@@ -1,0 +1,33 @@
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+const PlatformSettings = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Platform Settings</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div>
+            <label className="text-sm font-medium">Platform Name</label>
+            <Input defaultValue="OpportunityHub" />
+          </div>
+          <div>
+            <label className="text-sm font-medium">Max Free Applications</label>
+            <Input type="number" defaultValue="10" />
+          </div>
+          <div>
+            <label className="text-sm font-medium">Pro Subscription Price (NGN)</label>
+            <Input type="number" defaultValue="2500" />
+          </div>
+          <Button>Save Settings</Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default PlatformSettings;

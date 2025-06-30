@@ -1,0 +1,218 @@
+
+"use client";
+ 
+import { Briefcase } from "lucide-react";
+import { useState } from "react";
+
+export const FullScreenSignup = ({
+  onSubmit,
+  isLogin = false,
+  loading = false,
+  error = "",
+}: {
+  onSubmit: (email: string, password: string, fullName?: string) => void;
+  isLogin?: boolean;
+  loading?: boolean;
+  error?: string;
+}) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [fullNameError, setFullNameError] = useState("");
+ 
+  const validateEmail = (value: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  };
+ 
+  const validatePassword = (value: string) => {
+    return value.length >= 6;
+  };
+ 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    let valid = true;
+ 
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address.");
+      valid = false;
+    } else {
+      setEmailError("");
+    }
+ 
+    if (!validatePassword(password)) {
+      setPasswordError("Password must be at least 6 characters.");
+      valid = false;
+    } else {
+      setPasswordError("");
+    }
+ 
+    if (!isLogin && !fullName.trim()) {
+      setFullNameError("Please enter your full name.");
+      valid = false;
+    } else {
+      setFullNameError("");
+    }
+ 
+    if (valid) {
+      onSubmit(email, password, fullName);
+    }
+  };
+ 
+  return (
+    <div className="min-h-screen flex items-center justify-center overflow-hidden p-4">
+      <div className="w-full relative max-w-5xl overflow-hidden flex flex-col md:flex-row shadow-xl rounded-3xl">
+        <div className="w-full h-full z-2 absolute bg-gradient-to-t from-transparent to-black/20 rounded-3xl"></div>
+        <div className="flex absolute z-2 overflow-hidden backdrop-blur-2xl rounded-l-3xl">
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+        </div>
+        <div className="w-[15rem] h-[15rem] bg-gradient-to-r from-blue-600 to-purple-600 absolute z-1 rounded-full bottom-0 left-0"></div>
+        <div className="w-[8rem] h-[5rem] bg-white absolute z-1 rounded-full bottom-10 left-20"></div>
+        <div className="w-[6rem] h-[6rem] bg-gradient-to-r from-blue-400 to-purple-400 absolute z-1 rounded-full bottom-5 left-32 opacity-70"></div>
+        
+        <div className="bg-gradient-to-br from-gray-900 to-black text-white p-8 md:p-12 md:w-1/2 relative rounded-l-3xl overflow-hidden">
+          <h1 className="text-2xl md:text-3xl font-medium leading-tight z-10 tracking-tight relative">
+            Your gateway to global opportunities and career growth.
+          </h1>
+          <p className="text-gray-300 mt-4 z-10 relative">
+            Discover scholarships, jobs, fellowships, and competitions from around the world. 
+            Let AI help you find and apply to the best opportunities.
+          </p>
+        </div>
+ 
+        <div className="p-8 md:p-12 md:w-1/2 flex flex-col bg-white z-10 text-gray-900 rounded-r-3xl">
+          <div className="flex flex-col items-left mb-8">
+            <div className="text-gradient-to-r from-blue-600 to-purple-600 mb-4">
+              <Briefcase className="h-10 w-10 text-blue-600" />
+            </div>
+            <h2 className="text-3xl font-medium mb-2 tracking-tight">
+              {isLogin ? 'Welcome Back' : 'Get Started'}
+            </h2>
+            <p className="text-left opacity-80">
+              {isLogin ? 'Sign in to your OpportunityHub account' : 'Create your OpportunityHub account'}
+            </p>
+          </div>
+ 
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={handleSubmit}
+            noValidate
+          >
+            {!isLogin && (
+              <div>
+                <label htmlFor="fullName" className="block text-sm mb-2 font-medium">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  placeholder="Enter your full name"
+                  className={`text-sm w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-blue-500 focus:border-blue-500 ${
+                    fullNameError ? "border-red-500" : "border-gray-300"
+                  }`}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  aria-invalid={!!fullNameError}
+                  aria-describedby="fullName-error"
+                />
+                {fullNameError && (
+                  <p id="fullName-error" className="text-red-500 text-xs mt-1">
+                    {fullNameError}
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="email" className="block text-sm mb-2 font-medium">
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                className={`text-sm w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-blue-500 focus:border-blue-500 ${
+                  emailError ? "border-red-500" : "border-gray-300"
+                }`}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                aria-invalid={!!emailError}
+                aria-describedby="email-error"
+              />
+              {emailError && (
+                <p id="email-error" className="text-red-500 text-xs mt-1">
+                  {emailError}
+                </p>
+              )}
+            </div>
+ 
+            <div>
+              <label htmlFor="password" className="block text-sm mb-2 font-medium">
+                {isLogin ? 'Password' : 'Create Password'}
+              </label>
+              <input
+                type="password"
+                id="password"
+                placeholder={isLogin ? 'Enter your password' : 'Create a strong password'}
+                className={`text-sm w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-blue-500 focus:border-blue-500 ${
+                  passwordError ? "border-red-500" : "border-gray-300"
+                }`}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                aria-invalid={!!passwordError}
+                aria-describedby="password-error"
+              />
+              {passwordError && (
+                <p id="password-error" className="text-red-500 text-xs mt-1">
+                  {passwordError}
+                </p>
+              )}
+              {!isLogin && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Password must be at least 6 characters long
+                </p>
+              )}
+            </div>
+
+            {error && (
+              <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
+                {error}
+              </div>
+            )}
+ 
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  {isLogin ? 'Signing In...' : 'Creating Account...'}
+                </div>
+              ) : (
+                isLogin ? 'Sign In' : 'Create Account'
+              )}
+            </button>
+ 
+            <div className="text-center text-gray-600 text-sm">
+              {isLogin ? "Don't have an account? " : "Already have an account? "}
+              <a 
+                href={isLogin ? "/auth?tab=signup" : "/auth?tab=signin"} 
+                className="text-blue-600 font-medium hover:underline"
+              >
+                {isLogin ? 'Sign Up' : 'Sign In'}
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
