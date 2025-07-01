@@ -42,7 +42,7 @@ const Dashboard = () => {
     successRate: 85
   });
   const [categories, setCategories] = useState<any[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
   const [showAIRecommendations, setShowAIRecommendations] = useState(false);
@@ -119,26 +119,20 @@ const Dashboard = () => {
     navigate(`/opportunity/${result.id}`);
   };
 
-  const handleCategoryClick = (categoryName: string) => {
+  const handleCategoryClick = (category: any) => {
     // Check if category restriction is enabled and user is free tier
-    if (categoryRestrictionEnabled && tier === 'free' && categoryName) {
+    if (categoryRestrictionEnabled && tier === 'free' && category) {
       const allowedCategories = ['Jobs', 'Internships']; // First two categories for free users
-      if (!allowedCategories.includes(categoryName)) {
+      if (!allowedCategories.includes(category.name)) {
         setShowUpgradePrompt(true);
         return;
       }
     }
 
-    if (categoryName) {
-      // Find the category by name to get its ID
-      const category = categories.find(cat => cat.name === categoryName);
-      if (category) {
-        navigate(`/category/${category.id}`);
-      } else {
-        console.error('Category not found:', categoryName);
-      }
+    if (category) {
+      setSelectedCategory(category);
     } else {
-      setSelectedCategory('');
+      setSelectedCategory(null);
     }
   };
 
@@ -195,7 +189,7 @@ const Dashboard = () => {
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Button 
               onClick={() => setShowAIRecommendations(true)}
-              className="bg-gradient-to-r from-[#90EE90] to-[#32CD32] hover:from-[#32CD32] hover:to-[#228B22] text-white shadow-lg w-full sm:w-auto"
+              className="bg-gradient-to-r from-[#178a50] via-[#1fc77a] to-[#43e97b] hover:from-[#1fc77a] hover:to-[#178a50] text-white shadow-lg w-full sm:w-auto"
             >
               <Sparkles className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">AI Recommendations</span>
@@ -223,7 +217,7 @@ const Dashboard = () => {
         >
           <div className="flex justify-center">
             <div className="relative w-full max-w-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#90EE90]/20 to-[#e6f5ec]/20 rounded-2xl blur-xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#178a50]/20 to-[#e6f5ec]/20 rounded-2xl blur-xl"></div>
               <div className="relative bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl border border-[#e6f5ec]/50 shadow-lg">
                 <SearchBar onResultSelect={handleSearchResult} />
               </div>

@@ -8,7 +8,7 @@ const AddOpportunityButton = () => {
 
   if (loading) {
     return (
-      <Button disabled className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+      <Button disabled className="bg-[#90EE90] hover:bg-[#32CD32] w-full sm:w-auto">
         <Plus className="w-4 h-4 mr-2" />
         <span className="hidden sm:inline">Loading...</span>
         <span className="sm:hidden">Loading</span>
@@ -28,7 +28,7 @@ const AddOpportunityButton = () => {
 
   return (
     <Link to="/create-opportunity" className="w-full sm:w-auto">
-      <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+      <Button className="bg-[#90EE90] hover:bg-[#32CD32] w-full sm:w-auto shadow-lg hover:shadow-[#90EE90]/30 transition-all duration-300">
         <Plus className="w-4 h-4 mr-2" />
         <span className="hidden sm:inline">Create Opportunity</span>
         <span className="sm:hidden">Create</span>

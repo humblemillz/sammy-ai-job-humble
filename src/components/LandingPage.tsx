@@ -132,11 +132,16 @@ const LandingPage = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-5xl md:text-7xl font-bold text-[#384040] mb-6 leading-tight"
+              className="text-5xl md:text-7xl font-bold text-[#384040] mb-6 leading-[1.12] md:leading-[1.08]"
             >
               Discover Your Next
-              <span className="block bg-gradient-to-r from-[#90EE90] via-[#32CD32] to-[#228B22] bg-clip-text text-transparent drop-shadow-sm">
-                Big Opportunity
+              <span className="block">
+                <span className="block bg-gradient-to-r from-[#90EE90] via-[#32CD32] to-[#228B22] bg-clip-text text-transparent drop-shadow-sm">
+                  Big
+                </span>
+                <span className="block bg-gradient-to-r from-[#90EE90] via-[#32CD32] to-[#228B22] bg-clip-text text-transparent drop-shadow-sm mt-[-0.2em]">
+                  Opportunity
+                </span>
               </span>
             </motion.h1>
 

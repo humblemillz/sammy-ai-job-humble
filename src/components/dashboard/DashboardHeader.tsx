@@ -55,11 +55,11 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
             transition={{ duration: 0.2 }}
           >
             <Link to="/dashboard" className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#90EE90] to-[#32CD32] rounded-xl flex items-center justify-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#178a50] via-[#1fc77a] to-[#43e97b] rounded-xl flex items-center justify-center">
                 <span className="text-white font-bold text-sm sm:text-lg">O</span>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold bg-gradient-to-r from-[#384040] to-[#90EE90] bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-[#384040] to-[#1fc77a] bg-clip-text text-transparent">
                   OpportunityHub
                 </h1>
                 <p className="text-xs text-gray-500">Find your next opportunity</p>
@@ -78,7 +78,7 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
               variant="outline"
               size="sm"
               onClick={() => navigate('/ai-assistant')}
-              className="bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/10 border-[#90EE90]/30 text-[#90EE90] hover:bg-[#90EE90]/20 hover:border-[#90EE90]/50 transition-all duration-300"
+              className="bg-gradient-to-r from-[#178a50]/10 to-[#1fc77a]/10 border-[#1fc77a]/30 text-[#178a50] hover:bg-[#1fc77a]/20 hover:border-[#178a50]/50 transition-all duration-300"
             >
               <Sparkles className="h-4 w-4 mr-2" />
               AI Assistant
@@ -100,9 +100,9 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
                   whileTap={{ scale: 0.95 }}
                   className="flex items-center gap-2 sm:gap-3 p-1 sm:p-2 rounded-xl hover:bg-[#e6f5ec]/30 transition-all duration-200"
                 >
-                  <Avatar className="h-7 w-7 sm:h-8 sm:w-8 ring-2 ring-[#90EE90]/20">
+                  <Avatar className="h-7 w-7 sm:h-8 sm:w-8 ring-2 ring-[#1fc77a]/20">
                     <AvatarImage src={user?.user_metadata?.avatar_url} />
-                    <AvatarFallback className="bg-gradient-to-br from-[#90EE90] to-[#32CD32] text-white text-xs sm:text-sm">
+                    <AvatarFallback className="bg-gradient-to-br from-[#178a50] to-[#1fc77a] text-white text-xs sm:text-sm">
                       {getUserInitials(user)}
                     </AvatarFallback>
                   </Avatar>

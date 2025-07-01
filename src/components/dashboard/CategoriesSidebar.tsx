@@ -16,7 +16,7 @@ interface Category {
 
 interface CategoriesSidebarProps {
   categories: Category[];
-  selectedCategory: string | null;
+  selectedCategory: Category | null;
   onCategoryClick: (category: Category | null) => void;
   userTier?: string;
   categoryRestrictionEnabled?: boolean;
@@ -80,13 +80,13 @@ const CategoriesSidebar = ({
           onClick={() => onCategoryClick(null)}
           className={`w-full text-left p-3 sm:p-4 rounded-xl transition-all duration-300 mb-3 ${
             selectedCategory === null
-              ? 'bg-gradient-to-r from-[#90EE90] to-[#32CD32] text-white shadow-lg'
-              : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#90EE90]/20 hover:text-[#90EE90]'
+              ? 'bg-gradient-to-r from-[#178a50] via-[#1fc77a] to-[#43e97b] text-white shadow-lg'
+              : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#1fc77a]/20 hover:text-[#178a50]'
           }`}
         >
           <div className="flex items-center gap-3">
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-              selectedCategory === null ? 'bg-white/20' : 'bg-[#90EE90]/20'
+              selectedCategory === null ? 'bg-white/20' : 'bg-[#1fc77a]/20'
             }`}>
               <Globe className="w-4 h-4" />
             </div>
@@ -112,10 +112,10 @@ const CategoriesSidebar = ({
                 disabled={isRestricted}
                 className={`w-full text-left p-3 sm:p-4 rounded-xl transition-all duration-300 ${
                   selectedCategory?.id === category.id
-                    ? 'bg-gradient-to-r from-[#90EE90] to-[#32CD32] text-white shadow-lg'
+                    ? 'bg-gradient-to-r from-[#178a50] via-[#1fc77a] to-[#43e97b] text-white shadow-lg'
                     : isRestricted
                     ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#90EE90]/20 hover:text-[#90EE90]'
+                    : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#1fc77a]/20 hover:text-[#178a50]'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -125,12 +125,12 @@ const CategoriesSidebar = ({
                         ? 'bg-white/20' 
                         : isRestricted 
                         ? 'bg-gray-200' 
-                        : 'bg-[#90EE90]/20'
+                        : 'bg-[#1fc77a]/20'
                     }`}>
                       {category.icon ? (
-                        <span className="text-lg">{category.icon}</span>
+                        <category.icon className="w-4 h-4 text-[#178a50]" />
                       ) : (
-                        <Briefcase className="w-4 h-4" />
+                        <Briefcase className="w-4 h-4 text-[#178a50]" />
                       )}
                     </div>
                     <div className="text-left">

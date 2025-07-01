@@ -17,9 +17,12 @@ interface StaffStats {
   pendingSubmissions: number;
   approvedSubmissions: number;
   totalOpportunities: number;
-  publishedOpportunities: number;
-  draftOpportunities?: number;
+    publishedOpportunities: number;
+    draftOpportunities?: number;  
 }
+// interface StaffAdminDashboardProps {
+//   user: any;
+// }
 
 const StaffAdminDashboard = () => {
   const { user } = useAuth();
