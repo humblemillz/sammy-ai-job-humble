@@ -89,14 +89,14 @@ const StatsCards = ({ userStats }: StatsCardsProps) => {
             }}
             whileTap={{ scale: 0.95 }}
           >
-            <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-[#e6f5ec]/30 shadow-lg hover:shadow-[#178a50]/10 transition-all duration-300 rounded-xl sm:rounded-2xl group">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#e6f5ec]/20 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-[#e6f5ec]/30 shadow-lg hover:shadow-[#177517]/10 transition-all duration-300 rounded-xl sm:rounded-2xl group">
+              <div className="absolute inset-0 bg-[#177517]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               <motion.div 
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 0.1 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
-                className="absolute -top-6 -right-6 w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-[#178a50] via-[#1fc77a] to-[#43e97b] rounded-full blur-2xl"
+                className="absolute -top-6 -right-6 w-20 h-20 sm:w-24 sm:h-24 bg-[#177517] rounded-full blur-2xl"
               />
               
               <CardContent className="relative p-4 sm:p-6 lg:p-8">
@@ -130,9 +130,9 @@ const StatsCards = ({ userStats }: StatsCardsProps) => {
                       delay: index * 0.1 + 0.5,
                       duration: 0.6
                     }}
-                    className="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-[#1fc77a]/20 group-hover:scale-110 transition-transform duration-300"
+                    className="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-[#177517]/20 group-hover:scale-110 transition-transform duration-300"
                   >
-                    <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-[#178a50]" />
+                    <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-[#177517]" />
                   </motion.div>
                 </div>
                 
@@ -140,7 +140,7 @@ const StatsCards = ({ userStats }: StatsCardsProps) => {
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ delay: index * 0.1 + 0.6, duration: 0.5 }}
-                  className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#178a50] via-[#1fc77a] to-[#43e97b] origin-left"
+                  className="absolute bottom-0 left-0 h-1 bg-[#177517] origin-left"
                   style={{ width: '100%' }}
                 />
               </CardContent>

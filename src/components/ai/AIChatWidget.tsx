@@ -82,7 +82,7 @@ const AIChatWidget = () => {
       >
         <Button
           onClick={handleStartChat}
-          className="h-14 w-14 rounded-full bg-gradient-to-r from-[#17cfcf] to-[#17cfcf]/80 hover:from-[#17cfcf]/90 hover:to-[#17cfcf]/70 shadow-lg hover:shadow-xl transition-all duration-300 group relative"
+          className="h-14 w-14 rounded-full bg-[#177517] hover:bg-[#218c1b] shadow-lg hover:shadow-xl transition-all duration-300 group relative"
           size="icon"
         >
           <motion.div
@@ -118,9 +118,9 @@ const AIChatWidget = () => {
           >
             <ExpandableChat>
               {/* Header */}
-              <div className="flex items-center gap-3 p-4 border-b border-[#e6f5ec]/30 bg-gradient-to-r from-[#e6f5ec]/10 to-white/10">
+              <div className="flex items-center gap-3 p-4 border-b border-[#e6f5ec]/30 bg-[#177517]/10">
                 <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#17cfcf] to-[#17cfcf]/80 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-[#177517] rounded-full flex items-center justify-center">
                     <Bot className="w-5 h-5 text-white" />
                   </div>
                   <motion.div
@@ -142,7 +142,7 @@ const AIChatWidget = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowVoiceInterface(!showVoiceInterface)}
-                    className={`hover:bg-[#17cfcf]/10 rounded-full ${showVoiceInterface ? 'bg-[#17cfcf]/20' : ''}`}
+                    className={`hover:bg-[#177517]/10 rounded-full ${showVoiceInterface ? 'bg-[#177517]/20' : ''}`}
                     title="Toggle voice interface"
                   >
                     <Mic className="h-4 w-4" />
@@ -151,7 +151,7 @@ const AIChatWidget = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => setIsOpen(false)}
-                    className="hover:bg-[#17cfcf]/10 rounded-full"
+                    className="hover:bg-[#177517]/10 rounded-full"
                   >
                     <X className="h-4 w-4" />
                   </Button>
@@ -182,9 +182,9 @@ const AIChatWidget = () => {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="w-16 h-16 bg-gradient-to-br from-[#17cfcf]/20 to-[#e6f5ec]/20 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-16 h-16 bg-gradient-to-br from-[#177517]/20 to-[#e6f5ec]/20 rounded-full flex items-center justify-center mx-auto mb-4"
                     >
-                      <Bot className="w-8 h-8 text-[#17cfcf]" />
+                      <Bot className="w-8 h-8 text-[#177517]" />
                     </motion.div>
                     <h4 className="font-medium text-[#384040] mb-2">Welcome to AI Career Assistant!</h4>
                     <p className="text-sm text-gray-600 mb-2">🎤 Voice-enabled • Click mic to talk</p>
@@ -220,14 +220,14 @@ const AIChatWidget = () => {
                         className={`flex gap-3 ${msg.message_type === 'user' ? 'justify-end' : 'justify-start'}`}
                       >
                         {msg.message_type === 'assistant' && (
-                          <div className="w-8 h-8 bg-gradient-to-br from-[#17cfcf] to-[#17cfcf]/80 rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-8 h-8 bg-gradient-to-br from-[#177517] to-[#177517]/80 rounded-full flex items-center justify-center flex-shrink-0">
                             <Bot className="w-4 h-4 text-white" />
                           </div>
                         )}
                         <div
                           className={`max-w-[80%] p-3 rounded-2xl ${
                             msg.message_type === 'user'
-                              ? 'bg-[#17cfcf] text-white ml-12'
+                              ? 'bg-[#177517] text-white ml-12'
                               : 'bg-[#e6f5ec]/30 text-[#384040]'
                           }`}
                         >
@@ -252,7 +252,7 @@ const AIChatWidget = () => {
                         animate={{ opacity: 1 }}
                         className="flex gap-3 justify-start"
                       >
-                        <div className="w-8 h-8 bg-gradient-to-br from-[#17cfcf] to-[#17cfcf]/80 rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-gradient-to-br from-[#177517] to-[#177517]/80 rounded-full flex items-center justify-center">
                           <Bot className="w-4 h-4 text-white" />
                         </div>
                         <div className="bg-[#e6f5ec]/30 p-3 rounded-2xl">
@@ -260,7 +260,7 @@ const AIChatWidget = () => {
                             {[0, 1, 2].map((i) => (
                               <motion.div
                                 key={i}
-                                className="w-2 h-2 bg-[#17cfcf] rounded-full"
+                                className="w-2 h-2 bg-[#177517] rounded-full"
                                 animate={{ scale: [1, 1.5, 1] }}
                                 transition={{
                                   repeat: Infinity,
@@ -287,12 +287,12 @@ const AIChatWidget = () => {
                     onKeyPress={handleKeyPress}
                     placeholder="Type your message or use voice..."
                     disabled={loading}
-                    className="flex-1 border-[#e6f5ec]/50 focus:border-[#17cfcf] focus:ring-[#17cfcf]/20 rounded-xl"
+                    className="flex-1 border-[#e6f5ec]/50 focus:border-[#177517] focus:ring-[#177517]/20 rounded-xl"
                   />
                   <Button
                     onClick={handleSendMessage}
                     disabled={!message.trim() || loading}
-                    className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white rounded-xl px-4"
+                    className="bg-[#177517] hover:bg-[#177517]/90 text-white rounded-xl px-4"
                   >
                     <Send className="w-4 h-4" />
                   </Button>

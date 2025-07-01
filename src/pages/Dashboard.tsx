@@ -189,7 +189,7 @@ const Dashboard = () => {
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Button 
               onClick={() => setShowAIRecommendations(true)}
-              className="bg-gradient-to-r from-[#178a50] via-[#1fc77a] to-[#43e97b] hover:from-[#1fc77a] hover:to-[#178a50] text-white shadow-lg w-full sm:w-auto"
+              className="bg-[#177517] hover:bg-[#218c1b] text-white shadow-lg w-full sm:w-auto"
             >
               <Sparkles className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">AI Recommendations</span>
@@ -217,7 +217,7 @@ const Dashboard = () => {
         >
           <div className="flex justify-center">
             <div className="relative w-full max-w-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#178a50]/20 to-[#e6f5ec]/20 rounded-2xl blur-xl"></div>
+              <div className="absolute inset-0 bg-[#177517]/20 rounded-2xl blur-xl"></div>
               <div className="relative bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl border border-[#e6f5ec]/50 shadow-lg">
                 <SearchBar onResultSelect={handleSearchResult} />
               </div>
@@ -255,6 +255,8 @@ const Dashboard = () => {
             <MainContent
               selectedCategory={selectedCategory}
               searchQuery={searchQuery}
+              viewMode="grid"
+              handleViewMode={() => {}}
             />
           </motion.div>
         </motion.div>

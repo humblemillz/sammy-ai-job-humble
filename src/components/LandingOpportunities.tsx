@@ -160,22 +160,22 @@ const LandingOpportunities = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Card 
-                className="h-full bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 shadow-lg hover:shadow-xl hover:border-[#17cfcf]/50 transition-all duration-300 group cursor-pointer relative overflow-hidden"
+                className="h-full bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 shadow-lg hover:shadow-xl hover:border-[#177517]/50 transition-all duration-300 group cursor-pointer relative overflow-hidden"
                 onClick={() => handleOpportunityClick(opportunity.id)}
               >
                 {/* Hover overlay effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#17cfcf]/5 to-[#e6f5ec]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#177517]/5 to-[#e6f5ec]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative z-10">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
-                      <CardTitle className="text-lg font-bold text-[#384040] line-clamp-2 group-hover:text-[#17cfcf] transition-colors">
+                      <CardTitle className="text-lg font-bold text-[#384040] line-clamp-2 group-hover:text-[#177517] transition-colors">
                         {opportunity.title}
                       </CardTitle>
                     </div>
                     <div className="flex flex-col items-end space-y-1">
                       {opportunity.is_featured && (
-                        <Badge className="bg-gradient-to-r from-[#17cfcf] to-[#17cfcf]/80 text-white text-xs">
+                        <Badge className="bg-gradient-to-r from-[#177517] to-[#177517]/80 text-white text-xs">
                           Featured
                         </Badge>
                       )}
@@ -251,7 +251,7 @@ const LandingOpportunities = () => {
                     {opportunity.description.length > 150 && (
                       <button
                         onClick={() => toggleExpanded(opportunity.id)}
-                        className="text-[#17cfcf] hover:text-[#17cfcf]/80 text-sm font-medium mt-2 flex items-center group"
+                        className="text-[#177517] hover:text-[#177517]/80 text-sm font-medium mt-2 flex items-center group"
                       >
                         {expandedOpportunities.has(opportunity.id) ? (
                           <>
@@ -294,7 +294,7 @@ const LandingOpportunities = () => {
 
                     <Button
                       size="sm"
-                      className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white rounded-lg px-3 py-1 text-xs font-medium transition-all duration-300 group"
+                      className="bg-[#177517] hover:bg-[#177517]/90 text-white rounded-lg px-3 py-1 text-xs font-medium transition-all duration-300 group"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleViewDetails(opportunity.id);
@@ -322,7 +322,7 @@ const LandingOpportunities = () => {
             <Button
               size="lg"
               variant="outline"
-              className="border-2 border-[#e6f5ec] text-[#384040] hover:bg-[#e6f5ec]/30 hover:border-[#17cfcf] px-8 py-3 rounded-xl transition-all duration-300 group"
+              className="border-2 border-[#e6f5ec] text-[#384040] hover:bg-[#e6f5ec]/30 hover:border-[#177517] px-8 py-3 rounded-xl transition-all duration-300 group"
               onClick={() => user ? navigate('/dashboard') : navigate('/auth')}
             >
               {user ? 'View All Opportunities' : 'Sign In for More Features'}

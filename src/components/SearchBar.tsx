@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -149,21 +148,21 @@ const SearchBar = ({ onResultSelect }: SearchBarProps) => {
         whileFocus={{ scale: 1.02 }}
         transition={{ duration: 0.2 }}
       >
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#17cfcf] w-5 h-5" />
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#177517] w-5 h-5" />
         <Input
           type="text"
           placeholder="Search opportunities, organizations, categories..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setShowResults(query.trim().length > 0 || recentSearches.length > 0)}
-          className="pl-12 pr-12 h-12 rounded-2xl border-[#e6f5ec]/50 bg-white/90 backdrop-blur-sm focus:border-[#17cfcf] focus:ring-[#17cfcf] text-base"
+          className="pl-12 pr-12 h-12 rounded-2xl border-[#e6f5ec]/50 bg-white/90 backdrop-blur-sm focus:border-[#177517] focus:ring-[#177517] text-base"
         />
         {query && (
           <Button
             variant="ghost"
             size="sm"
             onClick={clearSearch}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 h-auto text-[#17cfcf] hover:bg-[#17cfcf]/10"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 h-auto text-[#177517] hover:bg-[#177517]/10"
           >
             <X className="w-4 h-4" />
           </Button>
@@ -182,7 +181,7 @@ const SearchBar = ({ onResultSelect }: SearchBarProps) => {
               <CardContent className="p-0">
                 {isLoading ? (
                   <div className="p-6 text-center text-gray-500">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#17cfcf] mx-auto mb-2"></div>
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#177517] mx-auto mb-2"></div>
                     Searching...
                   </div>
                 ) : results.length > 0 ? (
@@ -194,19 +193,19 @@ const SearchBar = ({ onResultSelect }: SearchBarProps) => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.2, delay: index * 0.05 }}
                         onClick={() => handleResultClick(result)}
-                        className="p-4 hover:bg-[#17cfcf]/5 cursor-pointer transition-colors"
+                        className="p-4 hover:bg-[#177517]/5 cursor-pointer transition-colors"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h4 className="font-medium text-gray-900 text-sm mb-1">{result.title}</h4>
                             <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
                               <span className="flex items-center">
-                                <Building className="w-3 h-3 mr-1 text-[#17cfcf]" />
+                                <Building className="w-3 h-3 mr-1 text-[#177517]" />
                                 {result.organization}
                               </span>
                               {result.location && (
                                 <span className="flex items-center">
-                                  <MapPin className="w-3 h-3 mr-1 text-[#17cfcf]" />
+                                  <MapPin className="w-3 h-3 mr-1 text-[#177517]" />
                                   {result.location}
                                 </span>
                               )}
@@ -214,7 +213,7 @@ const SearchBar = ({ onResultSelect }: SearchBarProps) => {
                             <div className="flex items-center gap-2">
                               <Badge 
                                 variant="outline" 
-                                className="text-xs border-[#17cfcf]/30 text-[#17cfcf] bg-[#17cfcf]/5"
+                                className="text-xs border-[#177517]/30 text-[#177517] bg-[#177517]/5"
                               >
                                 {result.category}
                               </Badge>
@@ -230,7 +229,7 @@ const SearchBar = ({ onResultSelect }: SearchBarProps) => {
                               )}
                             </div>
                           </div>
-                          <Bookmark className="w-4 h-4 text-[#17cfcf]/60" />
+                          <Bookmark className="w-4 h-4 text-[#177517]/60" />
                         </div>
                       </motion.div>
                     ))}
@@ -242,7 +241,7 @@ const SearchBar = ({ onResultSelect }: SearchBarProps) => {
                 ) : recentSearches.length > 0 ? (
                   <div className="p-4">
                     <h5 className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-[#17cfcf]" />
+                      <Clock className="w-4 h-4 text-[#177517]" />
                       Recent Searches
                     </h5>
                     <div className="space-y-1">
@@ -253,7 +252,7 @@ const SearchBar = ({ onResultSelect }: SearchBarProps) => {
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.2, delay: index * 0.05 }}
                           onClick={() => handleRecentSearchClick(search)}
-                          className="text-sm text-gray-600 hover:text-[#17cfcf] cursor-pointer py-2 px-2 rounded-lg hover:bg-[#17cfcf]/5 transition-colors"
+                          className="text-sm text-gray-600 hover:text-[#177517] cursor-pointer py-2 px-2 rounded-lg hover:bg-[#177517]/5 transition-colors"
                         >
                           {search}
                         </motion.div>

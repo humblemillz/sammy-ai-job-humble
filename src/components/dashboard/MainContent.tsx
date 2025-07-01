@@ -47,7 +47,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
           <TabsList className="grid w-full grid-cols-3 bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 rounded-xl sm:rounded-2xl p-1 sm:p-2 shadow-lg">
             <TabsTrigger 
               value="discover" 
-              className="rounded-lg sm:rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#178a50] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#1fc77a]/30 text-xs sm:text-sm"
+              className="rounded-lg sm:rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#177517] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#218c1b]/30 text-xs sm:text-sm"
             >
               Discover
             </TabsTrigger>
@@ -73,7 +73,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
             animate="visible"
           >
             <div className="mb-4 sm:mb-6 relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-[#178a50]/10 to-[#1fc77a]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
+              <div className="absolute -inset-2 bg-[#177517]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
               <div className="relative bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#e6f5ec]/30">
                 <motion.h2 
                   initial={{ opacity: 0, x: -20 }}
@@ -114,7 +114,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
             animate="visible"
           >
             <div className="mb-4 sm:mb-6 relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
+              <div className="absolute -inset-2 bg-[#177517]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
               <div className="relative bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#e6f5ec]/30">
                 <motion.h2 
                   initial={{ opacity: 0, x: -20 }}
@@ -156,7 +156,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
             animate="visible"
           >
             <div className="mb-4 sm:mb-6 relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
+              <div className="absolute -inset-2 bg-[#177517]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
               <div className="relative bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#e6f5ec]/30">
                 <motion.h2 
                   initial={{ opacity: 0, x: -20 }}
@@ -222,8 +222,8 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
         onClick={() => handleViewMode('grid')}
         className={`${
           viewMode === 'grid' 
-            ? 'bg-[#178a50]/10 border-[#178a50] text-[#178a50]' 
-            : 'border-gray-300 text-gray-600 hover:border-[#1fc77a]/50'
+            ? 'bg-[#177517]/10 border-[#177517] text-[#177517]' 
+            : 'border-gray-300 text-gray-600 hover:border-[#218c1b]/50'
         } transition-all duration-200`}
       >
         <Grid className="h-4 w-4" />

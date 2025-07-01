@@ -291,89 +291,88 @@ const OpportunitiesList = ({
           key={opportunity.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: index * 0.1 }}
+          transition={{ duration: 0.2, delay: index * 0.05 }}
+          className="group bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 rounded-2xl shadow-lg hover:shadow-xl hover:border-[#177517]/30 transition-all duration-300"
         >
-          <Card className="bg-white/80 backdrop-blur-sm border-[#e6f5ec]/30 shadow-lg rounded-2xl hover:shadow-xl transition-all duration-300 hover:border-[#17cfcf]/30">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <CardTitle className="text-xl mb-2">
-                    <Link 
-                      to={`/opportunity/${opportunity.id}`}
-                      className="hover:text-[#17cfcf] transition-colors"
-                    >
-                      {opportunity.title}
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="flex items-center gap-4 text-base">
-                    <span className="flex items-center">
-                      <Building className="w-4 h-4 mr-1 text-[#17cfcf]" />
-                      {opportunity.organization}
-                    </span>
-                    {opportunity.location && (
-                      <span className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-1 text-[#17cfcf]" />
-                        {opportunity.location}
-                      </span>
-                    )}
-                    {opportunity.is_remote && (
-                      <Badge variant="secondary" className="bg-green-100 text-green-800">
-                        Remote
-                      </Badge>
-                    )}
-                  </CardDescription>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge 
-                    variant="outline"
-                    className="border-[#17cfcf] text-[#17cfcf] bg-[#17cfcf]/10"
+          <CardHeader>
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <CardTitle className="text-xl mb-2">
+                  <Link 
+                    to={`/opportunity/${opportunity.id}`}
+                    className="hover:text-[#177517] transition-colors"
                   >
-                    {opportunity.category.name}
-                  </Badge>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleBookmark(opportunity.id)}
-                    className="text-[#17cfcf] hover:bg-[#17cfcf]/10"
-                  >
-                    {bookmarks.has(opportunity.id) ? (
-                      <BookmarkCheck className="w-4 h-4" />
-                    ) : (
-                      <Bookmark className="w-4 h-4" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            
-            <CardContent>
-              <p className="text-gray-700 mb-4 line-clamp-3">
-                {opportunity.description.substring(0, 200)}...
-              </p>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4 text-sm text-gray-500">
+                    {opportunity.title}
+                  </Link>
+                </CardTitle>
+                <CardDescription className="flex items-center gap-4 text-base">
                   <span className="flex items-center">
-                    <Calendar className="w-4 h-4 mr-1 text-[#17cfcf]" />
-                    Posted {format(new Date(opportunity.created_at), 'MMM dd, yyyy')}
+                    <Building className="w-4 h-4 mr-1 text-[#177517]" />
+                    {opportunity.organization}
                   </span>
-                  {opportunity.application_deadline && (
+                  {opportunity.location && (
                     <span className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-1 text-red-500" />
-                      Deadline {format(new Date(opportunity.application_deadline), 'MMM dd, yyyy')}
+                      <MapPin className="w-4 h-4 mr-1 text-[#177517]" />
+                      {opportunity.location}
                     </span>
                   )}
-                </div>
-                
-                <Link to={`/opportunity/${opportunity.id}`}>
-                  <Button variant="outline" size="sm" className="border-[#17cfcf] text-[#17cfcf] hover:bg-[#17cfcf] hover:text-white">
-                    <ExternalLink className="w-4 h-4 mr-1" />
-                    View Details
-                  </Button>
-                </Link>
+                  {opportunity.is_remote && (
+                    <Badge variant="secondary" className="bg-green-100 text-green-800">
+                      Remote
+                    </Badge>
+                  )}
+                </CardDescription>
               </div>
-            </CardContent>
-          </Card>
+              <div className="flex items-center gap-2">
+                <Badge 
+                  variant="outline"
+                  className="border-[#177517] text-[#177517] bg-[#177517]/10"
+                >
+                  {opportunity.category.name}
+                </Badge>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => toggleBookmark(opportunity.id)}
+                  className="text-[#177517] hover:bg-[#177517]/10"
+                >
+                  {bookmarks.has(opportunity.id) ? (
+                    <BookmarkCheck className="w-4 h-4" />
+                  ) : (
+                    <Bookmark className="w-4 h-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          </CardHeader>
+          
+          <CardContent>
+            <p className="text-gray-700 mb-4 line-clamp-3">
+              {opportunity.description.substring(0, 200)}...
+            </p>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4 text-sm text-gray-500">
+                <span className="flex items-center">
+                  <Calendar className="w-4 h-4 mr-1 text-[#177517]" />
+                  Posted {format(new Date(opportunity.created_at), 'MMM dd, yyyy')}
+                </span>
+                {opportunity.application_deadline && (
+                  <span className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-1 text-red-500" />
+                    Deadline {format(new Date(opportunity.application_deadline), 'MMM dd, yyyy')}
+                  </span>
+                )}
+              </div>
+              
+              <Link to={`/opportunity/${opportunity.id}`}>
+                <Button variant="outline" size="sm" className="border-[#177517] text-[#177517] hover:bg-[#177517] hover:text-white">
+                  <ExternalLink className="w-4 h-4 mr-1" />
+                  View Details
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
         </motion.div>
       ))}
       

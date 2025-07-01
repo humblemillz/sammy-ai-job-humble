@@ -49,21 +49,20 @@ const WelcomeSection = ({ user }: WelcomeSectionProps) => {
       >
         <Button
           onClick={() => navigate('/ai-assistant')}
-          className="bg-gradient-to-r from-[#90EE90] to-[#32CD32] hover:from-[#32CD32] hover:to-[#228B22] text-white shadow-lg hover:shadow-[#90EE90]/30 transition-all duration-300"
+          className="flex items-center gap-2 bg-[#177517] hover:bg-[#218c1b] text-white rounded-xl px-6 py-3 shadow-lg transition-all duration-300 font-semibold text-base"
         >
-          <Sparkles className="w-4 h-4 mr-2" />
+          <Sparkles className="w-5 h-5 mr-2" />
           <span className="hidden sm:inline">AI Recommendations</span>
           <span className="sm:hidden">AI Assistant</span>
         </Button>
         
         <Button
-          variant="outline"
           onClick={() => navigate('/create-opportunity')}
-          className="border-[#90EE90]/30 text-[#90EE90] hover:bg-[#90EE90]/10 hover:border-[#90EE90]/50 transition-all duration-300"
+          className="flex items-center gap-2 bg-[#177517] hover:bg-[#218c1b] text-white rounded-xl px-6 py-3 shadow-lg transition-all duration-300 font-semibold text-base"
         >
-          <Plus className="w-4 h-4 mr-2" />
-          <span className="hidden sm:inline">Submit Opportunity</span>
-          <span className="sm:hidden">Submit</span>
+          <Plus className="w-5 h-5 mr-2" />
+          <span className="hidden sm:inline">Create Opportunity</span>
+          <span className="sm:hidden">Create</span>
         </Button>
       </motion.div>
     </motion.div>

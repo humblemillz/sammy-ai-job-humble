@@ -80,13 +80,13 @@ const CategoriesSidebar = ({
           onClick={() => onCategoryClick(null)}
           className={`w-full text-left p-3 sm:p-4 rounded-xl transition-all duration-300 mb-3 ${
             selectedCategory === null
-              ? 'bg-gradient-to-r from-[#178a50] via-[#1fc77a] to-[#43e97b] text-white shadow-lg'
-              : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#1fc77a]/20 hover:text-[#178a50]'
+              ? 'bg-[#177517] text-white shadow-lg'
+              : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#218c1b]/20 hover:text-[#177517]'
           }`}
         >
           <div className="flex items-center gap-3">
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-              selectedCategory === null ? 'bg-white/20' : 'bg-[#1fc77a]/20'
+              selectedCategory === null ? 'bg-white/20' : 'bg-[#177517]/20'
             }`}>
               <Globe className="w-4 h-4" />
             </div>
@@ -112,10 +112,10 @@ const CategoriesSidebar = ({
                 disabled={isRestricted}
                 className={`w-full text-left p-3 sm:p-4 rounded-xl transition-all duration-300 ${
                   selectedCategory?.id === category.id
-                    ? 'bg-gradient-to-r from-[#178a50] via-[#1fc77a] to-[#43e97b] text-white shadow-lg'
+                    ? 'bg-[#177517] text-white shadow-lg'
                     : isRestricted
                     ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#1fc77a]/20 hover:text-[#178a50]'
+                    : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#218c1b]/20 hover:text-[#177517]'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -125,12 +125,12 @@ const CategoriesSidebar = ({
                         ? 'bg-white/20' 
                         : isRestricted 
                         ? 'bg-gray-200' 
-                        : 'bg-[#1fc77a]/20'
+                        : 'bg-[#177517]/20'
                     }`}>
                       {category.icon ? (
-                        <category.icon className="w-4 h-4 text-[#178a50]" />
+                        <category.icon className="w-4 h-4 text-[#177517]" />
                       ) : (
-                        <Briefcase className="w-4 h-4 text-[#178a50]" />
+                        <Briefcase className="w-4 h-4 text-[#177517]" />
                       )}
                     </div>
                     <div className="text-left">
@@ -166,28 +166,22 @@ const CategoriesSidebar = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => navigate('/create-opportunity')}
-            className="w-full text-left p-3 sm:p-4 rounded-xl bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/20 text-[#90EE90] hover:bg-[#90EE90]/20 transition-all duration-300 border border-[#90EE90]/30"
+            className="flex items-center gap-2 bg-[#177517] hover:bg-[#218c1b] text-white rounded-xl px-6 py-3 shadow-lg transition-all duration-300 font-semibold text-base w-full"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-[#90EE90]/20 rounded-lg flex items-center justify-center">
-                <Plus className="w-4 h-4" />
-              </div>
-              <span className="font-medium">Submit Opportunity</span>
-            </div>
+            <Plus className="w-5 h-5 mr-2" />
+            <span className="hidden sm:inline">Create Opportunity</span>
+            <span className="sm:hidden">Create</span>
           </motion.button>
           
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => navigate('/ai-assistant')}
-            className="w-full text-left p-3 sm:p-4 rounded-xl bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/20 text-[#90EE90] hover:bg-[#90EE90]/20 transition-all duration-300 border border-[#90EE90]/30"
+            className="flex items-center gap-2 bg-[#177517] hover:bg-[#218c1b] text-white rounded-xl px-6 py-3 shadow-lg transition-all duration-300 font-semibold text-base w-full"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-[#90EE90]/20 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <span className="font-medium">AI Assistant</span>
-            </div>
+            <Sparkles className="w-5 h-5 mr-2" />
+            <span className="hidden sm:inline">AI Recommendations</span>
+            <span className="sm:hidden">AI Assistant</span>
           </motion.button>
         </div>
       </div>

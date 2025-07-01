@@ -50,9 +50,9 @@ const LandingPage = () => {
       <section className="relative min-h-screen bg-gradient-to-br from-white via-[#e6f5ec]/20 to-white overflow-hidden">
         {/* Enhanced Background Pattern */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-[#17cfcf] rounded-full blur-3xl opacity-10 animate-pulse"></div>
+          <div className="absolute top-20 left-20 w-64 h-64 bg-[#177517] rounded-full blur-3xl opacity-10 animate-pulse"></div>
           <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#e6f5ec] rounded-full blur-3xl opacity-10 animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-[#17cfcf] to-[#17cfcf]/50 rounded-full blur-2xl opacity-5 animate-pulse" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-[#177517] to-[#177517]/50 rounded-full blur-2xl opacity-5 animate-pulse" style={{animationDelay: '2s'}}></div>
           <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{animationDelay: '0.5s'}}></div>
         </div>
 
@@ -80,7 +80,7 @@ const LandingPage = () => {
                   <motion.a
                     key={item}
                     href={`#${item.toLowerCase()}`}
-                    className="text-[#384040] hover:text-[#17cfcf] transition-colors font-medium"
+                    className="text-[#384040] hover:text-[#177517] transition-colors font-medium"
                     whileHover={{ y: -2 }}
                   >
                     {item}
