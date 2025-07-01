@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Star, Zap, Globe, Users, Trophy, Briefcase } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { HeroSection } from '@/components/ui/hero-section-1';
-import { OpportunityBento } from '@/components/ui/opportunity-bento';
+import LandingOpportunities from '@/components/LandingOpportunities';
 import { Testimonials } from '@/components/ui/testimonials-columns-1';
 import { FooterDemo } from '@/components/ui/footer-section';
 import SubscriptionPricing from '@/components/ui/subscription-pricing';
@@ -225,26 +225,8 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Bento Grid Features Section */}
-      <section className="py-24 bg-gradient-to-b from-[#e6f5ec]/10 to-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#384040] mb-6">
-              Explore Opportunities
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover a world of possibilities with our curated collection of opportunities
-            </p>
-          </motion.div>
-          <OpportunityBento />
-        </div>
-      </section>
+      {/* Opportunities Section */}
+      <LandingOpportunities />
 
       {/* Pricing Section */}
       <section id="pricing">
