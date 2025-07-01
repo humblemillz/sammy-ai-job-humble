@@ -12,6 +12,7 @@ interface OpportunityData {
   salary_range?: string;
   application_deadline?: string;
   application_url?: string;
+  source_url?: string;
   requirements?: string[];
   benefits?: string[];
   tags?: string[];

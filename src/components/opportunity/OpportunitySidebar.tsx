@@ -31,6 +31,7 @@ interface OpportunitySidebarProps {
     salary_range?: string;
     application_deadline?: string;
     application_url?: string;
+    source_url?: string;
     created_at: string;
   };
   user: any;
@@ -94,6 +95,29 @@ const OpportunitySidebar = ({
     onApply();
   };
 
+  const handleApplyClick = () => {
+    // Determine which URL to use for application
+    const applyUrl = opportunity.source_url || opportunity.application_url;
+    
+    if (applyUrl) {
+      // For external URLs (scraped opportunities), apply directly without requiring sign-in
+      window.open(applyUrl, '_blank', 'noopener,noreferrer');
+      // Record the application in our system if user is signed in
+      if (user) {
+        onApply();
+      }
+    } else {
+      // For user-submitted opportunities without external URLs, require sign-in
+      if (!user) {
+        // Redirect to auth page for user-submitted opportunities
+        window.location.href = '/auth';
+        return;
+      }
+      // If user is signed in, show the application modal
+      setShowApplicationModal(true);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Enhanced Quick Actions Card */}
@@ -106,7 +130,7 @@ const OpportunitySidebar = ({
         </CardHeader>
         <CardContent className="space-y-4">
           <Button
-            onClick={() => setShowApplicationModal(true)}
+            onClick={handleApplyClick}
             disabled={actionLoading}
             className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg ${
               hasApplied
@@ -115,7 +139,13 @@ const OpportunitySidebar = ({
             }`}
           >
             <ExternalLink className="w-5 h-5 mr-2" />
-            {hasApplied ? 'Applied Successfully ✓' : 'Apply Now'}
+            {hasApplied 
+              ? 'Applied Successfully ✓' 
+              : (opportunity.source_url || opportunity.application_url 
+                  ? 'Apply on External Site' 
+                  : (!user ? 'Sign In to Apply' : 'Apply Now')
+                )
+            }
           </Button>
 
           <div className="grid grid-cols-1 gap-3">

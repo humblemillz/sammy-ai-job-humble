@@ -8,8 +8,11 @@ import LandingOpportunities from '@/components/LandingOpportunities';
 import { Testimonials } from '@/components/ui/testimonials-columns-1';
 import { FooterDemo } from '@/components/ui/footer-section';
 import SubscriptionPricing from '@/components/ui/subscription-pricing';
+import { useAuth } from '@/hooks/useAuth';
 
 const LandingPage = () => {
+  const { user } = useAuth();
+  
   const features = [
     {
       icon: Globe,
@@ -83,16 +86,26 @@ const LandingPage = () => {
               </nav>
 
               <div className="flex items-center space-x-4">
-                <Link to="/auth">
-                  <Button variant="ghost" className="text-[#384040] hover:text-[#17cfcf] hover:bg-[#e6f5ec]/30">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/auth">
-                  <Button className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white rounded-xl px-6 shadow-lg hover:shadow-[#17cfcf]/30 transition-all duration-300">
-                    Get Started
-                  </Button>
-                </Link>
+                {user ? (
+                  <Link to="/dashboard">
+                    <Button className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white rounded-xl px-6 shadow-lg hover:shadow-[#17cfcf]/30 transition-all duration-300">
+                      Dashboard
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/auth">
+                      <Button variant="ghost" className="text-[#384040] hover:text-[#17cfcf] hover:bg-[#e6f5ec]/30">
+                        Sign In
+                      </Button>
+                    </Link>
+                    <Link to="/auth">
+                      <Button className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white rounded-xl px-6 shadow-lg hover:shadow-[#17cfcf]/30 transition-all duration-300">
+                        Get Started
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -140,15 +153,27 @@ const LandingPage = () => {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6"
             >
-              <Link to="/auth">
-                <Button 
-                  size="lg" 
-                  className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl hover:shadow-[#17cfcf]/30 transform hover:scale-105 transition-all duration-300"
-                >
-                  Start Exploring
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
+              {user ? (
+                <Link to="/dashboard">
+                  <Button 
+                    size="lg" 
+                    className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl hover:shadow-[#17cfcf]/30 transform hover:scale-105 transition-all duration-300"
+                  >
+                    Go to Dashboard
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/auth">
+                  <Button 
+                    size="lg" 
+                    className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl hover:shadow-[#17cfcf]/30 transform hover:scale-105 transition-all duration-300"
+                  >
+                    Start Exploring
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </Link>
+              )}
               <Button 
                 variant="outline" 
                 size="lg"

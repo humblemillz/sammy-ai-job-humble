@@ -3,8 +3,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { MapPin, Calendar, Building, Globe, DollarSign, Clock, CheckCircle, FileText } from 'lucide-react';
+import { MapPin, Calendar, Building, Globe, DollarSign, Clock, CheckCircle, FileText, ExternalLink } from 'lucide-react';
 
 interface OpportunityDetailsProps {
   opportunity: {
@@ -16,6 +17,8 @@ interface OpportunityDetailsProps {
     is_remote?: boolean;
     salary_range?: string;
     application_deadline?: string;
+    application_url?: string;
+    source_url?: string;
     requirements?: string[];
     benefits?: string[];
     tags?: string[];
@@ -222,6 +225,67 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                 </motion.li>
               ))}
             </ul>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* External Application Link */}
+      {(opportunity.source_url || opportunity.application_url) && (
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+              <ExternalLink className="w-6 h-6 text-blue-600" />
+              Apply for This Opportunity
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="bg-white rounded-xl p-6 border border-blue-200">
+              <div className="text-center space-y-4">
+                <p className="text-gray-700 text-lg">
+                  This opportunity requires you to apply through the official website.
+                </p>
+                <Button
+                  onClick={() => window.open(opportunity.source_url || opportunity.application_url, '_blank', 'noopener,noreferrer')}
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <ExternalLink className="w-5 h-5 mr-2" />
+                  Apply on Official Website
+                </Button>
+                <p className="text-sm text-gray-500">
+                  You'll be redirected to the official application page in a new tab. No sign-in required.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* User-Submitted Opportunity Application */}
+      {!opportunity.source_url && !opportunity.application_url && (
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-orange-50 to-red-50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+              <FileText className="w-6 h-6 text-orange-600" />
+              Apply for This Opportunity
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="bg-white rounded-xl p-6 border border-orange-200">
+              <div className="text-center space-y-4">
+                <p className="text-gray-700 text-lg">
+                  This is a user-submitted opportunity. You need to sign in to apply.
+                </p>
+                <Button
+                  onClick={() => window.location.href = '/auth'}
+                  className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Sign In to Apply
+                </Button>
+                <p className="text-sm text-gray-500">
+                  Create an account or sign in to submit your application.
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       )}

@@ -96,24 +96,13 @@ const LandingOpportunities = () => {
   };
 
   const handleOpportunityClick = (opportunityId: string) => {
-    if (user) {
-      navigate(`/opportunity/${opportunityId}`);
-    } else {
-      navigate('/auth');
-    }
+    // Always allow viewing opportunity details, regardless of auth status
+    navigate(`/opportunity/${opportunityId}`);
   };
 
-  const handleApplyNow = (sourceUrl: string | null, opportunityId: string) => {
-    if (!user) {
-      navigate('/auth');
-      return;
-    }
-    
-    if (sourceUrl) {
-      window.open(sourceUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      navigate(`/opportunity/${opportunityId}`);
-    }
+  const handleViewDetails = (opportunityId: string) => {
+    // Always allow viewing opportunity details, regardless of auth status
+    navigate(`/opportunity/${opportunityId}`);
   };
 
   if (loading) {
@@ -155,7 +144,7 @@ const LandingOpportunities = () => {
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Discover the most recent opportunities from top organizations worldwide. 
-            {user ? 'Click on any opportunity to view full details and apply.' : 'Sign in to view full details and apply.'}
+            Click on any opportunity to view full details. External opportunities can be applied to directly.
           </p>
         </motion.div>
 
@@ -308,20 +297,11 @@ const LandingOpportunities = () => {
                       className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white rounded-lg px-3 py-1 text-xs font-medium transition-all duration-300 group"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleApplyNow(opportunity.source_url, opportunity.id);
+                        handleViewDetails(opportunity.id);
                       }}
                     >
-                      {opportunity.source_url ? (
-                        <>
-                          Apply Now
-                          <ExternalLink className="w-3 h-3 ml-1 group-hover:scale-110 transition-transform" />
-                        </>
-                      ) : (
-                        <>
-                          View Details
-                          <ArrowRight className="w-3 h-3 ml-1 group-hover:scale-110 transition-transform" />
-                        </>
-                      )}
+                      View Details
+                      <ArrowRight className="w-3 h-3 ml-1 group-hover:scale-110 transition-transform" />
                     </Button>
                   </div>
                 </CardContent>
@@ -345,7 +325,7 @@ const LandingOpportunities = () => {
               className="border-2 border-[#e6f5ec] text-[#384040] hover:bg-[#e6f5ec]/30 hover:border-[#17cfcf] px-8 py-3 rounded-xl transition-all duration-300 group"
               onClick={() => user ? navigate('/dashboard') : navigate('/auth')}
             >
-              {user ? 'View All Opportunities' : 'Sign In to Explore More'}
+              {user ? 'View All Opportunities' : 'Sign In for More Features'}
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </motion.div>

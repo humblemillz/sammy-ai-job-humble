@@ -1,7 +1,7 @@
 
 "use client";
  
-import { Briefcase } from "lucide-react";
+import { Briefcase, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
 export const FullScreenSignup = ({
@@ -18,6 +18,7 @@ export const FullScreenSignup = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [fullNameError, setFullNameError] = useState("");
@@ -156,18 +157,32 @@ export const FullScreenSignup = ({
               <label htmlFor="password" className="block text-sm mb-2 font-medium">
                 {isLogin ? 'Password' : 'Create Password'}
               </label>
-              <input
-                type="password"
-                id="password"
-                placeholder={isLogin ? 'Enter your password' : 'Create a strong password'}
-                className={`text-sm w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-blue-500 focus:border-blue-500 ${
-                  passwordError ? "border-red-500" : "border-gray-300"
-                }`}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                aria-invalid={!!passwordError}
-                aria-describedby="password-error"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder={isLogin ? 'Enter your password' : 'Create a strong password'}
+                  className={`text-sm w-full py-3 pr-12 pl-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-blue-500 focus:border-blue-500 ${
+                    passwordError ? "border-red-500" : "border-gray-300"
+                  }`}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  aria-invalid={!!passwordError}
+                  aria-describedby="password-error"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
               {passwordError && (
                 <p id="password-error" className="text-red-500 text-xs mt-1">
                   {passwordError}
