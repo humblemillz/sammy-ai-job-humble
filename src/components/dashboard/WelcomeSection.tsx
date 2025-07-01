@@ -1,44 +1,71 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Sparkles, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface WelcomeSectionProps {
   user: any;
 }
 
 const WelcomeSection = ({ user }: WelcomeSectionProps) => {
+  const navigate = useNavigate();
+
   return (
-    <motion.div 
-      initial={{ opacity: 0, x: -30 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="relative"
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
     >
-      <div className="absolute -inset-4 bg-gradient-to-r from-[#17cfcf]/10 to-[#e6f5ec]/10 rounded-2xl blur-xl"></div>
-      <div className="relative bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-[#e6f5ec]/30 shadow-lg">
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-4xl font-bold bg-gradient-to-r from-[#384040] to-[#1b1c1c] bg-clip-text text-transparent mb-3"
+      <div className="flex-1">
+        <motion.h1
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#384040] mb-2"
         >
-          Welcome back, {user?.user_metadata?.full_name || 'there'}!
+          Welcome back,{' '}
+          <span className="bg-gradient-to-r from-[#90EE90] to-[#32CD32] bg-clip-text text-transparent">
+            {user?.user_metadata?.full_name || 'User'}!
+          </span>
         </motion.h1>
-        <motion.p 
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-lg text-gray-600 leading-relaxed"
+        
+        <motion.p
+          initial={{ opacity: 0, x: -15 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-gray-600 text-sm sm:text-base lg:text-lg"
         >
-          Discover new opportunities and take the next step in your career journey.
+          Ready to discover your next big opportunity? Let's find something amazing for you.
         </motion.p>
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="h-1 bg-gradient-to-r from-[#17cfcf] to-[#e6f5ec] rounded-full mt-4 origin-left"
-        />
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="flex flex-col sm:flex-row gap-3"
+      >
+        <Button
+          onClick={() => navigate('/ai-assistant')}
+          className="bg-gradient-to-r from-[#90EE90] to-[#32CD32] hover:from-[#32CD32] hover:to-[#228B22] text-white shadow-lg hover:shadow-[#90EE90]/30 transition-all duration-300"
+        >
+          <Sparkles className="w-4 h-4 mr-2" />
+          <span className="hidden sm:inline">AI Recommendations</span>
+          <span className="sm:hidden">AI Assistant</span>
+        </Button>
+        
+        <Button
+          variant="outline"
+          onClick={() => navigate('/create-opportunity')}
+          className="border-[#90EE90]/30 text-[#90EE90] hover:bg-[#90EE90]/10 hover:border-[#90EE90]/50 transition-all duration-300"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          <span className="hidden sm:inline">Submit Opportunity</span>
+          <span className="sm:hidden">Submit</span>
+        </Button>
+      </motion.div>
     </motion.div>
   );
 };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
@@ -78,7 +77,7 @@ const StatsCards = ({ userStats }: StatsCardsProps) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12"
     >
       {stats.map((stat, index) => {
         const IconComponent = stat.icon;
@@ -93,24 +92,24 @@ const StatsCards = ({ userStats }: StatsCardsProps) => {
             }}
             whileTap={{ scale: 0.95 }}
           >
-            <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-[#e6f5ec]/30 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl group">
+            <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-[#e6f5ec]/30 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl sm:rounded-2xl group">
               <div className="absolute inset-0 bg-gradient-to-br from-[#e6f5ec]/20 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               <motion.div 
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 0.1 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
-                className={`absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br ${stat.color} rounded-full blur-2xl`}
+                className={`absolute -top-6 -right-6 w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br ${stat.color} rounded-full blur-2xl`}
               />
               
-              <CardContent className="relative p-8">
+              <CardContent className="relative p-4 sm:p-6 lg:p-8">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <motion.p 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: index * 0.1 + 0.3 }}
-                      className="text-sm font-medium text-gray-600 mb-2"
+                      className="text-xs sm:text-sm font-medium text-gray-600 mb-1 sm:mb-2"
                     >
                       {stat.title}
                     </motion.p>
@@ -122,7 +121,7 @@ const StatsCards = ({ userStats }: StatsCardsProps) => {
                         type: "spring",
                         stiffness: 200
                       }}
-                      className="text-3xl font-bold text-[#384040]"
+                      className="text-2xl sm:text-3xl font-bold text-[#384040]"
                     >
                       {stat.value}
                     </motion.p>
@@ -134,9 +133,9 @@ const StatsCards = ({ userStats }: StatsCardsProps) => {
                       delay: index * 0.1 + 0.5,
                       duration: 0.6
                     }}
-                    className={`p-3 rounded-xl ${stat.bgColor} group-hover:scale-110 transition-transform duration-300`}
+                    className={`p-2 sm:p-3 rounded-lg sm:rounded-xl ${stat.bgColor} group-hover:scale-110 transition-transform duration-300`}
                   >
-                    <IconComponent className={`w-6 h-6 ${stat.iconColor}`} />
+                    <IconComponent className={`w-5 h-5 sm:w-6 sm:h-6 ${stat.iconColor}`} />
                   </motion.div>
                 </div>
                 

@@ -64,20 +64,20 @@ export const FullScreenSignup = ({
   return (
     <div className="min-h-screen flex items-center justify-center overflow-hidden p-4">
       <div className="w-full relative max-w-5xl overflow-hidden flex flex-col md:flex-row shadow-xl rounded-3xl">
-        <div className="w-full h-full z-2 absolute bg-gradient-to-t from-transparent to-black/20 rounded-3xl"></div>
+        <div className="w-full h-full z-2 absolute bg-gradient-to-t from-transparent to-[#90EE90]/20 rounded-3xl"></div>
         <div className="flex absolute z-2 overflow-hidden backdrop-blur-2xl rounded-l-3xl">
-          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
-          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
-          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
-          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
-          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
-          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-black/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-[#90EE90]/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-[#90EE90]/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-[#90EE90]/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-[#90EE90]/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-[#90EE90]/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
+          <div className="h-[40rem] z-2 w-[4rem] bg-gradient-to-b from-transparent via-[#90EE90]/50 via-[69%] to-white/30 opacity-30 overflow-hidden"></div>
         </div>
-        <div className="w-[15rem] h-[15rem] bg-gradient-to-r from-blue-600 to-purple-600 absolute z-1 rounded-full bottom-0 left-0"></div>
+        <div className="w-[15rem] h-[15rem] bg-gradient-to-r from-[#90EE90] to-[#32CD32] absolute z-1 rounded-full bottom-0 left-0"></div>
         <div className="w-[8rem] h-[5rem] bg-white absolute z-1 rounded-full bottom-10 left-20"></div>
-        <div className="w-[6rem] h-[6rem] bg-gradient-to-r from-blue-400 to-purple-400 absolute z-1 rounded-full bottom-5 left-32 opacity-70"></div>
+        <div className="w-[6rem] h-[6rem] bg-gradient-to-r from-[#90EE90] to-[#32CD32] absolute z-1 rounded-full bottom-5 left-32 opacity-70"></div>
         
-        <div className="bg-gradient-to-br from-gray-900 to-black text-white p-8 md:p-12 md:w-1/2 relative rounded-l-3xl overflow-hidden">
+        <div className="bg-gradient-to-br from-[#228B22] to-[#006400] text-white p-8 md:p-12 md:w-1/2 relative rounded-l-3xl overflow-hidden">
           <h1 className="text-2xl md:text-3xl font-medium leading-tight z-10 tracking-tight relative">
             Your gateway to global opportunities and career growth.
           </h1>
@@ -89,8 +89,8 @@ export const FullScreenSignup = ({
  
         <div className="p-8 md:p-12 md:w-1/2 flex flex-col bg-white z-10 text-gray-900 rounded-r-3xl">
           <div className="flex flex-col items-left mb-8">
-            <div className="text-gradient-to-r from-blue-600 to-purple-600 mb-4">
-              <Briefcase className="h-10 w-10 text-blue-600" />
+            <div className="text-gradient-to-r from-[#90EE90] to-[#32CD32] mb-4">
+              <Briefcase className="h-10 w-10 text-[#90EE90]" />
             </div>
             <h2 className="text-3xl font-medium mb-2 tracking-tight">
               {isLogin ? 'Welcome Back' : 'Get Started'}
@@ -114,7 +114,7 @@ export const FullScreenSignup = ({
                   type="text"
                   id="fullName"
                   placeholder="Enter your full name"
-                  className={`text-sm w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-blue-500 focus:border-blue-500 ${
+                  className={`text-sm w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-[#90EE90] focus:border-[#90EE90] ${
                     fullNameError ? "border-red-500" : "border-gray-300"
                   }`}
                   value={fullName}
@@ -138,7 +138,7 @@ export const FullScreenSignup = ({
                 type="email"
                 id="email"
                 placeholder="Enter your email"
-                className={`text-sm w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-blue-500 focus:border-blue-500 ${
+                className={`text-sm w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-[#90EE90] focus:border-[#90EE90] ${
                   emailError ? "border-red-500" : "border-gray-300"
                 }`}
                 value={email}
@@ -162,7 +162,7 @@ export const FullScreenSignup = ({
                   type={showPassword ? "text" : "password"}
                   id="password"
                   placeholder={isLogin ? 'Enter your password' : 'Create a strong password'}
-                  className={`text-sm w-full py-3 pr-12 pl-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-blue-500 focus:border-blue-500 ${
+                  className={`text-sm w-full py-3 pr-12 pl-4 border rounded-lg focus:outline-none focus:ring-2 bg-white text-black focus:ring-[#90EE90] focus:border-[#90EE90] ${
                     passwordError ? "border-red-500" : "border-gray-300"
                   }`}
                   value={password}
@@ -204,7 +204,7 @@ export const FullScreenSignup = ({
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-[#90EE90] to-[#32CD32] hover:from-[#32CD32] hover:to-[#228B22] text-white font-medium py-3 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="flex items-center justify-center">
@@ -220,7 +220,7 @@ export const FullScreenSignup = ({
               {isLogin ? "Don't have an account? " : "Already have an account? "}
               <a 
                 href={isLogin ? "/auth?tab=signup" : "/auth?tab=signin"} 
-                className="text-blue-600 font-medium hover:underline"
+                className="text-[#90EE90] font-medium hover:underline"
               >
                 {isLogin ? 'Sign Up' : 'Sign In'}
               </a>

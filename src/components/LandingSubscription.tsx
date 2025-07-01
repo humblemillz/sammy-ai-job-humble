@@ -68,9 +68,9 @@ const LandingSubscription = () => {
     <section className="py-32 bg-gradient-to-b from-[#e6f5ec]/10 via-white to-[#e6f5ec]/5 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-[#17cfcf] rounded-full blur-3xl opacity-5 animate-pulse"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-[#90EE90] rounded-full blur-3xl opacity-5 animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{animationDelay: '1s'}}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-[#17cfcf] to-[#17cfcf]/30 rounded-full blur-3xl opacity-3 animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-[#90EE90] to-[#32CD32] rounded-full blur-3xl opacity-3 animate-pulse" style={{animationDelay: '2s'}}></div>
       </div>
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -81,13 +81,13 @@ const LandingSubscription = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <Badge className="bg-gradient-to-r from-[#17cfcf] to-[#17cfcf]/90 text-white px-6 py-3 rounded-full font-bold mb-8 shadow-lg shadow-[#17cfcf]/20 border border-[#17cfcf]/20">
+          <Badge className="bg-gradient-to-r from-[#90EE90] to-[#32CD32] text-white px-6 py-3 rounded-full font-bold mb-8 shadow-lg shadow-[#90EE90]/20 border border-[#90EE90]/20">
             <Star className="w-5 h-5 mr-2" />
             Choose Your Plan
           </Badge>
           <h2 className="text-5xl md:text-6xl font-bold text-[#384040] mb-8 leading-tight">
             Plans made for every
-            <span className="block bg-gradient-to-r from-[#17cfcf] via-[#17cfcf]/90 to-[#17cfcf]/70 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-[#90EE90] via-[#32CD32] to-[#228B22] bg-clip-text text-transparent">
               opportunity seeker
             </span>
           </h2>
@@ -116,7 +116,7 @@ const LandingSubscription = () => {
                 features={[
                   "Access to all opportunity categories",
                   "Basic search and filtering",
-                  "Bookmark up to 10 opportunities",
+                  "Unlimited bookmarking",
                   "Email notifications",
                   "Basic profile creation",
                   "Limited to 5 applications per month",
@@ -135,7 +135,6 @@ const LandingSubscription = () => {
                   "Unlimited applications",
                   "AI-powered application guidance",
                   "Success rate analysis",
-                  "Unlimited bookmarks",
                   "Advanced search filters",
                   "Priority email support",
                   "Application tracking & analytics",
@@ -155,11 +154,11 @@ const LandingSubscription = () => {
                 No credit card required
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                <div className="w-2 h-2 bg-[#90EE90] rounded-full mr-2"></div>
                 7-day free trial
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                <div className="w-2 h-2 bg-[#32CD32] rounded-full mr-2"></div>
                 Cancel anytime
               </div>
             </div>
@@ -180,8 +179,8 @@ const LandingSubscription = () => {
               whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <Shield className="w-10 h-10 text-blue-600" />
+              <div className="w-20 h-20 bg-gradient-to-br from-[#90EE90]/20 to-[#32CD32]/20 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <Shield className="w-10 h-10 text-[#90EE90]" />
               </div>
               <h3 className="text-xl font-bold text-[#384040] mb-3">Secure & Private</h3>
               <p className="text-gray-600 text-base font-medium">Your data is protected with enterprise-grade security and encryption</p>
@@ -192,8 +191,8 @@ const LandingSubscription = () => {
               whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <TrendingUp className="w-10 h-10 text-green-600" />
+              <div className="w-20 h-20 bg-gradient-to-br from-[#90EE90]/20 to-[#32CD32]/20 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <TrendingUp className="w-10 h-10 text-[#90EE90]" />
               </div>
               <h3 className="text-xl font-bold text-[#384040] mb-3">Proven Results</h3>
               <p className="text-gray-600 text-base font-medium">95% success rate for users with Pro features and AI guidance</p>
@@ -204,8 +203,8 @@ const LandingSubscription = () => {
               whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <MessageSquare className="w-10 h-10 text-purple-600" />
+              <div className="w-20 h-20 bg-gradient-to-br from-[#90EE90]/20 to-[#32CD32]/20 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <MessageSquare className="w-10 h-10 text-[#90EE90]" />
               </div>
               <h3 className="text-xl font-bold text-[#384040] mb-3">24/7 Support</h3>
               <p className="text-gray-600 text-base font-medium">Get help whenever you need it with priority customer support</p>

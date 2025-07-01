@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
@@ -42,42 +41,42 @@ const MainContent = ({ selectedCategory, searchQuery }: MainContentProps) => {
           initial="hidden"
           animate="visible"
         >
-          <TabsList className="grid w-full grid-cols-3 bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 rounded-2xl p-2 shadow-lg">
+          <TabsList className="grid w-full grid-cols-3 bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 rounded-xl sm:rounded-2xl p-1 sm:p-2 shadow-lg">
             <TabsTrigger 
               value="discover" 
-              className="rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#17cfcf] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#e6f5ec]/50"
+              className="rounded-lg sm:rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#90EE90] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#e6f5ec]/50 text-xs sm:text-sm"
             >
               Discover
             </TabsTrigger>
             <TabsTrigger 
               value="bookmarks"
-              className="rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#17cfcf] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#e6f5ec]/50"
+              className="rounded-lg sm:rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#90EE90] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#e6f5ec]/50 text-xs sm:text-sm"
             >
               Bookmarks
             </TabsTrigger>
             <TabsTrigger 
               value="applications"
-              className="rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#17cfcf] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#e6f5ec]/50"
+              className="rounded-lg sm:rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#90EE90] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#e6f5ec]/50 text-xs sm:text-sm"
             >
               Applications
             </TabsTrigger>
           </TabsList>
         </motion.div>
         
-        <TabsContent value="discover" className="mt-8">
+        <TabsContent value="discover" className="mt-6 sm:mt-8">
           <motion.div
             variants={contentVariants}
             initial="hidden"
             animate="visible"
           >
-            <div className="mb-6 relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-[#17cfcf]/10 to-[#e6f5ec]/10 rounded-2xl blur-lg"></div>
-              <div className="relative bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-[#e6f5ec]/30">
+            <div className="mb-4 sm:mb-6 relative">
+              <div className="absolute -inset-2 bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
+              <div className="relative bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#e6f5ec]/30">
                 <motion.h2 
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="text-2xl font-bold text-[#384040] mb-2"
+                  className="text-xl sm:text-2xl font-bold text-[#384040] mb-2"
                 >
                   {selectedCategory ? `${selectedCategory} Opportunities` : 'All Opportunities'}
                 </motion.h2>
@@ -85,7 +84,7 @@ const MainContent = ({ selectedCategory, searchQuery }: MainContentProps) => {
                   initial={{ opacity: 0, x: -15 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-gray-600"
+                  className="text-sm sm:text-base text-gray-600"
                 >
                   Discover opportunities that match your interests and goals.
                 </motion.p>
@@ -104,31 +103,31 @@ const MainContent = ({ selectedCategory, searchQuery }: MainContentProps) => {
             </motion.div>
           </motion.div>
         </TabsContent>
-        
-        <TabsContent value="bookmarks" className="mt-8">
+
+        <TabsContent value="bookmarks" className="mt-6 sm:mt-8">
           <motion.div
             variants={contentVariants}
             initial="hidden"
             animate="visible"
           >
-            <div className="mb-6 relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-[#17cfcf]/10 to-[#e6f5ec]/10 rounded-2xl blur-lg"></div>
-              <div className="relative bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-[#e6f5ec]/30">
+            <div className="mb-4 sm:mb-6 relative">
+              <div className="absolute -inset-2 bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
+              <div className="relative bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#e6f5ec]/30">
                 <motion.h2 
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="text-2xl font-bold text-[#384040] mb-2"
+                  className="text-xl sm:text-2xl font-bold text-[#384040] mb-2"
                 >
-                  Saved Opportunities
+                  Bookmarked Opportunities
                 </motion.h2>
                 <motion.p 
                   initial={{ opacity: 0, x: -15 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-gray-600"
+                  className="text-sm sm:text-base text-gray-600"
                 >
-                  Your bookmarked opportunities for later review.
+                  Your saved opportunities for easy access.
                 </motion.p>
               </div>
             </div>
@@ -146,21 +145,21 @@ const MainContent = ({ selectedCategory, searchQuery }: MainContentProps) => {
             </motion.div>
           </motion.div>
         </TabsContent>
-        
-        <TabsContent value="applications" className="mt-8">
+
+        <TabsContent value="applications" className="mt-6 sm:mt-8">
           <motion.div
             variants={contentVariants}
             initial="hidden"
             animate="visible"
           >
-            <div className="mb-6 relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-[#17cfcf]/10 to-[#e6f5ec]/10 rounded-2xl blur-lg"></div>
-              <div className="relative bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-[#e6f5ec]/30">
+            <div className="mb-4 sm:mb-6 relative">
+              <div className="absolute -inset-2 bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
+              <div className="relative bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#e6f5ec]/30">
                 <motion.h2 
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="text-2xl font-bold text-[#384040] mb-2"
+                  className="text-xl sm:text-2xl font-bold text-[#384040] mb-2"
                 >
                   My Applications
                 </motion.h2>
@@ -168,9 +167,9 @@ const MainContent = ({ selectedCategory, searchQuery }: MainContentProps) => {
                   initial={{ opacity: 0, x: -15 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-gray-600"
+                  className="text-sm sm:text-base text-gray-600"
                 >
-                  Track your application status and follow-ups.
+                  Track your application progress and status.
                 </motion.p>
               </div>
             </div>
@@ -179,37 +178,12 @@ const MainContent = ({ selectedCategory, searchQuery }: MainContentProps) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <Card className="bg-white/80 backdrop-blur-sm border-[#e6f5ec]/30 shadow-lg rounded-2xl overflow-hidden">
-                <CardContent className="p-12 text-center">
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.6, type: "spring" }}
-                    className="relative"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#17cfcf]/10 to-[#e6f5ec]/10 rounded-full blur-2xl"></div>
-                    <div className="relative p-8 bg-[#e6f5ec]/20 rounded-full w-32 h-32 mx-auto mb-6 flex items-center justify-center">
-                      <Briefcase className="w-16 h-16 text-[#17cfcf]" />
-                    </div>
-                  </motion.div>
-                  <motion.h3 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="text-xl font-semibold text-[#384040] mb-3"
-                  >
-                    No applications yet
-                  </motion.h3>
-                  <motion.p 
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    className="text-gray-600"
-                  >
-                    Your submitted applications will appear here.
-                  </motion.p>
-                </CardContent>
-              </Card>
+              <OpportunitiesList 
+                categoryFilter={selectedCategory}
+                searchQuery={searchQuery}
+                limit={10}
+                showApplicationsOnly={true}
+              />
             </motion.div>
           </motion.div>
         </TabsContent>

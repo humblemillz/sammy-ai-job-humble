@@ -1,14 +1,14 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { Users, Shield, Search, Plus } from 'lucide-react';
+import { Users, Shield, Search, Plus, Mail, Calendar, Crown } from 'lucide-react';
 
 interface UserProfile {
   id: string;
@@ -22,12 +22,24 @@ interface UserRole {
   role: 'user' | 'staff_admin' | 'admin';
   assigned_at: string;
   full_name?: string;
+  email?: string;
+}
+
+interface AdminUserDetail {
+  user_id: string;
+  email: string;
+  full_name: string;
+  subscription_tier: string;
+  created_at: string;
+  last_sign_in: string | null;
+  is_active: boolean;
 }
 
 const UserRoleManager = () => {
   const { user } = useAuth();
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [allUsers, setAllUsers] = useState<UserProfile[]>([]);
+  const [adminUserDetails, setAdminUserDetails] = useState<AdminUserDetail[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState<string>('');
@@ -37,6 +49,7 @@ const UserRoleManager = () => {
   useEffect(() => {
     fetchUserRoles();
     fetchAllUsers();
+    fetchAdminUserDetails();
   }, []);
 
   const fetchUserRoles = async () => {
@@ -58,11 +71,20 @@ const UserRoleManager = () => {
           .select('id, full_name')
           .in('id', userIds);
 
+        // Get email information using the admin function
+        const { data: emailData } = await supabase
+          .rpc('get_user_emails_for_admin' as any);
+
         // Merge the data
-        const formattedRoles = rolesData.map(role => ({
-          ...role,
-          full_name: usersData?.find(u => u.id === role.user_id)?.full_name || 'Unknown User'
-        }));
+        const formattedRoles = rolesData.map(role => {
+          const userProfile = usersData?.find(u => u.id === role.user_id);
+          const emailInfo = emailData?.find(e => e.user_id === role.user_id);
+          return {
+            ...role,
+            full_name: userProfile?.full_name || 'Unknown User',
+            email: emailInfo?.email || 'No email'
+          };
+        });
 
         setUserRoles(formattedRoles);
       } else {
@@ -87,6 +109,19 @@ const UserRoleManager = () => {
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAdminUserDetails = async () => {
+    try {
+      const { data, error } = await supabase
+        .rpc('get_admin_user_details' as any);
+
+      if (error) throw error;
+      setAdminUserDetails(data || []);
+    } catch (error) {
+      console.error('Error fetching admin user details:', error);
+      toast.error('Failed to load user details');
     }
   };
 
@@ -172,7 +207,13 @@ const UserRoleManager = () => {
   };
 
   const filteredRoles = userRoles.filter(role => 
-    role.full_name?.toLowerCase().includes(searchTerm.toLowerCase())
+    role.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    role.email?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredUserDetails = adminUserDetails.filter(user => 
+    user.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const availableUsers = allUsers.filter(u => 
@@ -185,7 +226,7 @@ const UserRoleManager = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5" />
-            User Role Management
+            User Management
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -207,89 +248,174 @@ const UserRoleManager = () => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Shield className="w-5 h-5" />
-          User Role Management
+          User Management
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Assign New Role */}
-        <div className="p-4 border rounded-lg space-y-4">
-          <h3 className="font-medium flex items-center gap-2">
-            <Plus className="w-4 h-4" />
-            Assign Admin Role
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <Select value={selectedUser} onValueChange={setSelectedUser}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select user" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableUsers.map((user) => (
-                  <SelectItem key={user.id} value={user.id}>
-                    {user.full_name || 'Unnamed User'}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
-            <Select value={selectedRole} onValueChange={(value: 'staff_admin' | 'admin') => setSelectedRole(value)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="staff_admin">Staff Admin</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Button onClick={assignRole} disabled={assigning || !selectedUser}>
-              {assigning ? 'Assigning...' : 'Assign Role'}
-            </Button>
-          </div>
-        </div>
+        <Tabs defaultValue="all-users" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="all-users">All Users</TabsTrigger>
+            <TabsTrigger value="admin-roles">Admin Roles</TabsTrigger>
+          </TabsList>
 
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            placeholder="Search admin users..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
+          <TabsContent value="all-users" className="space-y-6">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search users by name or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
 
-        {/* Admin Users List */}
-        <div className="space-y-3">
-          {filteredRoles.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No admin users found</p>
-          ) : (
-            filteredRoles.map((roleEntry) => (
-              <div key={roleEntry.id} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Users className="w-5 h-5 text-gray-400" />
-                  <div>
-                    <p className="font-medium">{roleEntry.full_name || 'Unnamed User'}</p>
-                    <p className="text-sm text-gray-500">
-                      Assigned {new Date(roleEntry.assigned_at).toLocaleDateString()}
-                    </p>
+            {/* All Users List */}
+            <div className="space-y-3">
+              {filteredUserDetails.length === 0 ? (
+                <p className="text-gray-500 text-center py-4">No users found</p>
+              ) : (
+                filteredUserDetails.map((userDetail) => (
+                  <div key={userDetail.user_id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                    <div className="flex items-center gap-3">
+                      <Users className="w-5 h-5 text-gray-400" />
+                      <div>
+                        <p className="font-medium">{userDetail.full_name || 'Unnamed User'}</p>
+                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Mail className="w-3 h-3" />
+                            {userDetail.email}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Crown className="w-3 h-3" />
+                            {userDetail.subscription_tier}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            Joined {new Date(userDetail.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={userDetail.is_active ? "default" : "secondary"}>
+                        {userDetail.is_active ? 'Active' : 'Inactive'}
+                      </Badge>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          navigator.clipboard.writeText(userDetail.email);
+                          toast.success('Email copied to clipboard');
+                        }}
+                      >
+                        Copy Email
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant={roleEntry.role === 'admin' ? 'default' : 'secondary'}>
-                    {roleEntry.role.replace('_', ' ')}
-                  </Badge>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeRole(roleEntry.id, roleEntry.user_id, roleEntry.role)}
-                  >
-                    Remove
-                  </Button>
-                </div>
+                ))
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="admin-roles" className="space-y-6">
+            {/* Assign New Role */}
+            <div className="p-4 border rounded-lg space-y-4">
+              <h3 className="font-medium flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                Assign Admin Role
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <Select value={selectedUser} onValueChange={setSelectedUser}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select user" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableUsers.map((user) => (
+                      <SelectItem key={user.id} value={user.id}>
+                        {user.full_name || 'Unnamed User'}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                
+                <Select value={selectedRole} onValueChange={(value: 'staff_admin' | 'admin') => setSelectedRole(value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="staff_admin">Staff Admin</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Button onClick={assignRole} disabled={assigning || !selectedUser}>
+                  {assigning ? 'Assigning...' : 'Assign Role'}
+                </Button>
               </div>
-            ))
-          )}
-        </div>
+            </div>
+
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search admin users..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+
+            {/* Admin Users List */}
+            <div className="space-y-3">
+              {filteredRoles.length === 0 ? (
+                <p className="text-gray-500 text-center py-4">No admin users found</p>
+              ) : (
+                filteredRoles.map((roleEntry) => (
+                  <div key={roleEntry.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Users className="w-5 h-5 text-gray-400" />
+                      <div>
+                        <p className="font-medium">{roleEntry.full_name || 'Unnamed User'}</p>
+                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Mail className="w-3 h-3" />
+                            {roleEntry.email}
+                          </span>
+                          <span>
+                            Assigned {new Date(roleEntry.assigned_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={roleEntry.role === 'admin' ? 'default' : 'secondary'}>
+                        {roleEntry.role.replace('_', ' ')}
+                      </Badge>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          navigator.clipboard.writeText(roleEntry.email || '');
+                          toast.success('Email copied to clipboard');
+                        }}
+                      >
+                        Copy Email
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeRole(roleEntry.id, roleEntry.user_id, roleEntry.role)}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );

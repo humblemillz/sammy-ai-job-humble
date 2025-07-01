@@ -1,22 +1,23 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Filter, Crown, Lock } from 'lucide-react';
+import { Filter, Crown, Lock, Globe, Briefcase, Plus, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Category {
   id: string;
   name: string;
   icon: any;
   count: number;
+  tier_requirement?: string;
 }
 
 interface CategoriesSidebarProps {
   categories: Category[];
-  selectedCategory: string;
-  onCategoryClick: (categoryName: string) => void;
+  selectedCategory: string | null;
+  onCategoryClick: (category: Category | null) => void;
   userTier?: string;
   categoryRestrictionEnabled?: boolean;
 }
@@ -28,6 +29,8 @@ const CategoriesSidebar = ({
   userTier = 'free',
   categoryRestrictionEnabled = false
 }: CategoriesSidebarProps) => {
+  const navigate = useNavigate();
+
   const containerVariants = {
     hidden: { opacity: 0, x: -50 },
     visible: {
@@ -56,144 +59,138 @@ const CategoriesSidebar = ({
 
   return (
     <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      initial={{ opacity: 0, x: -50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.6 }}
+      className="space-y-4"
     >
-      <Card className="bg-white/80 backdrop-blur-sm border-[#e6f5ec]/30 shadow-lg rounded-2xl overflow-hidden">
-        {/* Header with gradient background */}
-        <CardHeader className="bg-gradient-to-r from-[#e6f5ec]/50 to-white/50 border-b border-[#e6f5ec]/30">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <CardTitle className="flex items-center gap-3 text-[#384040]">
-              <div className="p-2 bg-[#17cfcf]/10 rounded-lg">
-                <Filter className="w-5 h-5 text-[#17cfcf]" />
-              </div>
-              Categories
-              {userTier === 'pro' && (
-                <Crown className="w-4 h-4 text-yellow-500" />
-              )}
-            </CardTitle>
-            <CardDescription className="text-gray-600 mt-2">
-              Explore opportunities by category
-            </CardDescription>
-          </motion.div>
-        </CardHeader>
+      {/* Header */}
+      <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#e6f5ec]/30 shadow-lg">
+        <h3 className="text-lg sm:text-xl font-semibold text-[#384040] mb-3 sm:mb-4">
+          Categories
+        </h3>
+        <p className="text-sm text-gray-600 mb-4">
+          Filter opportunities by category
+        </p>
         
-        <CardContent className="p-6 space-y-3">
-          {/* All Categories Button */}
-          <motion.div variants={itemVariants}>
-            <Button
-              variant={selectedCategory === '' ? 'default' : 'ghost'}
-              className={`w-full justify-start rounded-xl font-medium transition-all duration-300 ${
-                selectedCategory === '' 
-                  ? 'bg-[#17cfcf] text-white shadow-lg hover:bg-[#17cfcf]/90 hover:shadow-xl' 
-                  : 'text-[#384040] hover:bg-[#e6f5ec]/50 hover:text-[#17cfcf]'
-              }`}
-              onClick={() => onCategoryClick('')}
-            >
-              <motion.span
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center gap-2"
-              >
-                All Categories
-              </motion.span>
-            </Button>
-          </motion.div>
+        {/* All Categories Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => onCategoryClick(null)}
+          className={`w-full text-left p-3 sm:p-4 rounded-xl transition-all duration-300 mb-3 ${
+            selectedCategory === null
+              ? 'bg-gradient-to-r from-[#90EE90] to-[#32CD32] text-white shadow-lg'
+              : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#90EE90]/20 hover:text-[#90EE90]'
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+              selectedCategory === null ? 'bg-white/20' : 'bg-[#90EE90]/20'
+            }`}>
+              <Globe className="w-4 h-4" />
+            </div>
+            <span className="font-medium">All Categories</span>
+          </div>
+        </motion.button>
+      </div>
 
-          {/* Upgrade prompt for free users */}
-          {categoryRestrictionEnabled && userTier === 'free' && (
-            <motion.div variants={itemVariants}>
-              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 mb-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Crown className="w-4 h-4 text-yellow-600" />
-                  <span className="text-sm font-semibold text-yellow-800">Upgrade to Pro</span>
-                </div>
-                <p className="text-xs text-yellow-700 mb-3">
-                  Access all categories and unlimited opportunities
-                </p>
-                <Button 
-                  size="sm" 
-                  className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white"
-                  onClick={() => onCategoryClick('upgrade')}
-                >
-                  Upgrade Now
-                </Button>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Category List */}
-          {categories.map((category, index) => {
-            const IconComponent = category.icon;
-            const isSelected = selectedCategory === category.name;
-            const restricted = isRestricted(category.name);
+      {/* Categories List */}
+      <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#e6f5ec]/30 shadow-lg">
+        <div className="space-y-2">
+          {categories.map((category) => {
+            const isRestricted = categoryRestrictionEnabled && 
+              category.tier_requirement && 
+              userTier !== category.tier_requirement;
             
             return (
-              <motion.div
+              <motion.button
                 key={category.id}
-                variants={itemVariants}
-                whileHover={{ scale: restricted ? 1 : 1.02 }}
-                whileTap={{ scale: restricted ? 1 : 0.98 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => !isRestricted && onCategoryClick(category)}
+                disabled={isRestricted}
+                className={`w-full text-left p-3 sm:p-4 rounded-xl transition-all duration-300 ${
+                  selectedCategory?.id === category.id
+                    ? 'bg-gradient-to-r from-[#90EE90] to-[#32CD32] text-white shadow-lg'
+                    : isRestricted
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-[#e6f5ec]/30 text-[#384040] hover:bg-[#90EE90]/20 hover:text-[#90EE90]'
+                }`}
               >
-                <Button
-                  variant={isSelected ? 'default' : 'ghost'}
-                  className={`w-full justify-start rounded-xl font-medium transition-all duration-300 group relative ${
-                    isSelected 
-                      ? 'bg-[#17cfcf] text-white shadow-lg hover:bg-[#17cfcf]/90 hover:shadow-xl' 
-                      : restricted
-                      ? 'text-gray-400 hover:bg-gray-50 cursor-not-allowed opacity-60'
-                      : 'text-[#384040] hover:bg-[#e6f5ec]/50 hover:text-[#17cfcf]'
-                  }`}
-                  onClick={() => onCategoryClick(category.name)}
-                  disabled={restricted}
-                >
-                  <motion.div 
-                    className="flex items-center justify-between w-full"
-                    whileHover={{ x: restricted ? 0 : 2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <motion.div
-                        whileHover={{ rotate: restricted ? 0 : 5 }}
-                        className={`transition-colors duration-300 ${
-                          isSelected ? 'text-white' : restricted ? 'text-gray-400' : 'text-[#17cfcf] group-hover:text-[#17cfcf]'
-                        }`}
-                      >
-                        <IconComponent className="w-4 h-4" />
-                      </motion.div>
-                      <span className="text-left font-medium">{category.name}</span>
-                      {restricted && (
-                        <Lock className="w-3 h-3 text-gray-400" />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      selectedCategory?.id === category.id 
+                        ? 'bg-white/20' 
+                        : isRestricted 
+                        ? 'bg-gray-200' 
+                        : 'bg-[#90EE90]/20'
+                    }`}>
+                      {category.icon ? (
+                        <span className="text-lg">{category.icon}</span>
+                      ) : (
+                        <Briefcase className="w-4 h-4" />
                       )}
                     </div>
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: index * 0.1 + 0.5 }}
-                    >
-                      <Badge 
-                        variant="outline" 
-                        className={`text-xs font-semibold transition-all duration-300 ${
-                          isSelected 
-                            ? 'border-white/30 text-white bg-white/10' 
-                            : restricted
-                            ? 'border-gray-300 text-gray-400 bg-gray-50'
-                            : 'border-[#17cfcf]/30 text-[#17cfcf] bg-[#17cfcf]/5 group-hover:border-[#17cfcf] group-hover:bg-[#17cfcf]/10'
-                        }`}
-                      >
-                        {category.count}
-                      </Badge>
-                    </motion.div>
-                  </motion.div>
-                </Button>
-              </motion.div>
+                    <div className="text-left">
+                      <span className="font-medium block">{category.name}</span>
+                      {category.tier_requirement && (
+                        <span className="text-xs opacity-75">
+                          {category.tier_requirement} tier
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {isRestricted && (
+                    <div className="flex items-center gap-1 text-xs">
+                      <Lock className="w-3 h-3" />
+                      <span>Upgrade</span>
+                    </div>
+                  )}
+                </div>
+              </motion.button>
             );
           })}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#e6f5ec]/30 shadow-lg">
+        <h4 className="text-sm sm:text-base font-semibold text-[#384040] mb-3">
+          Quick Actions
+        </h4>
+        <div className="space-y-2">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/create-opportunity')}
+            className="w-full text-left p-3 sm:p-4 rounded-xl bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/20 text-[#90EE90] hover:bg-[#90EE90]/20 transition-all duration-300 border border-[#90EE90]/30"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-[#90EE90]/20 rounded-lg flex items-center justify-center">
+                <Plus className="w-4 h-4" />
+              </div>
+              <span className="font-medium">Submit Opportunity</span>
+            </div>
+          </motion.button>
+          
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/ai-assistant')}
+            className="w-full text-left p-3 sm:p-4 rounded-xl bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/20 text-[#90EE90] hover:bg-[#90EE90]/20 transition-all duration-300 border border-[#90EE90]/30"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-[#90EE90]/20 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <span className="font-medium">AI Assistant</span>
+            </div>
+          </motion.button>
+        </div>
+      </div>
     </motion.div>
   );
 };

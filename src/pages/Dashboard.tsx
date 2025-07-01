@@ -183,22 +183,23 @@ const Dashboard = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8"
       >
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex justify-between items-center mb-8"
+          className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 mb-6 sm:mb-8"
         >
           <WelcomeSection user={user} />
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Button 
               onClick={() => setShowAIRecommendations(true)}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+              className="bg-gradient-to-r from-[#90EE90] to-[#32CD32] hover:from-[#32CD32] hover:to-[#228B22] text-white shadow-lg w-full sm:w-auto"
             >
               <Sparkles className="w-4 h-4 mr-2" />
-              AI Recommendations
+              <span className="hidden sm:inline">AI Recommendations</span>
+              <span className="sm:hidden">AI Assistant</span>
             </Button>
             <AddOpportunityButton />
           </div>
@@ -208,6 +209,7 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-6 sm:mb-8"
         >
           <StatsCards userStats={userStats} />
         </motion.div>
@@ -217,12 +219,12 @@ const Dashboard = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mb-12"
+          className="mb-8 sm:mb-12"
         >
           <div className="flex justify-center">
             <div className="relative w-full max-w-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#17cfcf]/20 to-[#e6f5ec]/20 rounded-2xl blur-xl"></div>
-              <div className="relative bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-[#e6f5ec]/50 shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#90EE90]/20 to-[#e6f5ec]/20 rounded-2xl blur-xl"></div>
+              <div className="relative bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl border border-[#e6f5ec]/50 shadow-lg">
                 <SearchBar onResultSelect={handleSearchResult} />
               </div>
             </div>
@@ -233,13 +235,13 @@ const Dashboard = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-1 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8"
         >
           <motion.div 
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="lg:col-span-1"
+            className="lg:col-span-1 order-2 lg:order-1"
           >
             <CategoriesSidebar
               categories={categories}
@@ -254,7 +256,7 @@ const Dashboard = () => {
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="lg:col-span-3"
+            className="lg:col-span-3 order-1 lg:order-2"
           >
             <MainContent
               selectedCategory={selectedCategory}

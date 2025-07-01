@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -21,7 +20,8 @@ import {
   Search,
   Code,
   Mail,
-  Crown
+  Crown,
+  Shield
 } from 'lucide-react';
 
 interface AdminSidebarProps {
@@ -37,7 +37,8 @@ const AdminSidebar = ({ activeSection, onSectionChange }: AdminSidebarProps) => 
     { id: 'opportunities', label: 'Opportunities', icon: Target },
     { id: 'discover', label: 'Published Opportunities', icon: Mail },
     { id: 'submissions', label: 'User Submissions', icon: FileText },
-    { id: 'users', label: 'User Roles', icon: Users },
+    { id: 'users', label: 'All Users', icon: Users },
+    { id: 'user-roles', label: 'User Roles', icon: Shield },
     { id: 'subscriptions', label: 'User Subscriptions', icon: Crown },
     { id: 'features', label: 'Feature Toggles', icon: Code },
     { id: 'settings', label: 'Platform Settings', icon: Settings },

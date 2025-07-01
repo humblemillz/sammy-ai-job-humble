@@ -50,16 +50,16 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <motion.div 
-            className="flex items-center gap-3"
+            className="flex items-center gap-2 sm:gap-3"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            <Link to="/dashboard" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#17cfcf] to-[#384040] rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">O</span>
+            <Link to="/dashboard" className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#90EE90] to-[#32CD32] rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-sm sm:text-lg">O</span>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold bg-gradient-to-r from-[#384040] to-[#17cfcf] bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-[#384040] to-[#90EE90] bg-clip-text text-transparent">
                   OpportunityHub
                 </h1>
                 <p className="text-xs text-gray-500">Find your next opportunity</p>
@@ -68,17 +68,17 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
           </motion.div>
 
           {/* Search Bar - Hidden on mobile, shown on larger screens */}
-          <div className="hidden md:flex flex-1 max-w-2xl mx-8">
+          <div className="hidden md:flex flex-1 max-w-2xl mx-4 lg:mx-8">
             <SearchBar onResultSelect={onResultSelect} />
           </div>
 
-          {/* AI Assistant Button */}
+          {/* AI Assistant Button - Hidden on mobile */}
           <div className="hidden sm:flex items-center gap-4">
             <Button
               variant="outline"
               size="sm"
               onClick={() => navigate('/ai-assistant')}
-              className="bg-gradient-to-r from-[#17cfcf]/10 to-[#e6f5ec]/10 border-[#17cfcf]/30 text-[#17cfcf] hover:bg-[#17cfcf]/20 hover:border-[#17cfcf]/50 transition-all duration-300"
+              className="bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/10 border-[#90EE90]/30 text-[#90EE90] hover:bg-[#90EE90]/20 hover:border-[#90EE90]/50 transition-all duration-300"
             >
               <Sparkles className="h-4 w-4 mr-2" />
               AI Assistant
@@ -86,10 +86,10 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
           </div>
 
           {/* User Menu */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {/* Mobile Search Button */}
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Search className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="md:hidden p-2">
+              <Search className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
 
             {/* User Dropdown */}
@@ -98,11 +98,11 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#e6f5ec]/30 transition-all duration-200"
+                  className="flex items-center gap-2 sm:gap-3 p-1 sm:p-2 rounded-xl hover:bg-[#e6f5ec]/30 transition-all duration-200"
                 >
-                  <Avatar className="h-8 w-8 ring-2 ring-[#17cfcf]/20">
+                  <Avatar className="h-7 w-7 sm:h-8 sm:w-8 ring-2 ring-[#90EE90]/20">
                     <AvatarImage src={user?.user_metadata?.avatar_url} />
-                    <AvatarFallback className="bg-gradient-to-br from-[#17cfcf] to-[#384040] text-white text-sm">
+                    <AvatarFallback className="bg-gradient-to-br from-[#90EE90] to-[#32CD32] text-white text-xs sm:text-sm">
                       {getUserInitials(user)}
                     </AvatarFallback>
                   </Avatar>

@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import AdminTabs from '@/components/admin/AdminTabs';
 import EnhancedSubmissionManager from '@/components/admin/EnhancedSubmissionManager';
 import OpportunityManager from '@/components/admin/OpportunityManager';
 import UserRoleManager from '@/components/admin/UserRoleManager';
+import UserManagement from '@/components/admin/UserManagement';
 import UserSubscriptionManager from '@/components/admin/UserSubscriptionManager';
 import FeatureTogglePanel from '@/components/admin/FeatureTogglePanel';
 import PlatformSettings from '@/components/admin/PlatformSettings';
@@ -35,6 +35,8 @@ const Admin = () => {
       case 'applications':
         return <ApplicationDetailsManager />;
       case 'users':
+        return <UserManagement />;
+      case 'user-roles':
         return <UserRoleManager />;
       case 'subscriptions':
         return <UserSubscriptionManager />;

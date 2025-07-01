@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -9,27 +8,30 @@ const AddOpportunityButton = () => {
 
   if (loading) {
     return (
-      <Button disabled className="bg-blue-600 hover:bg-blue-700">
+      <Button disabled className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
         <Plus className="w-4 h-4 mr-2" />
-        Loading...
+        <span className="hidden sm:inline">Loading...</span>
+        <span className="sm:hidden">Loading</span>
       </Button>
     );
   }
 
   if (!canCreatePosts) {
     return (
-      <Button disabled className="bg-gray-400 cursor-not-allowed">
+      <Button disabled className="bg-gray-400 cursor-not-allowed w-full sm:w-auto">
         <Plus className="w-4 h-4 mr-2" />
-        Create Disabled
+        <span className="hidden sm:inline">Create Disabled</span>
+        <span className="sm:hidden">Disabled</span>
       </Button>
     );
   }
 
   return (
-    <Link to="/create-opportunity">
-      <Button className="bg-blue-600 hover:bg-blue-700">
+    <Link to="/create-opportunity" className="w-full sm:w-auto">
+      <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
         <Plus className="w-4 h-4 mr-2" />
-        Create Opportunity
+        <span className="hidden sm:inline">Create Opportunity</span>
+        <span className="sm:hidden">Create</span>
       </Button>
     </Link>
   );
