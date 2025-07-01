@@ -7,7 +7,8 @@ import { HeroSection } from '@/components/ui/hero-section-1';
 import LandingOpportunities from '@/components/LandingOpportunities';
 import { Testimonials } from '@/components/ui/testimonials-columns-1';
 import { FooterDemo } from '@/components/ui/footer-section';
-import SubscriptionPricing from '@/components/ui/subscription-pricing';
+import LandingSubscription from '@/components/LandingSubscription';
+import { FeaturesSectionWithHoverEffects } from '@/components/ui/feature-section-with-hover-effects';
 import { useAuth } from '@/hooks/useAuth';
 
 const LandingPage = () => {
@@ -47,18 +48,20 @@ const LandingPage = () => {
     <div className="min-h-screen bg-white">
       {/* Enhanced Hero Section */}
       <section className="relative min-h-screen bg-gradient-to-br from-white via-[#e6f5ec]/20 to-white overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-[#17cfcf] rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#e6f5ec] rounded-full blur-3xl"></div>
+        {/* Enhanced Background Pattern */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-[#17cfcf] rounded-full blur-3xl opacity-10 animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#e6f5ec] rounded-full blur-3xl opacity-10 animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-[#17cfcf] to-[#17cfcf]/50 rounded-full blur-2xl opacity-5 animate-pulse" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{animationDelay: '0.5s'}}></div>
         </div>
 
-        {/* Header */}
+        {/* Enhanced Header */}
         <motion.header 
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 bg-white/80 backdrop-blur-md border-b border-[#e6f5ec]/30 sticky top-0"
+          className="relative z-10 bg-white/90 backdrop-blur-xl border-b border-[#e6f5ec]/40 sticky top-0 shadow-lg shadow-black/5"
         >
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
@@ -119,9 +122,9 @@ const LandingPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <span className="inline-flex items-center space-x-2 bg-[#e6f5ec]/50 text-[#384040] px-4 py-2 rounded-full text-sm font-medium mb-8">
+              <span className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#17cfcf]/10 to-[#e6f5ec]/30 text-[#384040] px-6 py-3 rounded-full text-sm font-semibold mb-8 border border-[#17cfcf]/20 shadow-lg shadow-[#17cfcf]/10">
                 <Star className="w-4 h-4 text-[#17cfcf]" />
-                <span>Trusted by 50,000+ professionals</span>
+                <span>Trusted by 50,000+ professionals worldwide</span>
               </span>
             </motion.div>
 
@@ -132,7 +135,7 @@ const LandingPage = () => {
               className="text-5xl md:text-7xl font-bold text-[#384040] mb-6 leading-tight"
             >
               Discover Your Next
-              <span className="block bg-gradient-to-r from-[#17cfcf] to-[#17cfcf]/80 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-[#17cfcf] via-[#17cfcf]/90 to-[#17cfcf]/70 bg-clip-text text-transparent drop-shadow-sm">
                 Big Opportunity
               </span>
             </motion.h1>
@@ -141,10 +144,11 @@ const LandingPage = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed font-medium"
             >
               Access thousands of verified opportunities from top organizations worldwide. 
-              Jobs, scholarships, fellowships, grants, and more - all in one place with AI-powered matching.
+              Jobs, scholarships, fellowships, grants, and more - all in one place with 
+              <span className="text-[#17cfcf] font-semibold"> AI-powered matching</span>.
             </motion.p>
 
             <motion.div
@@ -167,7 +171,7 @@ const LandingPage = () => {
                 <Link to="/auth">
                   <Button 
                     size="lg" 
-                    className="bg-[#17cfcf] hover:bg-[#17cfcf]/90 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl hover:shadow-[#17cfcf]/30 transform hover:scale-105 transition-all duration-300"
+                    className="bg-gradient-to-r from-[#17cfcf] to-[#17cfcf]/90 hover:from-[#17cfcf]/90 hover:to-[#17cfcf] text-white px-10 py-5 rounded-2xl text-lg font-bold shadow-2xl hover:shadow-[#17cfcf]/40 transform hover:scale-105 transition-all duration-300 border-0"
                   >
                     Start Exploring
                     <ArrowRight className="ml-2 w-5 h-5" />
@@ -177,7 +181,7 @@ const LandingPage = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="px-8 py-4 rounded-2xl text-lg border-2 border-[#e6f5ec] text-[#384040] hover:bg-[#e6f5ec]/30 hover:border-[#17cfcf] transition-all duration-300"
+                className="px-10 py-5 rounded-2xl text-lg border-2 border-[#17cfcf]/30 text-[#384040] hover:bg-[#17cfcf]/10 hover:border-[#17cfcf] transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-lg"
               >
                 Watch Demo
               </Button>
@@ -250,12 +254,62 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Premium Pro Features Section with Hover Effects */}
+      <section className="py-32 bg-gradient-to-b from-[#e6f5ec]/10 via-white to-[#e6f5ec]/5 relative overflow-hidden">
+        {/* Enhanced Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-[#17cfcf] rounded-full blur-3xl opacity-5 animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-[#17cfcf] to-[#17cfcf]/30 rounded-full blur-3xl opacity-3 animate-pulse" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#17cfcf]/10 to-[#e6f5ec]/30 text-[#384040] px-6 py-3 rounded-full text-sm font-semibold mb-8 border border-[#17cfcf]/20 shadow-lg shadow-[#17cfcf]/10"
+            >
+              <Star className="w-4 h-4 text-[#17cfcf]" />
+              <span>21st Century AI Technology</span>
+            </motion.div>
+            <h2 className="text-5xl md:text-6xl font-bold text-[#384040] mb-8 leading-tight">
+              Next-Generation
+              <span className="block bg-gradient-to-r from-[#17cfcf] via-[#17cfcf]/90 to-[#17cfcf]/70 bg-clip-text text-transparent">
+                Career Platform
+              </span>
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto font-medium leading-relaxed">
+              Experience the future of professional development with cutting-edge AI features that revolutionize how you discover, apply, and succeed in your career.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <FeaturesSectionWithHoverEffects />
+          </motion.div>
+        </div>
+      </section>
+
       {/* Opportunities Section */}
       <LandingOpportunities />
 
-      {/* Pricing Section */}
+      {/* Subscription Section */}
       <section id="pricing">
-        <SubscriptionPricing />
+        <LandingSubscription />
       </section>
 
       {/* Testimonials Section */}
