@@ -167,7 +167,8 @@ const LandingOpportunities = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -5, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <Card 
                 className="h-full bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 shadow-lg hover:shadow-xl hover:border-[#17cfcf]/50 transition-all duration-300 group cursor-pointer relative overflow-hidden"
@@ -190,8 +191,18 @@ const LandingOpportunities = () => {
                         </Badge>
                       )}
                       {opportunity.application_deadline && new Date(opportunity.application_deadline) > new Date() && (
-                        <Badge variant="outline" className="text-green-600 border-green-200 text-xs">
-                          Active
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${
+                            new Date(opportunity.application_deadline) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                              ? 'text-orange-600 border-orange-200'
+                              : 'text-green-600 border-green-200'
+                          }`}
+                        >
+                          {new Date(opportunity.application_deadline) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                            ? 'Expiring Soon'
+                            : 'Active'
+                          }
                         </Badge>
                       )}
                     </div>
