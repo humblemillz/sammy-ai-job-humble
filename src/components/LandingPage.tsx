@@ -72,7 +72,7 @@ const LandingPage = () => {
                 <div className="w-10 h-10 bg-gradient-to-r from-[#90EE90] to-[#32CD32] rounded-xl flex items-center justify-center">
                   <Briefcase className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-2xl font-bold text-[#384040]">OpportunityHub</span>
+                <span className="text-2xl font-bold text-[#384040]">PrimeChances</span>
               </motion.div>
               
               <nav className="hidden md:flex space-x-8">
@@ -229,7 +229,7 @@ const LandingPage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-[#384040] mb-6">
-              Why Choose OpportunityHub?
+              Why Choose PrimeChances?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Our comprehensive platform connects you with global opportunities through intelligent matching, 

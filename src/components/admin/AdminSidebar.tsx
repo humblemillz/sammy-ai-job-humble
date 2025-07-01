@@ -75,7 +75,7 @@ const AdminSidebar = ({ activeSection, onSectionChange }: AdminSidebarProps) => 
           </div>
           <div>
             <h2 className="text-lg font-bold text-[#384040]">Admin Panel</h2>
-            <p className="text-sm text-gray-500">OpportunityHub</p>
+            <p className="text-sm text-gray-500">PrimeChances</p>
           </div>
         </motion.div>
       </SidebarHeader>
@@ -121,7 +121,7 @@ const AdminSidebar = ({ activeSection, onSectionChange }: AdminSidebarProps) => 
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          OpportunityHub Admin v1.0
+          PrimeChances Admin v1.0
         </motion.div>
       </SidebarFooter>
     </Sidebar>

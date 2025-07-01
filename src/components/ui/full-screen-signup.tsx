@@ -96,7 +96,7 @@ export const FullScreenSignup = ({
               {isLogin ? 'Welcome Back' : 'Get Started'}
             </h2>
             <p className="text-left opacity-80">
-              {isLogin ? 'Sign in to your OpportunityHub account' : 'Create your OpportunityHub account'}
+              {isLogin ? 'Sign in to your PrimeChances account' : 'Create your PrimeChances account'}
             </p>
           </div>
  

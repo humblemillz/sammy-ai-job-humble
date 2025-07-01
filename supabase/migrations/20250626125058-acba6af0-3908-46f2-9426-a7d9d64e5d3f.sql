@@ -171,7 +171,7 @@ INSERT INTO public.categories (name, description, icon, color) VALUES
 
 -- Insert default admin settings (without updated_by for now)
 INSERT INTO public.admin_settings (setting_key, setting_value, description) VALUES
-('platform_name', '"OpportunityHub"', 'Name of the platform'),
+('platform_name', '"PrimeChances"', 'Name of the platform'),
 ('maintenance_mode', 'false', 'Enable/disable maintenance mode'),
 ('user_registration_enabled', 'true', 'Allow new user registrations'),
 ('max_free_applications', '10', 'Maximum applications for free tier users'),

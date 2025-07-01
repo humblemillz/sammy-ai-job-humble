@@ -13,7 +13,7 @@ const PlatformSettings = () => {
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium">Platform Name</label>
-            <Input defaultValue="OpportunityHub" />
+            <Input defaultValue="PrimeChances" />
           </div>
           <div>
             <label className="text-sm font-medium">Max Free Applications</label>

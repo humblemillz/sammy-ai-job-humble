@@ -44,7 +44,7 @@ export const initializeFlutterwavePayment = (
       name: userName,
     },
     customizations: {
-      title: 'OpportunityHub Pro Subscription',
+      title: 'PrimeChances Pro Subscription',
       description: 'Upgrade to Pro for premium features',
       logo: '',
     },

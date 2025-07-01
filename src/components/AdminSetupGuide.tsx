@@ -23,7 +23,7 @@ const AdminSetupGuide = () => {
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Setup Guide</h1>
-        <p className="text-gray-600">Configure automatic admin role assignment for your OpportunityHub</p>
+        <p className="text-gray-600">Configure automatic admin role assignment for your PrimeChances</p>
       </div>
 
       <Card>

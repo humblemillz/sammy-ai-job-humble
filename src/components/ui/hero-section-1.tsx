@@ -176,7 +176,7 @@ export function HeroSection() {
                                     <img
                                         className="bg-background aspect-15/8 relative rounded-2xl"
                                         src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2700&q=80"
-                                        alt="OpportunityHub dashboard preview"
+                                        alt="PrimeChances dashboard preview"
                                         width="2700"
                                         height="1440"
                                     />
@@ -407,7 +407,7 @@ const Logo = ({ className }: { className?: string }) => {
                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             </div>
-            <span className="text-xl font-bold">OpportunityHub</span>
+            <span className="text-xl font-bold">PrimeChances</span>
         </div>
     )
 }

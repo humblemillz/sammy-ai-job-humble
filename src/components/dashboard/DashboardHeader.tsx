@@ -60,7 +60,7 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-[#177517] bg-clip-text text-transparent">
-                  OpportunityHub
+                  PrimeChances
                 </h1>
                 <p className="text-xs text-gray-500">Find your next opportunity</p>
               </div>

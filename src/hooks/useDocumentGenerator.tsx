@@ -86,7 +86,7 @@ Bachelor's Degree in Computer Science
 University Name (2015 - 2019)
 
 PROJECTS
-• OpportunityHub - Full-stack job portal with AI recommendations
+• PrimeChances - Full-stack job portal with AI recommendations
 • Personal Portfolio - Responsive website showcasing development skills`;
           break;
           

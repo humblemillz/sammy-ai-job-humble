@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 
 const testimonials = [
   {
-    text: "OpportunityHub transformed my career search. I found amazing fellowships and grants I never knew existed. The AI matching is incredibly accurate!",
+    text: "PrimeChances transformed my career search. I found amazing fellowships and grants I never knew existed. The AI matching is incredibly accurate!",
     image: "https://randomuser.me/api/portraits/women/1.jpg",
     name: "Sarah Johnson",
     role: "Research Fellow",
@@ -131,7 +131,7 @@ const Testimonials = () => {
             What our users say
           </h2>
           <p className="text-center mt-5 opacity-75">
-            See how OpportunityHub has transformed careers and opened doors worldwide.
+            See how PrimeChances has transformed careers and opened doors worldwide.
           </p>
         </motion.div>
 

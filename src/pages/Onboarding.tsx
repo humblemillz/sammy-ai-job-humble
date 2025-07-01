@@ -145,7 +145,7 @@ const Onboarding = () => {
       }
 
       toast({
-        title: "Welcome to OpportunityHub!",
+        title: "Welcome to PrimeChances!",
         description: "Your profile has been set up successfully.",
       });
 
