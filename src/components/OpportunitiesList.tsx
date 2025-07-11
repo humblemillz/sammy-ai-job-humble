@@ -40,11 +40,11 @@ interface OpportunitiesListProps {
   showBookmarksOnly?: boolean;
 }
 
-const OpportunitiesList = ({ 
-  categoryFilter = '', 
-  searchQuery = '', 
+const OpportunitiesList = ({
+  categoryFilter = '',
+  searchQuery = '',
   limit = 10,
-  showBookmarksOnly = false 
+  showBookmarksOnly = false
 }: OpportunitiesListProps) => {
   const { user } = useAuth();
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
@@ -68,7 +68,7 @@ const OpportunitiesList = ({
   const fetchOpportunities = async (page = 1) => {
     try {
       setLoading(true);
-      
+
       const from = (page - 1) * limit;
       const to = from + limit - 1;
 
@@ -96,7 +96,7 @@ const OpportunitiesList = ({
           .select('id')
           .eq('name', categoryFilter)
           .single();
-        
+
         if (categoryData) {
           query = query.eq('category_id', categoryData.id);
         }
@@ -109,9 +109,9 @@ const OpportunitiesList = ({
           .from('categories')
           .select('id')
           .ilike('name', `%${searchQuery}%`);
-        
+
         const categoryIds = matchingCategories?.map(cat => cat.id) || [];
-        
+
         if (categoryIds.length > 0) {
           query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,organization.ilike.%${searchQuery}%,category_id.in.(${categoryIds.join(',')})`);
         } else {
@@ -125,16 +125,16 @@ const OpportunitiesList = ({
           .from('user_bookmarks')
           .select('opportunity_id')
           .eq('user_id', user.id);
-        
+
         const bookmarkedIds = userBookmarks?.map(b => b.opportunity_id) || [];
-        
+
         if (bookmarkedIds.length === 0) {
           setOpportunities([]);
           setTotalPages(1);
           setTotalCount(0);
           return;
         }
-        
+
         query = query.in('id', bookmarkedIds);
       }
 
@@ -188,7 +188,7 @@ const OpportunitiesList = ({
 
     try {
       const isBookmarked = bookmarks.has(opportunityId);
-      
+
       if (isBookmarked) {
         const { error } = await supabase
           .from('user_bookmarks')
@@ -264,11 +264,11 @@ const OpportunitiesList = ({
         <CardContent className="p-8 text-center">
           <h3 className="text-lg font-medium text-gray-900 mb-2">No opportunities found</h3>
           <p className="text-gray-600">
-            {showBookmarksOnly 
+            {showBookmarksOnly
               ? "You haven't bookmarked any opportunities yet."
-              : searchQuery 
+              : searchQuery
                 ? `No opportunities match "${searchQuery}"`
-                : categoryFilter 
+                : categoryFilter
                   ? `No opportunities found in ${categoryFilter}`
                   : "No opportunities are currently available."
             }
@@ -292,27 +292,27 @@ const OpportunitiesList = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: index * 0.05 }}
-          className="group bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 rounded-2xl shadow-lg hover:shadow-xl hover:border-[#177517]/30 transition-all duration-300"
+          className="group bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 rounded-2xl shadow-lg hover:shadow-xl hover:border-[#008000]/30 transition-all duration-300"
         >
           <CardHeader>
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <CardTitle className="text-xl mb-2">
-                  <Link 
+                  <Link
                     to={`/opportunity/${opportunity.id}`}
-                    className="hover:text-[#177517] transition-colors"
+                    className="hover:text-[#008000] transition-colors"
                   >
                     {opportunity.title}
                   </Link>
                 </CardTitle>
                 <CardDescription className="flex items-center gap-4 text-base">
                   <span className="flex items-center">
-                    <Building className="w-4 h-4 mr-1 text-[#177517]" />
+                    <Building className="w-4 h-4 mr-1 text-[#008000]" />
                     {opportunity.organization}
                   </span>
                   {opportunity.location && (
                     <span className="flex items-center">
-                      <MapPin className="w-4 h-4 mr-1 text-[#177517]" />
+                      <MapPin className="w-4 h-4 mr-1 text-[#008000]" />
                       {opportunity.location}
                     </span>
                   )}
@@ -324,9 +324,9 @@ const OpportunitiesList = ({
                 </CardDescription>
               </div>
               <div className="flex items-center gap-2">
-                <Badge 
+                <Badge
                   variant="outline"
-                  className="border-[#177517] text-[#177517] bg-[#177517]/10"
+                  className="border-[#008000] text-[#008000] bg-[#008000]/10"
                 >
                   {opportunity.category.name}
                 </Badge>
@@ -334,7 +334,7 @@ const OpportunitiesList = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => toggleBookmark(opportunity.id)}
-                  className="text-[#177517] hover:bg-[#177517]/10"
+                  className="text-[#008000] hover:bg-[#008000]/10"
                 >
                   {bookmarks.has(opportunity.id) ? (
                     <BookmarkCheck className="w-4 h-4" />
@@ -345,16 +345,16 @@ const OpportunitiesList = ({
               </div>
             </div>
           </CardHeader>
-          
+
           <CardContent>
             <p className="text-gray-700 mb-4 line-clamp-3">
               {opportunity.description.substring(0, 200)}...
             </p>
-            
+
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4 text-sm text-gray-500">
                 <span className="flex items-center">
-                  <Calendar className="w-4 h-4 mr-1 text-[#177517]" />
+                  <Calendar className="w-4 h-4 mr-1 text-[#008000]" />
                   Posted {format(new Date(opportunity.created_at), 'MMM dd, yyyy')}
                 </span>
                 {opportunity.application_deadline && (
@@ -364,9 +364,9 @@ const OpportunitiesList = ({
                   </span>
                 )}
               </div>
-              
+
               <Link to={`/opportunity/${opportunity.id}`}>
-                <Button variant="outline" size="sm" className="border-[#177517] text-[#177517] hover:bg-[#177517] hover:text-white">
+                <Button variant="outline" size="sm" className="border-[#008000] text-[#008000] hover:bg-[#008000] hover:text-white">
                   <ExternalLink className="w-4 h-4 mr-1" />
                   View Details
                 </Button>
@@ -375,19 +375,19 @@ const OpportunitiesList = ({
           </CardContent>
         </motion.div>
       ))}
-      
+
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center">
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious 
+                <PaginationPrevious
                   onClick={() => handlePageChange(currentPage - 1)}
                   className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
                 />
               </PaginationItem>
-              
+
               {/* Show page numbers */}
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                 const page = Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i;
@@ -406,9 +406,9 @@ const OpportunitiesList = ({
                 }
                 return null;
               })}
-              
+
               <PaginationItem>
-                <PaginationNext 
+                <PaginationNext
                   onClick={() => handlePageChange(currentPage + 1)}
                   className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
                 />

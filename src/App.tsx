@@ -43,9 +43,8 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="/opportunity/:id" element={
-              <ProtectedRoute>
-                <Opportunity />
-              </ProtectedRoute>
+              // <ProtectedRoute></ProtectedRoute>
+              <Opportunity />
             } />
             <Route path="/opportunity/:id/apply" element={
               <ProtectedRoute>

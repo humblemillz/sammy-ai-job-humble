@@ -89,8 +89,9 @@ export const FullScreenSignup = ({
  
         <div className="p-8 md:p-12 md:w-1/2 flex flex-col bg-white z-10 text-gray-900 rounded-r-3xl">
           <div className="flex flex-col items-left mb-8">
-            <div className="text-gradient-to-r from-[#90EE90] to-[#32CD32] mb-4">
-              <Briefcase className="h-10 w-10 text-[#90EE90]" />
+            <div className="w-16 h-w-16 flex items-center justify-center rounded-xl">
+              <img className='h-w-16 w-16 rounded-full' src="/assets/img/logo.jpg" alt="" />
+              {/* <Briefcase className="w-6 h-6 text-white" /> */}
             </div>
             <h2 className="text-3xl font-medium mb-2 tracking-tight">
               {isLogin ? 'Welcome Back' : 'Get Started'}

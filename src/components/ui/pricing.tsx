@@ -34,7 +34,7 @@ export function PricingCard({
             <p className="text-muted-foreground text-sm">{description}</p>
           </div>
 
-          <Button asChild className="w-full" variant={buttonVariant}>
+          <Button asChild className="w-full bg-green-600 text-white hover:bg-green-500" variant={buttonVariant}>
             <Link to="/auth">Get Started</Link>
           </Button>
         </div>
@@ -49,7 +49,7 @@ export function PricingCard({
       <ul className={`${highlight ? "mt-4" : "border-t pt-4"} list-outside space-y-3 text-sm`}>
         {features.map((item, index) => (
           <li key={index} className="flex items-center gap-2">
-            <Check className="size-3" />
+            <Check className="size-3 !text-green-500" />
             {item}
           </li>
         ))}

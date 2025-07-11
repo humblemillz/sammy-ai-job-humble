@@ -16,8 +16,8 @@ interface MainContentProps {
 const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }: MainContentProps) => {
   const tabVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.5 }
     }
@@ -25,8 +25,8 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
 
   const contentVariants = {
     hidden: { opacity: 0, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: { duration: 0.4 }
     }
@@ -45,19 +45,19 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
           animate="visible"
         >
           <TabsList className="grid w-full grid-cols-3 bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 rounded-xl sm:rounded-2xl p-1 sm:p-2 shadow-lg">
-            <TabsTrigger 
-              value="discover" 
-              className="rounded-lg sm:rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#177517] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#218c1b]/30 text-xs sm:text-sm"
+            <TabsTrigger
+              value="discover"
+              className="rounded-lg sm:rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#008000] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#218c1b]/30 text-xs sm:text-sm"
             >
               Discover
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="bookmarks"
               className="rounded-lg sm:rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#90EE90] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#e6f5ec]/50 text-xs sm:text-sm"
             >
               Bookmarks
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="applications"
               className="rounded-lg sm:rounded-xl font-medium text-[#384040] data-[state=active]:bg-[#90EE90] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-[#e6f5ec]/50 text-xs sm:text-sm"
             >
@@ -65,7 +65,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
             </TabsTrigger>
           </TabsList>
         </motion.div>
-        
+
         <TabsContent value="discover" className="mt-6 sm:mt-8">
           <motion.div
             variants={contentVariants}
@@ -73,9 +73,9 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
             animate="visible"
           >
             <div className="mb-4 sm:mb-6 relative">
-              <div className="absolute -inset-2 bg-[#177517]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
+              <div className="absolute -inset-2 bg-[#008000]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
               <div className="relative bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#e6f5ec]/30">
-                <motion.h2 
+                <motion.h2
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
@@ -83,7 +83,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
                 >
                   {selectedCategory ? `${selectedCategory.name} Opportunities` : 'All Opportunities'}
                 </motion.h2>
-                <motion.p 
+                <motion.p
                   initial={{ opacity: 0, x: -15 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
@@ -98,7 +98,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <OpportunitiesList 
+              <OpportunitiesList
                 categoryFilter={selectedCategory?.name || ''}
                 searchQuery={searchQuery}
                 limit={10}
@@ -114,9 +114,9 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
             animate="visible"
           >
             <div className="mb-4 sm:mb-6 relative">
-              <div className="absolute -inset-2 bg-[#177517]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
+              <div className="absolute -inset-2 bg-[#008000]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
               <div className="relative bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#e6f5ec]/30">
-                <motion.h2 
+                <motion.h2
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
@@ -124,7 +124,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
                 >
                   Bookmarked Opportunities
                 </motion.h2>
-                <motion.p 
+                <motion.p
                   initial={{ opacity: 0, x: -15 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
@@ -139,7 +139,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <OpportunitiesList 
+              <OpportunitiesList
                 categoryFilter={selectedCategory?.name || ''}
                 searchQuery={searchQuery}
                 limit={10}
@@ -156,9 +156,9 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
             animate="visible"
           >
             <div className="mb-4 sm:mb-6 relative">
-              <div className="absolute -inset-2 bg-[#177517]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
+              <div className="absolute -inset-2 bg-[#008000]/10 rounded-xl sm:rounded-2xl blur-lg"></div>
               <div className="relative bg-white/60 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#e6f5ec]/30">
-                <motion.h2 
+                <motion.h2
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
@@ -166,7 +166,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
                 >
                   My Applications
                 </motion.h2>
-                <motion.p 
+                <motion.p
                   initial={{ opacity: 0, x: -15 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
@@ -194,7 +194,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
                       <Briefcase className="w-12 h-12 sm:w-16 sm:h-16 text-[#90EE90]" />
                     </div>
                   </motion.div>
-                  <motion.h3 
+                  <motion.h3
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
@@ -202,7 +202,7 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
                   >
                     No applications yet
                   </motion.h3>
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
@@ -220,11 +220,10 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
         variant="outline"
         size="sm"
         onClick={() => handleViewMode('grid')}
-        className={`${
-          viewMode === 'grid' 
-            ? 'bg-[#177517]/10 border-[#177517] text-[#177517]' 
+        className={`${viewMode === 'grid'
+            ? 'bg-[#008000]/10 border-[#008000] text-[#008000]'
             : 'border-gray-300 text-gray-600 hover:border-[#218c1b]/50'
-        } transition-all duration-200`}
+          } transition-all duration-200`}
       >
         <Grid className="h-4 w-4" />
       </Button>

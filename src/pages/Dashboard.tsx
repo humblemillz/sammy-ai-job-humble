@@ -5,14 +5,14 @@ import { useAdminRole } from '@/hooks/useAdminRole';
 import { useNavigate } from 'react-router-dom';
 import { useUserTier } from '@/hooks/useUserTier';
 import { useFeatureToggle } from '@/hooks/useFeatureToggle';
-import { 
-  Briefcase, 
-  GraduationCap, 
-  Users, 
-  Lightbulb, 
-  UserPlus, 
-  DollarSign, 
-  Trophy, 
+import {
+  Briefcase,
+  GraduationCap,
+  Users,
+  Lightbulb,
+  UserPlus,
+  DollarSign,
+  Trophy,
   Calendar,
   Sparkles
 } from 'lucide-react';
@@ -35,7 +35,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { tier } = useUserTier();
   const { isEnabled: categoryRestrictionEnabled } = useFeatureToggle('restrict_free_user_categories');
-  
+
   const [userStats, setUserStats] = useState({
     savedOpportunities: 0,
     applications: 0,
@@ -136,7 +136,7 @@ const Dashboard = () => {
     }
   };
 
-  if (showAIRecommendations) {  
+  if (showAIRecommendations) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-[#e6f5ec]/20">
         <DashboardHeader
@@ -146,11 +146,11 @@ const Dashboard = () => {
           onResultSelect={handleSearchResult}
           onSignOut={signOut}
         />
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-between mb-6">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => setShowAIRecommendations(false)}
               className="mb-4"
             >
@@ -173,13 +173,13 @@ const Dashboard = () => {
         onSignOut={signOut}
       />
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8"
       >
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -187,9 +187,9 @@ const Dashboard = () => {
         >
           <WelcomeSection user={user} />
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <Button 
+            <Button
               onClick={() => setShowAIRecommendations(true)}
-              className="bg-[#177517] hover:bg-[#218c1b] text-white shadow-lg w-full sm:w-auto"
+              className="bg-[#008000] hover:bg-[#218c1b] text-white shadow-lg w-full sm:w-auto"
             >
               <Sparkles className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">AI Recommendations</span>
@@ -198,7 +198,7 @@ const Dashboard = () => {
             <AddOpportunityButton />
           </div>
         </motion.div>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -209,7 +209,7 @@ const Dashboard = () => {
         </motion.div>
 
         {/* Enhanced Search Bar Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
@@ -217,7 +217,7 @@ const Dashboard = () => {
         >
           <div className="flex justify-center">
             <div className="relative w-full max-w-2xl">
-              <div className="absolute inset-0 bg-[#177517]/20 rounded-2xl blur-xl"></div>
+              <div className="absolute inset-0 bg-[#008000]/20 rounded-2xl blur-xl"></div>
               <div className="relative bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl border border-[#e6f5ec]/50 shadow-lg">
                 <SearchBar onResultSelect={handleSearchResult} />
               </div>
@@ -225,13 +225,13 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8"
         >
-          <motion.div 
+          <motion.div
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
@@ -246,7 +246,7 @@ const Dashboard = () => {
             />
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
@@ -256,7 +256,7 @@ const Dashboard = () => {
               selectedCategory={selectedCategory}
               searchQuery={searchQuery}
               viewMode="grid"
-              handleViewMode={() => {}}
+              handleViewMode={() => { }}
             />
           </motion.div>
         </motion.div>
@@ -266,7 +266,7 @@ const Dashboard = () => {
       <AIChatWidget />
 
       {/* Upgrade Prompt */}
-      <UpgradePrompt 
+      <UpgradePrompt
         isOpen={showUpgradePrompt}
         onClose={() => setShowUpgradePrompt(false)}
       />
