@@ -40,7 +40,7 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
   };
 
   return (
-    <motion.header 
+    <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -49,17 +49,17 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.div 
+          <motion.div
             className="flex items-center gap-2 sm:gap-3"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
             <Link to="/dashboard" className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#177517] rounded-xl flex items-center justify-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#008000] rounded-xl flex items-center justify-center">
                 <span className="text-white font-bold text-sm sm:text-lg">O</span>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-[#177517] bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold text-[#008000] bg-clip-text text-transparent">
                   PrimeChances
                 </h1>
                 <p className="text-xs text-gray-500">Find your next opportunity</p>
@@ -78,7 +78,7 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
               variant="outline"
               size="sm"
               onClick={() => navigate('/ai-assistant')}
-              className="bg-[#177517]/10 border-[#177517]/30 text-[#177517] hover:bg-[#218c1b]/20 hover:border-[#218c1b]/50 transition-all duration-300"
+              className="bg-[#008000]/10 border-[#008000]/30 text-[#008000] hover:bg-[#218c1b]/20 hover:border-[#218c1b]/50 transition-all duration-300"
             >
               <Sparkles className="h-4 w-4 mr-2" />
               AI Assistant
@@ -100,9 +100,9 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
                   whileTap={{ scale: 0.95 }}
                   className="flex items-center gap-2 sm:gap-3 p-1 sm:p-2 rounded-xl hover:bg-[#e6f5ec]/30 transition-all duration-200"
                 >
-                  <Avatar className="h-7 w-7 sm:h-8 sm:w-8 ring-2 ring-[#177517]/20">
+                  <Avatar className="h-7 w-7 sm:h-8 sm:w-8 ring-2 ring-[#008000]/20">
                     <AvatarImage src={user?.user_metadata?.avatar_url} />
-                    <AvatarFallback className="bg-[#177517] text-white text-xs sm:text-sm">
+                    <AvatarFallback className="bg-[#008000] text-white text-xs sm:text-sm">
                       {getUserInitials(user)}
                     </AvatarFallback>
                   </Avatar>
@@ -114,7 +114,7 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
                   </div>
                 </motion.button>
               </DropdownMenuTrigger>
-              
+
               <DropdownMenuContent align="end" className="w-56 bg-white/95 backdrop-blur-md border border-[#e6f5ec]/50">
                 <DropdownMenuItem asChild>
                   <Link to="/profile" className="flex items-center gap-2 cursor-pointer">
@@ -122,14 +122,14 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
                     Profile Settings
                   </Link>
                 </DropdownMenuItem>
-                
+
                 <DropdownMenuItem asChild>
                   <Link to="/ai-assistant" className="flex items-center gap-2 cursor-pointer">
                     <Sparkles className="h-4 w-4" />
                     AI Assistant
                   </Link>
                 </DropdownMenuItem>
-                
+
                 <DropdownMenuItem asChild>
                   <Link to="/subscription" className="flex items-center gap-2 cursor-pointer">
                     <Settings className="h-4 w-4" />

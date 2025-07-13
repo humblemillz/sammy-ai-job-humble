@@ -13,7 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 const LandingPage = () => {
   const { user } = useAuth();
-  
+
   const features = [
     {
       icon: Globe,
@@ -39,7 +39,7 @@ const LandingPage = () => {
 
   const stats = [
     { number: "10,000+", label: "Active Opportunities" },
-    { number: "50,000+", label: "Registered Users" },
+    { number: "500,000+", label: "Registered Users" },
     { number: "95%", label: "Success Rate" },
     { number: "200+", label: "Partner Organizations" }
   ];
@@ -50,14 +50,14 @@ const LandingPage = () => {
       <section className="relative min-h-screen bg-gradient-to-br from-white via-[#e6f5ec]/20 to-white overflow-hidden">
         {/* Enhanced Background Pattern */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-[#177517] rounded-full blur-3xl opacity-10 animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#e6f5ec] rounded-full blur-3xl opacity-10 animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-[#177517] to-[#177517]/50 rounded-full blur-2xl opacity-5 animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+          <div className="absolute top-20 left-20 w-64 h-64 bg-[#008000] rounded-full blur-3xl opacity-10 animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#e6f5ec] rounded-full blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-r from-[#008000] to-[#008000]/50 rounded-full blur-2xl opacity-5 animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
         </div>
 
         {/* Enhanced Header */}
-        <motion.header 
+        <motion.header
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
@@ -65,22 +65,23 @@ const LandingPage = () => {
         >
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
-              <motion.div 
+              <motion.div
                 className="flex items-center space-x-3"
                 whileHover={{ scale: 1.05 }}
               >
-                <div className="w-10 h-10 bg-gradient-to-r from-[#90EE90] to-[#32CD32] rounded-xl flex items-center justify-center">
-                  <Briefcase className="w-6 h-6 text-white" />
+                <div className="w-10 h-10 flex items-center justify-center rounded-xl">
+                  <img className='h-10 w-10 rounded-full' src="/assets/img/logo.jpg" alt="" />
+                  {/* <Briefcase className="w-6 h-6 text-white" /> */}
                 </div>
                 <span className="text-2xl font-bold text-[#384040]">PrimeChances</span>
               </motion.div>
-              
+
               <nav className="hidden md:flex space-x-8">
                 {['Features', 'Pricing', 'About', 'Testimonials', 'Contact'].map((item) => (
                   <motion.a
                     key={item}
                     href={`#${item.toLowerCase()}`}
-                    className="text-[#384040] hover:text-[#177517] transition-colors font-medium"
+                    className="text-[#384040] hover:text-[#008000] transition-colors font-medium"
                     whileHover={{ y: -2 }}
                   >
                     {item}
@@ -97,11 +98,11 @@ const LandingPage = () => {
                   </Link>
                 ) : (
                   <>
-                    <Link to="/auth">
+                    {/* <Link to="/auth">
                       <Button variant="ghost" className="text-[#384040] hover:text-[#90EE90] hover:bg-[#e6f5ec]/30">
                         Sign In
                       </Button>
-                    </Link>
+                    </Link> */}
                     <Link to="/auth">
                       <Button className="bg-[#90EE90] hover:bg-[#32CD32] text-white rounded-xl px-6 shadow-lg hover:shadow-[#90EE90]/30 transition-all duration-300">
                         Get Started
@@ -124,7 +125,7 @@ const LandingPage = () => {
             >
               <span className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/30 text-[#384040] px-6 py-3 rounded-full text-sm font-semibold mb-8 border border-[#90EE90]/20 shadow-lg shadow-[#90EE90]/10">
                 <Star className="w-4 h-4 text-[#90EE90]" />
-                <span>Trusted by 50,000+ professionals worldwide</span>
+                <span>Trusted by 500,000+ professionals worldwide</span>
               </span>
             </motion.div>
 
@@ -151,8 +152,8 @@ const LandingPage = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed font-medium"
             >
-              Access thousands of verified opportunities from top organizations worldwide. 
-              Jobs, scholarships, fellowships, grants, and more - all in one place with 
+              Access thousands of verified opportunities from top organizations worldwide.
+              Jobs, scholarships, fellowships, grants, and more - all in one place with
               <span className="text-[#90EE90] font-semibold"> AI-powered matching</span>.
             </motion.p>
 
@@ -164,8 +165,8 @@ const LandingPage = () => {
             >
               {user ? (
                 <Link to="/dashboard">
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     className="bg-[#90EE90] hover:bg-[#32CD32] text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl hover:shadow-[#90EE90]/30 transform hover:scale-105 transition-all duration-300"
                   >
                     Go to Dashboard
@@ -174,8 +175,8 @@ const LandingPage = () => {
                 </Link>
               ) : (
                 <Link to="/auth">
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     className="bg-gradient-to-r from-[#90EE90] to-[#32CD32] hover:from-[#32CD32] hover:to-[#228B22] text-white px-10 py-5 rounded-2xl text-lg font-bold shadow-2xl hover:shadow-[#90EE90]/40 transform hover:scale-105 transition-all duration-300 border-0"
                   >
                     Start Exploring
@@ -183,8 +184,8 @@ const LandingPage = () => {
                   </Button>
                 </Link>
               )}
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="lg"
                 className="px-10 py-5 rounded-2xl text-lg border-2 border-[#90EE90]/30 text-[#384040] hover:bg-[#90EE90]/10 hover:border-[#90EE90] transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-lg"
               >
@@ -232,8 +233,7 @@ const LandingPage = () => {
               Why Choose PrimeChances?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our comprehensive platform connects you with global opportunities through intelligent matching, 
-              personalized recommendations, and seamless application tracking.
+              Our comprehensive platform connects you with global opportunities through intelligent matching, personalized recommendations, and seamless application tracking system with ATS standard CV making, cover letter and statement of purpose writing powered by AI.
             </p>
           </motion.div>
 
@@ -264,11 +264,11 @@ const LandingPage = () => {
         {/* Enhanced Background Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-72 h-72 bg-[#90EE90] rounded-full blur-3xl opacity-5 animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-[#90EE90] to-[#32CD32] rounded-full blur-3xl opacity-3 animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-[#90EE90] to-[#32CD32] rounded-full blur-3xl opacity-3 animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-[#e6f5ec] rounded-full blur-3xl opacity-5 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -284,7 +284,7 @@ const LandingPage = () => {
               viewport={{ once: true }}
               className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/30 text-[#384040] px-6 py-3 rounded-full text-sm font-semibold mb-8 border border-[#90EE90]/20 shadow-lg shadow-[#90EE90]/10"
             >
-                              <Star className="w-4 h-4 text-[#90EE90]" />
+              <Star className="w-4 h-4 text-[#90EE90]" />
               <span>21st Century AI Technology</span>
             </motion.div>
             <h2 className="text-5xl md:text-6xl font-bold text-[#384040] mb-8 leading-tight">

@@ -69,7 +69,7 @@ const StaffAdminDashboard = () => {
         .from('opportunities')
         .select('*')
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
       setOpportunities(data || []);
     } catch (error) {
@@ -87,7 +87,7 @@ const StaffAdminDashboard = () => {
         .from('user_submissions')
         .select('*')
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
       setSubmissions(data || []);
     } catch (error) {
@@ -106,7 +106,7 @@ const StaffAdminDashboard = () => {
         .from('user_bookmarks')
         .select('opportunity_id, opportunities(*)')
         .eq('user_id', userId);
-      
+
       if (error) throw error;
       setSavedOpportunities((bookmarks || []).map((b: any) => b.opportunities).filter(Boolean));
     } catch (error) {
@@ -126,7 +126,7 @@ const StaffAdminDashboard = () => {
         .eq('is_published', true)
         .eq('status', 'approved')
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
       setDiscoverOpportunities(data || []);
     } catch (error) {
@@ -144,7 +144,7 @@ const StaffAdminDashboard = () => {
 
   const handleDelete = async (opp: any) => {
     if (!window.confirm('Are you sure you want to delete this opportunity?')) return;
-    
+
     try {
       const { error } = await supabase
         .from('opportunities')
@@ -164,15 +164,15 @@ const StaffAdminDashboard = () => {
 
   const handleSubmissionAction = async (submission: any, status: 'approved' | 'rejected') => {
     if (processingSubmission) return; // Prevent multiple clicks
-    
+
     setProcessingSubmission(submission.id);
-    
+
     try {
       // Update submission status
       const { error: updateError } = await supabase
         .from('user_submissions')
-        .update({ 
-          status, 
+        .update({
+          status,
           reviewed_at: new Date().toISOString(),
           reviewed_by: 'staff-admin-id' // TODO: Replace with real user id
         })
@@ -275,7 +275,7 @@ const StaffAdminDashboard = () => {
 
       toast.success('Opportunity created successfully');
       setShowCreateModal(false);
-      
+
       // Refresh all data
       await Promise.all([
         fetchOpportunities(),
@@ -302,10 +302,10 @@ const StaffAdminDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-[#e6f5ec]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-[#177517]">Staff Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold text-[#008000]">Staff Admin Dashboard</h1>
           <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
             <DialogTrigger asChild>
-              <Button className="bg-[#177517] text-white hover:bg-[#177517]/90 shadow-lg">
+              <Button className="bg-[#008000] text-white hover:bg-[#008000]/90 shadow-lg">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Opportunity
               </Button>
@@ -324,18 +324,18 @@ const StaffAdminDashboard = () => {
             </DialogContent>
           </Dialog>
         </div>
-        
+
         {/* Analytics Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {analytics.map((a, i) => (
             <Card key={a.label} className="bg-white/80 border border-[#e6f5ec]/30 shadow rounded-xl">
               <CardContent className="flex items-center gap-4 p-6">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-[#177517]/10">
-                  <a.icon className="w-6 h-6 text-[#177517]" />
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-[#008000]/10">
+                  <a.icon className="w-6 h-6 text-[#008000]" />
                 </div>
                 <div>
                   <div className="text-sm text-gray-600 font-medium mb-1">{a.label}</div>
-                  <div className="text-2xl font-bold text-[#177517]">{a.value}</div>
+                  <div className="text-2xl font-bold text-[#008000]">{a.value}</div>
                 </div>
               </CardContent>
             </Card>
@@ -344,16 +344,16 @@ const StaffAdminDashboard = () => {
         {/* Tabs */}
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="mb-6 bg-white/80 border border-[#e6f5ec]/30 rounded-xl">
-            <TabsTrigger value="all" className="data-[state=active]:bg-[#177517] data-[state=active]:text-white">All Listings & Submissions</TabsTrigger>
-            <TabsTrigger value="manage" className="data-[state=active]:bg-[#177517] data-[state=active]:text-white">Manage Submissions</TabsTrigger>
-            <TabsTrigger value="saved" className="data-[state=active]:bg-[#177517] data-[state=active]:text-white">Saved Opportunities</TabsTrigger>
-            <TabsTrigger value="discover" className="data-[state=active]:bg-[#177517] data-[state=active]:text-white">Discover</TabsTrigger>
+            <TabsTrigger value="all" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">All Listings & Submissions</TabsTrigger>
+            <TabsTrigger value="manage" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">Manage Submissions</TabsTrigger>
+            <TabsTrigger value="saved" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">Saved Opportunities</TabsTrigger>
+            <TabsTrigger value="discover" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">Discover</TabsTrigger>
           </TabsList>
           <TabsContent value="all">
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white rounded-xl">
                 <thead>
-                  <tr className="bg-[#177517]/10 text-[#177517]">
+                  <tr className="bg-[#008000]/10 text-[#008000]">
                     <th className="p-3 text-left">Title</th>
                     <th className="p-3 text-left">Organization</th>
                     <th className="p-3 text-left">Status</th>
@@ -373,7 +373,7 @@ const StaffAdminDashboard = () => {
                       <td className="p-3 capitalize">{opp.status}</td>
                       <td className="p-3">{opp.is_published ? 'Yes' : 'No'}</td>
                       <td className="p-3 flex gap-2">
-                        <Button size="sm" className="bg-[#177517] text-white" onClick={() => handleEdit(opp)}><Edit className="w-4 h-4" /></Button>
+                        <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit(opp)}><Edit className="w-4 h-4" /></Button>
                         <Button size="sm" className="bg-red-600 text-white" onClick={() => handleDelete(opp)}><Trash2 className="w-4 h-4" /></Button>
                       </td>
                     </tr>
@@ -386,7 +386,7 @@ const StaffAdminDashboard = () => {
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white rounded-xl">
                 <thead>
-                  <tr className="bg-[#177517]/10 text-[#177517]">
+                  <tr className="bg-[#008000]/10 text-[#008000]">
                     <th className="p-3 text-left">Title</th>
                     <th className="p-3 text-left">Organization</th>
                     <th className="p-3 text-left">Status</th>
@@ -406,9 +406,9 @@ const StaffAdminDashboard = () => {
                       <td className="p-3 capitalize">{sub.status}</td>
                       <td className="p-3">{sub.user_id?.slice(0, 8) || 'N/A'}</td>
                       <td className="p-3 flex gap-2">
-                        <Button 
-                          size="sm" 
-                          className="bg-green-600 text-white hover:bg-green-700" 
+                        <Button
+                          size="sm"
+                          className="bg-green-600 text-white hover:bg-green-700"
                           disabled={sub.status !== 'pending' || processingSubmission === sub.id}
                           onClick={() => handleSubmissionAction(sub, 'approved')}
                         >
@@ -419,9 +419,9 @@ const StaffAdminDashboard = () => {
                           )}
                           Approve
                         </Button>
-                        <Button 
-                          size="sm" 
-                          className="bg-red-600 text-white hover:bg-red-700" 
+                        <Button
+                          size="sm"
+                          className="bg-red-600 text-white hover:bg-red-700"
                           disabled={sub.status !== 'pending' || processingSubmission === sub.id}
                           onClick={() => handleSubmissionAction(sub, 'rejected')}
                         >
@@ -443,7 +443,7 @@ const StaffAdminDashboard = () => {
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white rounded-xl">
                 <thead>
-                  <tr className="bg-[#177517]/10 text-[#177517]">
+                  <tr className="bg-[#008000]/10 text-[#008000]">
                     <th className="p-3 text-left">Title</th>
                     <th className="p-3 text-left">Organization</th>
                     <th className="p-3 text-left">Actions</th>
@@ -471,7 +471,7 @@ const StaffAdminDashboard = () => {
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white rounded-xl">
                 <thead>
-                  <tr className="bg-[#177517]/10 text-[#177517]">
+                  <tr className="bg-[#008000]/10 text-[#008000]">
                     <th className="p-3 text-left">Title</th>
                     <th className="p-3 text-left">Organization</th>
                     <th className="p-3 text-left">Category</th>

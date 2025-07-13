@@ -25,7 +25,7 @@ const LandingOpportunities = () => {
   const fetchOpportunities = async () => {
     try {
       setLoading(true);
-      
+
       const { data, error } = await supabase
         .from('opportunities')
         .select(`
@@ -80,7 +80,7 @@ const LandingOpportunities = () => {
 
   const getCategoryColor = (color: string | null) => {
     if (!color) return 'bg-blue-100 text-blue-800';
-    
+
     const colorMap: { [key: string]: string } = {
       'blue': 'bg-blue-100 text-blue-800',
       'green': 'bg-green-100 text-green-800',
@@ -91,7 +91,7 @@ const LandingOpportunities = () => {
       'indigo': 'bg-indigo-100 text-indigo-800',
       'gray': 'bg-gray-100 text-gray-800',
     };
-    
+
     return colorMap[color] || 'bg-blue-100 text-blue-800';
   };
 
@@ -143,7 +143,7 @@ const LandingOpportunities = () => {
             Latest Opportunities
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Discover the most recent opportunities from top organizations worldwide. 
+            Discover the most recent opportunities from top organizations worldwide.
             Click on any opportunity to view full details. External opportunities can be applied to directly.
           </p>
         </motion.div>
@@ -159,117 +159,116 @@ const LandingOpportunities = () => {
               whileHover={{ y: -5, scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Card 
-                className="h-full bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 shadow-lg hover:shadow-xl hover:border-[#177517]/50 transition-all duration-300 group cursor-pointer relative overflow-hidden"
+              <Card
+                className="h-full bg-white/80 backdrop-blur-sm border border-[#e6f5ec]/30 shadow-lg hover:shadow-xl hover:border-[#008000]/50 transition-all duration-300 group cursor-pointer relative overflow-hidden"
                 onClick={() => handleOpportunityClick(opportunity.id)}
               >
                 {/* Hover overlay effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#177517]/5 to-[#e6f5ec]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#008000]/5 to-[#e6f5ec]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative z-10">
-                <CardHeader className="pb-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg font-bold text-[#384040] line-clamp-2 group-hover:text-[#177517] transition-colors">
-                        {opportunity.title}
-                      </CardTitle>
-                    </div>
-                    <div className="flex flex-col items-end space-y-1">
-                      {opportunity.is_featured && (
-                        <Badge className="bg-gradient-to-r from-[#177517] to-[#177517]/80 text-white text-xs">
-                          Featured
-                        </Badge>
-                      )}
-                      {opportunity.application_deadline && new Date(opportunity.application_deadline) > new Date() && (
-                        <Badge 
-                          variant="outline" 
-                          className={`text-xs ${
-                            new Date(opportunity.application_deadline) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-                              ? 'text-orange-600 border-orange-200'
-                              : 'text-green-600 border-green-200'
-                          }`}
-                        >
-                          {new Date(opportunity.application_deadline) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-                            ? 'Expiring Soon'
-                            : 'Active'
-                          }
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-gray-600 mb-3">
-                    <Building className="w-4 h-4 mr-1" />
-                    <span className="truncate">{opportunity.organization}</span>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {opportunity.location && (
-                      <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
-                        <MapPin className="w-3 h-3 mr-1" />
-                        <span>{opportunity.is_remote ? 'Remote' : opportunity.location}</span>
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <CardTitle className="text-lg font-bold text-[#384040] line-clamp-2 group-hover:text-[#008000] transition-colors">
+                          {opportunity.title}
+                        </CardTitle>
                       </div>
-                    )}
-                    {opportunity.application_deadline && (
-                      <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        <span>{formatDate(opportunity.application_deadline)}</span>
-                      </div>
-                    )}
-                    {opportunity.salary_range && (
-                      <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
-                        <TrendingUp className="w-3 h-3 mr-1" />
-                        <span>{opportunity.salary_range}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {opportunity.tags && opportunity.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {opportunity.tags.slice(0, 3).map((tag, tagIndex) => (
-                        <Badge key={tagIndex} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                      {opportunity.tags.length > 3 && (
-                        <Badge variant="secondary" className="text-xs">
-                          +{opportunity.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                  )}
-                </CardHeader>
-
-                <CardContent className="pt-0">
-                  <div className="mb-4">
-                    <p className="text-sm text-gray-700 leading-relaxed">
-                      {expandedOpportunities.has(opportunity.id) 
-                        ? opportunity.description
-                        : truncateText(opportunity.description, 150)
-                      }
-                    </p>
-                    
-                    {opportunity.description.length > 150 && (
-                      <button
-                        onClick={() => toggleExpanded(opportunity.id)}
-                        className="text-[#177517] hover:text-[#177517]/80 text-sm font-medium mt-2 flex items-center group"
-                      >
-                        {expandedOpportunities.has(opportunity.id) ? (
-                          <>
-                            <Eye className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform" />
-                            Show Less
-                          </>
-                        ) : (
-                          <>
-                            <BookOpen className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform" />
-                            Read More
-                          </>
+                      <div className="flex flex-col items-end space-y-1">
+                        {opportunity.is_featured && (
+                          <Badge className="bg-gradient-to-r from-[#008000] to-[#008000]/80 text-white text-xs">
+                            Featured
+                          </Badge>
                         )}
-                      </button>
-                    )}
-                  </div>
+                        {opportunity.application_deadline && new Date(opportunity.application_deadline) > new Date() && (
+                          <Badge
+                            variant="outline"
+                            className={`text-xs ${new Date(opportunity.application_deadline) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                                ? 'text-orange-600 border-orange-200'
+                                : 'text-green-600 border-green-200'
+                              }`}
+                          >
+                            {new Date(opportunity.application_deadline) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                              ? 'Expiring Soon'
+                              : 'Active'
+                            }
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-[#e6f5ec]/30">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center text-sm text-gray-600 mb-3">
+                      <Building className="w-4 h-4 mr-1" />
+                      <span className="truncate">{opportunity.organization}</span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {opportunity.location && (
+                        <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
+                          <MapPin className="w-3 h-3 mr-1" />
+                          <span>{opportunity.is_remote ? 'Remote' : opportunity.location}</span>
+                        </div>
+                      )}
+                      {opportunity.application_deadline && (
+                        <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
+                          <Calendar className="w-3 h-3 mr-1" />
+                          <span>{formatDate(opportunity.application_deadline)}</span>
+                        </div>
+                      )}
+                      {opportunity.salary_range && (
+                        <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
+                          <TrendingUp className="w-3 h-3 mr-1" />
+                          <span>{opportunity.salary_range}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {opportunity.tags && opportunity.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {opportunity.tags.slice(0, 3).map((tag, tagIndex) => (
+                          <Badge key={tagIndex} variant="secondary" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                        {opportunity.tags.length > 3 && (
+                          <Badge variant="secondary" className="text-xs">
+                            +{opportunity.tags.length - 3}
+                          </Badge>
+                        )}
+                      </div>
+                    )}
+                  </CardHeader>
+
+                  <CardContent className="pt-0">
+                    <div className="mb-4">
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        {expandedOpportunities.has(opportunity.id)
+                          ? opportunity.description
+                          : truncateText(opportunity.description, 150)
+                        }
+                      </p>
+
+                      {opportunity.description.length > 150 && (
+                        <button
+                          onClick={() => toggleExpanded(opportunity.id)}
+                          className="text-[#008000] hover:text-[#008000]/80 text-sm font-medium mt-2 flex items-center group"
+                        >
+                          {expandedOpportunities.has(opportunity.id) ? (
+                            <>
+                              <Eye className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform" />
+                              Show Less
+                            </>
+                          ) : (
+                            <>
+                              <BookOpen className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform" />
+                              Read More
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between pt-4 border-t border-[#e6f5ec]/30">
+                      {/* <div className="flex items-center space-x-2">
                       {opportunity.source && (
                         <Badge 
                           variant="outline" 
@@ -290,21 +289,21 @@ const LandingOpportunities = () => {
                           {opportunity.application_count}
                         </span>
                       )}
-                    </div>
+                    </div> */}
 
-                    <Button
-                      size="sm"
-                      className="bg-[#177517] hover:bg-[#177517]/90 text-white rounded-lg px-3 py-1 text-xs font-medium transition-all duration-300 group"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleViewDetails(opportunity.id);
-                      }}
-                    >
-                      View Details
-                      <ArrowRight className="w-3 h-3 ml-1 group-hover:scale-110 transition-transform" />
-                    </Button>
-                  </div>
-                </CardContent>
+                      <Button
+                        size="sm"
+                        className="bg-[#008000] hover:bg-[#008000]/90 text-white rounded-lg px-3 py-1 text-xs font-medium transition-all duration-300 group"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleViewDetails(opportunity.id);
+                        }}
+                      >
+                        View Details
+                        <ArrowRight className="w-3 h-3 ml-1 group-hover:scale-110 transition-transform" />
+                      </Button>
+                    </div>
+                  </CardContent>
                 </div>
               </Card>
             </motion.div>
@@ -322,7 +321,7 @@ const LandingOpportunities = () => {
             <Button
               size="lg"
               variant="outline"
-              className="border-2 border-[#e6f5ec] text-[#384040] hover:bg-[#e6f5ec]/30 hover:border-[#177517] px-8 py-3 rounded-xl transition-all duration-300 group"
+              className="border-2 border-[#e6f5ec] text-[#384040] hover:bg-[#e6f5ec]/30 hover:border-[#008000] px-8 py-3 rounded-xl transition-all duration-300 group"
               onClick={() => user ? navigate('/dashboard') : navigate('/auth')}
             >
               {user ? 'View All Opportunities' : 'Sign In for More Features'}

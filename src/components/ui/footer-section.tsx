@@ -26,7 +26,7 @@ function FooterDemo() {
   }, [isDarkMode])
 
   return (
-    <footer className="relative border-t bg-background text-foreground transition-colors duration-300">
+    <footer className="relative border-t bg-green-900 text-white text-foreground transition-colors duration-300">
       <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative">
@@ -38,15 +38,15 @@ function FooterDemo() {
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="pr-12 backdrop-blur-sm"
+                className="pr-12 backdrop-blur-sm rounded-full"
               />
               <Button
                 type="submit"
                 size="icon"
-                className="absolute right-1 top-1 h-8 w-8 rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105"
+                className="absolute right-1 top-1 h-8 w-8 rounded-full bg-green-950 transition-transform hover:scale-105"
               >
-                <Send className="h-4 w-4" />
-                <span className="sr-only">Subscribe</span>
+                <Send className="h-4 w-4 bg-green-950 " />
+                <span className="sr-only text-white">Subscribe</span>
               </Button>
             </form>
             <div className="absolute -right-4 top-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
@@ -75,7 +75,7 @@ function FooterDemo() {
             <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
             <address className="space-y-2 text-sm not-italic">
               <p>123 Opportunity Street</p>
-              <p>Innovation City, IC 12345</p>
+              <p>No.1 close 14. Lekki Atlantic Gardens, Lekki -Epe Express Way, Lagos</p>
               <p>Phone: (555) 123-4567</p>
               <p>Email: hello@PrimeChances.com</p>
             </address>
@@ -86,8 +86,8 @@ function FooterDemo() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                      <Facebook className="h-4 w-4" />
+                    <Button onClick={() => window.open('https://www.facebook.com/share/1Aw7banxpA/', '_blank')} variant="outline" size="icon" className="rounded-full">
+                      <Facebook className="h-4 w-4 text-green-950" />
                       <span className="sr-only">Facebook</span>
                     </Button>
                   </TooltipTrigger>
@@ -99,8 +99,8 @@ function FooterDemo() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                      <Twitter className="h-4 w-4" />
+                    <Button onClick={() => window.open('https://x.com/opportunities03?t=O0ZO845JL8NzWrmJpsHi4A&s=09', '_blank')} variant="outline" size="icon" className="rounded-full">
+                      <Twitter className="h-4 w-4 text-green-950" />
                       <span className="sr-only">Twitter</span>
                     </Button>
                   </TooltipTrigger>
@@ -112,8 +112,8 @@ function FooterDemo() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                      <Instagram className="h-4 w-4" />
+                    <Button onClick={() => window.open('https://www.instagram.com/careeropp?igsh=cXF1dDl1M2d3eTkz', '_blank')} variant="outline" size="icon" className="rounded-full">
+                      <Instagram className="h-4 w-4 text-green-950" />
                       <span className="sr-only">Instagram</span>
                     </Button>
                   </TooltipTrigger>
@@ -125,8 +125,8 @@ function FooterDemo() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                      <Linkedin className="h-4 w-4" />
+                    <Button onClick={() => window.open('https://www.linkedin.com/company/primechances/', '_blank')} variant="outline" size="icon" className="rounded-full">
+                      <Linkedin className="h-4 w-4 text-green-950" />
                       <span className="sr-only">LinkedIn</span>
                     </Button>
                   </TooltipTrigger>
@@ -136,23 +136,23 @@ function FooterDemo() {
                 </Tooltip>
               </TooltipProvider>
             </div>
-            <div className="flex items-center space-x-2">
-              <Sun className="h-4 w-4" />
+            {/* <div className="flex items-center space-x-2">
+              <Sun className="h-4 w-4 text-green-950" />
               <Switch
                 id="dark-mode"
                 checked={isDarkMode}
                 onCheckedChange={setIsDarkMode}
               />
-              <Moon className="h-4 w-4" />
+              <Moon className="h-4 w-4 text-green-950" />
               <Label htmlFor="dark-mode" className="sr-only">
                 Toggle dark mode
               </Label>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 text-center md:flex-row">
           <p className="text-sm text-muted-foreground">
-            © 2024 PrimeChances. All rights reserved.
+            © {(new Date()).getFullYear()} PrimeChances. All rights reserved.
           </p>
           <nav className="flex gap-4 text-sm">
             <a href="#" className="transition-colors hover:text-primary">

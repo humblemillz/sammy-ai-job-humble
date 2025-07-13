@@ -30,7 +30,7 @@ const WelcomeSection = ({ user }: WelcomeSectionProps) => {
             {user?.user_metadata?.full_name || 'User'}!
           </span>
         </motion.h1>
-        
+
         <motion.p
           initial={{ opacity: 0, x: -15 }}
           animate={{ opacity: 1, x: 0 }}
@@ -49,16 +49,16 @@ const WelcomeSection = ({ user }: WelcomeSectionProps) => {
       >
         <Button
           onClick={() => navigate('/ai-assistant')}
-          className="flex items-center gap-2 bg-[#177517] hover:bg-[#218c1b] text-white rounded-xl px-6 py-3 shadow-lg transition-all duration-300 font-semibold text-base"
+          className="flex items-center gap-2 bg-[#008000] hover:bg-[#218c1b] text-white rounded-xl px-6 py-3 shadow-lg transition-all duration-300 font-semibold text-base"
         >
           <Sparkles className="w-5 h-5 mr-2" />
           <span className="hidden sm:inline">AI Recommendations</span>
           <span className="sm:hidden">AI Assistant</span>
         </Button>
-        
+
         <Button
           onClick={() => navigate('/create-opportunity')}
-          className="flex items-center gap-2 bg-[#177517] hover:bg-[#218c1b] text-white rounded-xl px-6 py-3 shadow-lg transition-all duration-300 font-semibold text-base"
+          className="flex items-center gap-2 bg-[#008000] hover:bg-[#218c1b] text-white rounded-xl px-6 py-3 shadow-lg transition-all duration-300 font-semibold text-base"
         >
           <Plus className="w-5 h-5 mr-2" />
           <span className="hidden sm:inline">Create Opportunity</span>

@@ -115,12 +115,13 @@ const LandingSubscription = () => {
                 buttonVariant="outline"
                 features={[
                   "Access to all opportunity categories",
-                  "Basic search and filtering",
-                  "Unlimited bookmarking",
-                  "Email notifications",
-                  "Basic profile creation",
-                  "Limited to 5 applications per month",
-                  "Basic support only"
+                  "Advanced search functionality",
+                  "Save unlimited opportunities",
+                  "Standard email notifications",
+                  "Profile customization",
+                  "Unlimited applications per month",
+                  "Community forum access",
+                  "Standard support only"
                 ]}
               />
 
@@ -147,7 +148,7 @@ const LandingSubscription = () => {
             </div>
           </div>
           
-          <div className="text-center mt-8">
+          {/* <div className="text-center mt-8">
             <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
@@ -162,7 +163,7 @@ const LandingSubscription = () => {
                 Cancel anytime
               </div>
             </div>
-          </div>
+          </div> */}
         </motion.div>
 
         {/* Enhanced Additional Benefits */}
