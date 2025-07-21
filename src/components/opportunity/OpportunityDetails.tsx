@@ -96,11 +96,11 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
-              <Building className="w-5 h-5 text-blue-600" />
+            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
+              <Building className="w-5 h-5" style={{ color: '#008000' }} />
               <div>
-                <p className="text-sm font-medium text-blue-900">Organization</p>
-                <p className="font-semibold text-blue-800">{opportunity.organization}</p>
+                <p className="text-sm font-medium text-blue-950">Organization</p>
+                <p className="font-semibold text-blue-950">{opportunity.organization}</p>
               </div>
             </div>
 
@@ -115,10 +115,10 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
             )}
 
             <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg border border-purple-100">
-              <Calendar className="w-5 h-5 text-purple-600" />
+              <Calendar className="w-5 h-5" style={{ color: '#008000' }} />
               <div>
-                <p className="text-sm font-medium text-purple-900">Posted</p>
-                <p className="font-semibold text-purple-800">{formatDate(opportunity.created_at)}</p>
+                <p className="text-sm font-medium text-blue-950">Posted</p>
+                <p className="font-semibold text-blue-950">{formatDate(opportunity.created_at)}</p>
               </div>
             </div>
           </div>
@@ -143,7 +143,7 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
       <Card className="border-0 shadow-lg bg-white">
         <CardHeader className="pb-4">
           <CardTitle className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <FileText className="w-6 h-6 text-[#17cfcf]" />
+            <FileText className="w-6 h-6" style={{ color: '#008000' }} />
             About This Opportunity
           </CardTitle>
         </CardHeader>
@@ -192,7 +192,7 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg"
                 >
-                  <div className="w-2 h-2 bg-[#17cfcf] rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="w-2 h-2 bg-[#022e06] rounded-full mt-2 flex-shrink-0"></div>
                   <span className="text-gray-700">{requirement}</span>
                 </motion.li>
               ))}
@@ -231,24 +231,24 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
 
       {/* External Application Link */}
       {(opportunity.source_url || opportunity.application_url) && (
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50">
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-green-50 to-white">
           <CardHeader className="pb-4">
             <CardTitle className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <ExternalLink className="w-6 h-6 text-blue-600" />
+              <ExternalLink className="w-6 h-6" style={{ color: '#008000' }} />
               Apply for This Opportunity
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-white rounded-xl p-6 border border-blue-200">
+            <div className="bg-white rounded-xl p-6 border border-green-200">
               <div className="text-center space-y-4">
                 <p className="text-gray-700 text-lg">
                   This opportunity requires you to apply through the official website.
                 </p>
                 <Button
                   onClick={() => window.open(opportunity.source_url || opportunity.application_url, '_blank', 'noopener,noreferrer')}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-[#008000] hover:bg-[#008000]/90 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <ExternalLink className="w-5 h-5 mr-2" />
+                  <ExternalLink className="w-5 h-5 mr-2" style={{ color: '#fff' }} />
                   Apply on Official Website
                 </Button>
                 <p className="text-sm text-gray-500">

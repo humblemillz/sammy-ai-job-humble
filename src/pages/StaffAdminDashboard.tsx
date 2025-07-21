@@ -264,7 +264,7 @@ const StaffAdminDashboard = () => {
           tags: formData.tags,
           featured_image_url: formData.featured_image_url,
           status: 'approved',
-          source: 'staff_admin_created',
+          source: 'user_submitted',
           submitted_by: 'staff-admin-id', // TODO: Replace with real user id
           approved_by: 'staff-admin-id', // TODO: Replace with real user id
           approved_at: new Date().toISOString(),
