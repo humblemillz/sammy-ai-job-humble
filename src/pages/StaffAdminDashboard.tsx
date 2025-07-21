@@ -37,6 +37,16 @@ const StaffAdminDashboard = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
 
+  // Pagination state for Discover tab
+  const [discoverPage, setDiscoverPage] = useState(1);
+  const DISCOVER_PAGE_SIZE = 6;
+
+  // Paginated opportunities for Discover tab
+  const paginatedDiscoverOpportunities = discoverOpportunities.slice(
+    (discoverPage - 1) * DISCOVER_PAGE_SIZE,
+    discoverPage * DISCOVER_PAGE_SIZE
+  );
+
   useEffect(() => {
     fetchAnalytics();
     fetchOpportunities();
@@ -44,6 +54,15 @@ const StaffAdminDashboard = () => {
     fetchSavedOpportunities();
     fetchDiscoverOpportunities();
   }, []);
+
+  // Update analytics count for Saved Opportunities
+  useEffect(() => {
+    setAnalytics((prev) => prev.map((a) =>
+      a.label === 'Saved Opportunities'
+        ? { ...a, value: savedOpportunities.length }
+        : a
+    ));
+  }, [savedOpportunities]);
 
   const fetchAnalytics = async () => {
     try {
@@ -231,7 +250,7 @@ const StaffAdminDashboard = () => {
 
   const handleRemoveBookmark = async (opp: any) => {
     try {
-      const userId = 'staff-admin-id'; // TODO: Replace with real user id
+      const userId = user?.id || 'staff-admin-id'; // Use actual staff-admin id if available
       const { error } = await supabase
         .from('user_bookmarks')
         .delete()
@@ -507,7 +526,39 @@ const StaffAdminDashboard = () => {
                     <tr key={opp.id} className="border-b">
                       <td className="p-3 font-medium">{opp.title}</td>
                       <td className="p-3">{opp.organization}</td>
-                      <td className="p-3">
+                      <td className="p-3 flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-[#008000] border-[#008000]"
+                          onClick={() => {
+                            let toastId;
+                            toastId = toast(
+                              <div className="max-w-md relative">
+                                <button
+                                  onClick={() => toast.dismiss(toastId)}
+                                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-lg font-bold"
+                                  aria-label="Close"
+                                >
+                                  &times;
+                                </button>
+                                <h3 className="font-bold text-lg mb-2">Opportunity Details</h3>
+                                <div className="space-y-1 text-sm">
+                                  <div><strong>Title:</strong> {opp.title}</div>
+                                  <div><strong>Organization:</strong> {opp.organization}</div>
+                                  <div><strong>Description:</strong> {opp.description}</div>
+                                  <div><strong>Location:</strong> {opp.location}</div>
+                                  <div><strong>Salary Range:</strong> {opp.salary_range}</div>
+                                  <div><strong>Deadline:</strong> {opp.application_deadline ? new Date(opp.application_deadline).toLocaleDateString() : 'N/A'}</div>
+                                  <div><strong>Tags:</strong> {Array.isArray(opp.tags) ? opp.tags.join(', ') : opp.tags}</div>
+                                </div>
+                              </div>,
+                              { duration: 8000 }
+                            );
+                          }}
+                        >
+                          View
+                        </Button>
                         <Button size="sm" className="bg-red-600 text-white" onClick={() => handleRemoveBookmark(opp)}>Remove</Button>
                       </td>
                     </tr>
@@ -517,17 +568,46 @@ const StaffAdminDashboard = () => {
             </div>
           </TabsContent>
           <TabsContent value="discover">
-            {discoverLoading ? (
-              <div className="py-12 text-center text-lg text-gray-500">Loading opportunities...</div>
-            ) : discoverOpportunities.length === 0 ? (
-              <div className="py-12 text-center text-lg text-gray-400">No published opportunities.</div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {discoverOpportunities.map((opp) => (
-                  <OpportunityCard key={opp.id} opportunity={opp} />
-                ))}
+            <section className="py-8">
+              <div className="mb-8 text-center">
+                <h2 className="text-3xl font-bold text-[#008000] mb-2">Published Opportunities</h2>
+                <p className="text-gray-600 text-lg">Browse all published and approved opportunities. Click any card to view full details or take action.</p>
               </div>
-            )}
+              {discoverLoading ? (
+                <div className="py-12 text-center text-lg text-gray-500">Loading opportunities...</div>
+              ) : discoverOpportunities.length === 0 ? (
+                <div className="py-12 text-center text-lg text-gray-400">No published opportunities.</div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {paginatedDiscoverOpportunities.map((opp) => (
+                      <OpportunityCard key={opp.id} opportunity={opp} />
+                    ))}
+                  </div>
+                  <div className="flex justify-center mt-8 gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-[#008000] border-[#008000]"
+                      disabled={discoverPage === 1}
+                      onClick={() => setDiscoverPage(discoverPage - 1)}
+                    >
+                      Previous
+                    </Button>
+                    <span className="px-4 py-2 text-[#008000] font-semibold">Page {discoverPage}</span>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-[#008000] border-[#008000]"
+                      disabled={discoverPage * DISCOVER_PAGE_SIZE >= discoverOpportunities.length}
+                      onClick={() => setDiscoverPage(discoverPage + 1)}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </>
+              )}
+            </section>
           </TabsContent>
         </Tabs>
       </div>
