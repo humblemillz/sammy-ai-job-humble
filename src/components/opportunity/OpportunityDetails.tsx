@@ -1,5 +1,9 @@
 
 import React from 'react';
+import { useState } from 'react';
+import { DocumentGeneratorModal } from '@/components/ai/DocumentGeneratorModal';
+import { useAuth } from '@/hooks/useAuth';
+import { useUserTier } from '@/hooks/useUserTier';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -31,6 +35,11 @@ interface OpportunityDetailsProps {
 }
 
 const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
+  const [showDocumentGenerator, setShowDocumentGenerator] = useState(false);
+  const { user } = useAuth();
+  const { tier } = useUserTier();
+  // Adjust tier check to match actual possible values from useUserTier
+  const isSubscribed = ["pro", "premium"].includes(tier);
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -244,17 +253,42 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                 <p className="text-gray-700 text-lg">
                   This opportunity requires you to apply through the official website.
                 </p>
-                <Button
-                  onClick={() => window.open(opportunity.source_url || opportunity.application_url, '_blank', 'noopener,noreferrer')}
-                  className="bg-[#008000] hover:bg-[#008000]/90 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <ExternalLink className="w-5 h-5 mr-2" style={{ color: '#fff' }} />
-                  Apply on Official Website
-                </Button>
+                <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+                  <Button
+                    onClick={() => window.open(opportunity.source_url || opportunity.application_url, '_blank', 'noopener,noreferrer')}
+                    className="bg-[#008000] hover:bg-[#008000]/90 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    <ExternalLink className="w-5 h-5 mr-2" style={{ color: '#fff' }} />
+                    Apply on Official Website
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border-[#008000] text-[#008000]"
+                    onClick={() => {
+                      if (!isSubscribed) {
+                        window.location.href = '/subscription';
+                      } else {
+                        setShowDocumentGenerator(true);
+                      }
+                    }}
+                  >
+                    <FileText className="w-5 h-5 mr-2" style={{ color: '#008000' }} />
+                    Use AI
+                  </Button>
+                </div>
                 <p className="text-sm text-gray-500">
                   You'll be redirected to the official application page in a new tab. No sign-in required.
                 </p>
               </div>
+              {/* Only render modal if subscribed */}
+              {isSubscribed && (
+                <DocumentGeneratorModal
+                  isOpen={showDocumentGenerator}
+                  onClose={() => setShowDocumentGenerator(false)}
+                  opportunityId={opportunity.id}
+                  opportunityTitle={opportunity.title}
+                />
+              )}
             </div>
           </CardContent>
         </Card>

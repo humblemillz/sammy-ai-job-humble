@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { OpportunityCard } from '@/components/opportunity/OpportunityCard';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Briefcase, CheckCircle, Bookmark, Eye, Edit, Trash2, Check, X, Plus } from 'lucide-react';
@@ -14,6 +17,8 @@ const isStaffAdmin = true; // TODO: Replace with real role check
 const analyticsIcons = [CheckCircle, Bookmark, Eye, Briefcase];
 
 const StaffAdminDashboard = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [analytics, setAnalytics] = useState([
     { label: 'Pending Submissions', value: 0, icon: CheckCircle },
     { label: 'Saved Opportunities', value: 0, icon: Bookmark },
@@ -45,7 +50,7 @@ const StaffAdminDashboard = () => {
       // Replace with real user id for saved opportunities
       const userId = 'staff-admin-id';
       const [pending, saved, published, total] = await Promise.all([
-        supabase.from('opportunities').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('user_submissions').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
         supabase.from('user_bookmarks').select('*', { count: 'exact', head: true }).eq('user_id', userId),
         supabase.from('opportunities').select('*', { count: 'exact', head: true }).eq('is_published', true),
         supabase.from('opportunities').select('*', { count: 'exact', head: true }),
@@ -101,7 +106,7 @@ const StaffAdminDashboard = () => {
   const fetchSavedOpportunities = async () => {
     try {
       setSavedLoading(true);
-      const userId = 'staff-admin-id'; // TODO: Replace with real user id
+      const userId = user?.id || '';
       const { data: bookmarks, error } = await supabase
         .from('user_bookmarks')
         .select('opportunity_id, opportunities(*)')
@@ -174,7 +179,7 @@ const StaffAdminDashboard = () => {
         .update({
           status,
           reviewed_at: new Date().toISOString(),
-          reviewed_by: 'staff-admin-id' // TODO: Replace with real user id
+          reviewed_by: user?.id || 'unknown'
         })
         .eq('id', submission.id);
 
@@ -200,9 +205,9 @@ const StaffAdminDashboard = () => {
             status: 'approved',
             source: 'user_submitted',
             submitted_by: submission.user_id,
-            approved_by: 'staff-admin-id', // TODO: Replace with real user id
+            approved_by: user?.id || 'unknown',
             approved_at: new Date().toISOString(),
-            is_published: false
+            is_published: true
           });
 
         if (opportunityError) throw opportunityError;
@@ -302,7 +307,16 @@ const StaffAdminDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-[#e6f5ec]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-[#008000]">Staff Admin Dashboard</h1>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              className="text-[#008000] border-[#008000] hover:bg-[#008000]/10"
+              onClick={() => navigate('/dashboard')}
+            >
+              &larr; Back to Dashboard
+            </Button>
+            <h1 className="text-3xl font-bold text-[#008000]">Staff Admin Dashboard</h1>
+          </div>
           <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
             <DialogTrigger asChild>
               <Button className="bg-[#008000] text-white hover:bg-[#008000]/90 shadow-lg">
@@ -408,6 +422,41 @@ const StaffAdminDashboard = () => {
                       <td className="p-3 flex gap-2">
                         <Button
                           size="sm"
+                          variant="outline"
+                          className="text-[#008000] border-[#008000]"
+                          onClick={() => {
+                            let toastId: string | number | undefined;
+                            toastId = toast(
+                              <div className="max-w-md relative">
+                                <button
+                                  onClick={() => toast.dismiss(toastId)}
+                                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-lg font-bold"
+                                  aria-label="Close"
+                                >
+                                  &times;
+                                </button>
+                                <h3 className="font-bold text-lg mb-2">Opportunity Details</h3>
+                                <div className="space-y-1 text-sm">
+                                  <div><strong>Title:</strong> {sub.title}</div>
+                                  <div><strong>Organization:</strong> {sub.organization}</div>
+                                  <div><strong>Description:</strong> {sub.description}</div>
+                                  <div><strong>Category:</strong> {sub.category_id}</div>
+                                  <div><strong>Location:</strong> {sub.location}</div>
+                                  <div><strong>Salary Range:</strong> {sub.salary_range}</div>
+                                  <div><strong>Deadline:</strong> {sub.application_deadline ? new Date(sub.application_deadline).toLocaleDateString() : 'N/A'}</div>
+                                  <div><strong>Requirements:</strong> {sub.requirements}</div>
+                                  <div><strong>Benefits:</strong> {sub.benefits}</div>
+                                  <div><strong>Tags:</strong> {Array.isArray(sub.tags) ? sub.tags.join(', ') : sub.tags}</div>
+                                </div>
+                              </div>,
+                              { duration: 8000 }
+                            );
+                          }}
+                        >
+                          View Details
+                        </Button>
+                        <Button
+                          size="sm"
                           className="bg-green-600 text-white hover:bg-green-700"
                           disabled={sub.status !== 'pending' || processingSubmission === sub.id}
                           onClick={() => handleSubmissionAction(sub, 'approved')}
@@ -468,32 +517,17 @@ const StaffAdminDashboard = () => {
             </div>
           </TabsContent>
           <TabsContent value="discover">
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-white rounded-xl">
-                <thead>
-                  <tr className="bg-[#008000]/10 text-[#008000]">
-                    <th className="p-3 text-left">Title</th>
-                    <th className="p-3 text-left">Organization</th>
-                    <th className="p-3 text-left">Category</th>
-                    <th className="p-3 text-left">Deadline</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {discoverLoading ? (
-                    <tr><td colSpan={4} className="p-6 text-center">Loading...</td></tr>
-                  ) : discoverOpportunities.length === 0 ? (
-                    <tr><td colSpan={4} className="p-6 text-center text-gray-400">No published opportunities.</td></tr>
-                  ) : discoverOpportunities.map((opp) => (
-                    <tr key={opp.id} className="border-b">
-                      <td className="p-3 font-medium">{opp.title}</td>
-                      <td className="p-3">{opp.organization}</td>
-                      <td className="p-3">{opp.category_id?.slice(0, 8) || 'N/A'}</td>
-                      <td className="p-3">{opp.application_deadline ? new Date(opp.application_deadline).toLocaleDateString() : 'N/A'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {discoverLoading ? (
+              <div className="py-12 text-center text-lg text-gray-500">Loading opportunities...</div>
+            ) : discoverOpportunities.length === 0 ? (
+              <div className="py-12 text-center text-lg text-gray-400">No published opportunities.</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {discoverOpportunities.map((opp) => (
+                  <OpportunityCard key={opp.id} opportunity={opp} />
+                ))}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
