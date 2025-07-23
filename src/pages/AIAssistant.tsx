@@ -80,7 +80,7 @@ const AIAssistant = () => {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold text-[#008000] mb-2">
-                AI Assistant
+                PrimeChance AI Assistant
               </h1>
               <p className="text-gray-600">
                 Supercharge your career journey with AI-powered tools
@@ -108,16 +108,16 @@ const AIAssistant = () => {
               </TabsTrigger>
               <TabsTrigger value="chat">
                 <MessageSquare className="h-4 w-4 mr-2 text-[#008000]" />
-                <span className="text-[#008000]">Chat</span>
+                <span className="text-[#008000]">Chatbot</span>
               </TabsTrigger>
               <TabsTrigger value="documents" disabled={!hasProAccess()}>
                 <FileText className="h-4 w-4 mr-2 text-[#008000]" />
-                <span className="text-[#008000]">Documents</span>
+                <span className="text-[#008000]">CV, SOP & Cover letter</span>
                 {!hasProAccess() && <Crown className="h-3 w-3 ml-1 text-amber-500" />}
               </TabsTrigger>
               <TabsTrigger value="voice" disabled={!hasProAccess()}>
                 <Mic className="h-4 w-4 mr-2 text-[#008000]" />
-                <span className="text-[#008000]">Voice</span>
+                <span className="text-[#008000]">Voice Assistant</span>
                 {!hasProAccess() && <Crown className="h-3 w-3 ml-1 text-amber-500" />}
               </TabsTrigger>
             </TabsList>
@@ -131,7 +131,7 @@ const AIAssistant = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <MessageSquare className="h-5 w-5 mr-2 text-[#008000]" />
-                    <span className="text-[#008000]">AI Chat Assistant</span>
+                    <span className="text-[#008000]">Primechance AI Career Assistant</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
