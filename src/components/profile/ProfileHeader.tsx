@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -22,17 +21,12 @@ const ProfileHeader = () => {
     <header className="bg-white shadow-sm border-b sticky top-0 z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <button 
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-            >
-              <div className="w-8 h-8 bg-[#008000] rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">PC</span>
-              </div>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <img src="/assets/img/logo.jpg" alt="App Logo" className="h-8 w-8 rounded-full" />
               <span className="text-xl font-bold text-[#008000] hidden sm:block">PrimeChances</span>
-            </button>
+            </div>
+            <span className="text-xs text-gray-500 ml-10">Find your next opportunity</span>
           </div>
 
           {/* Navigation */}

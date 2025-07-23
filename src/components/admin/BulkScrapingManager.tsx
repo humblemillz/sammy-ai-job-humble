@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -61,6 +62,84 @@ const BulkScrapingManager = () => {
       deadline: ''
     }
   });
+
+  // Modal state for editing sources
+  const [editSourcesConfig, setEditSourcesConfig] = useState<BulkConfig | null>(null);
+  const [editWebsites, setEditWebsites] = useState<Website[]>([]);
+  const [editWebsiteDraft, setEditWebsiteDraft] = useState<Website>({
+    url: '',
+    name: '',
+    selectors: {
+      title: '',
+      description: '',
+      organization: '',
+      location: '',
+      deadline: ''
+    }
+  });
+  const [savingSources, setSavingSources] = useState(false);
+  // Open modal for editing sources
+  const openEditSources = (config: BulkConfig) => {
+    setEditSourcesConfig(config);
+    setEditWebsites(config.websites ? [...config.websites] : []);
+    setEditWebsiteDraft({
+      url: '',
+      name: '',
+      selectors: {
+        title: '',
+        description: '',
+        organization: '',
+        location: '',
+        deadline: ''
+      }
+    });
+  };
+
+  // Add website to edit list
+  const addEditWebsite = () => {
+    if (!editWebsiteDraft.url || !editWebsiteDraft.name) {
+      toast.error('Please fill in website URL and name');
+      return;
+    }
+    setEditWebsites(prev => [...prev, { ...editWebsiteDraft }]);
+    setEditWebsiteDraft({
+      url: '',
+      name: '',
+      selectors: {
+        title: '',
+        description: '',
+        organization: '',
+        location: '',
+        deadline: ''
+      }
+    });
+  };
+
+  // Remove website from edit list
+  const removeEditWebsite = (index: number) => {
+    setEditWebsites(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // Save edited sources to Supabase
+  const saveEditedSources = async () => {
+    if (!editSourcesConfig) return;
+    setSavingSources(true);
+    try {
+      const { error } = await supabase
+        .from('bulk_scraping_configs')
+        .update({ websites: editWebsites as any })
+        .eq('id', editSourcesConfig.id);
+      if (error) throw error;
+      toast.success('Sources updated successfully');
+      setEditSourcesConfig(null);
+      fetchConfigs();
+    } catch (error) {
+      console.error('Error updating sources:', error);
+      toast.error('Failed to update sources');
+    } finally {
+      setSavingSources(false);
+    }
+  };
 
   useEffect(() => {
     fetchConfigs();
@@ -395,13 +474,81 @@ const BulkScrapingManager = () => {
                         </span>
                       </div>
                     </div>
-                    <Button onClick={() => runBulkScraping(config.id)} className="bg-white hover:bg-[#008000] text-[#008000] hover:text-white border border-[#008000] transition-colors duration-200">
-                      <Play className="w-4 h-4 mr-2" />
-                      Run Scraping
-                    </Button>
+                    <div className="flex flex-col gap-2 items-end">
+                      <Button onClick={() => runBulkScraping(config.id)} className="bg-white hover:bg-[#008000] text-[#008000] hover:text-white border border-[#008000] transition-colors duration-200">
+                        <Play className="w-4 h-4 mr-2" />
+                        Run Scraping
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => openEditSources(config)}>
+                        Edit Sources
+                      </Button>
+                    </div>
                   </div>
                 ))
               )}
+      {/* Edit Sources Modal */}
+      <Dialog open={!!editSourcesConfig} onOpenChange={open => !open && setEditSourcesConfig(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Edit Sources for {editSourcesConfig?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            {/* List of editable sources */}
+            {editWebsites.length === 0 && <p className="text-gray-500">No sources yet.</p>}
+            {editWebsites.map((website, idx) => (
+              <div key={idx} className="flex flex-col md:flex-row md:items-center gap-2 border rounded-lg p-3 bg-gray-50">
+                <Input
+                  className="flex-1"
+                  value={website.name}
+                  onChange={e => {
+                    const v = e.target.value;
+                    setEditWebsites(prev => prev.map((w, i) => i === idx ? { ...w, name: v } : w));
+                  }}
+                  placeholder="Website Name"
+                />
+                <Input
+                  className="flex-1"
+                  value={website.url}
+                  onChange={e => {
+                    const v = e.target.value;
+                    setEditWebsites(prev => prev.map((w, i) => i === idx ? { ...w, url: v } : w));
+                  }}
+                  placeholder="Website URL"
+                />
+                <Button variant="destructive" size="sm" onClick={() => removeEditWebsite(idx)}>
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+            ))}
+
+            {/* Add new source */}
+            <div className="flex flex-col md:flex-row md:items-center gap-2 border rounded-lg p-3 bg-white">
+              <Input
+                className="flex-1"
+                value={editWebsiteDraft.name}
+                onChange={e => setEditWebsiteDraft(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="Website Name"
+              />
+              <Input
+                className="flex-1"
+                value={editWebsiteDraft.url}
+                onChange={e => setEditWebsiteDraft(prev => ({ ...prev, url: e.target.value }))}
+                placeholder="Website URL"
+              />
+              <Button size="sm" onClick={addEditWebsite}>
+                <Plus className="w-4 h-4 mr-1" /> Add
+              </Button>
+            </div>
+          </div>
+          <DialogFooter className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setEditSourcesConfig(null)} disabled={savingSources}>Cancel</Button>
+            <Button onClick={saveEditedSources} className="bg-[#008000] hover:bg-[#218c1b] text-white" disabled={savingSources}>
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+              
             </div>
           )}
         </CardContent>

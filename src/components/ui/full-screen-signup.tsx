@@ -1,4 +1,3 @@
-
 "use client";
  
 import { Briefcase, Eye, EyeOff } from "lucide-react";
@@ -89,9 +88,10 @@ export const FullScreenSignup = ({
  
         <div className="p-8 md:p-12 md:w-1/2 flex flex-col bg-white z-10 text-gray-900 rounded-r-3xl">
           <div className="flex flex-col items-left mb-8">
-            <div className="w-16 h-w-16 flex items-center justify-center rounded-xl">
-              <img className='h-w-16 w-16 rounded-full' src="/assets/img/logo.jpg" alt="" />
-              {/* <Briefcase className="w-6 h-6 text-white" /> */}
+            <div className="flex flex-col items-center">
+              <img className='h-16 w-16 rounded-full' src="/assets/img/logo.jpg" alt="App Logo" />
+              <span className="text-xl font-bold text-[#008000] mt-2">PrimeChances</span>
+              <span className="text-xs text-gray-500 mt-1">Find your next opportunity</span>
             </div>
             <h2 className="text-3xl font-medium mb-2 tracking-tight">
               {isLogin ? 'Welcome Back' : 'Get Started'}

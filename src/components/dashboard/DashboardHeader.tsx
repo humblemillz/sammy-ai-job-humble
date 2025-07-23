@@ -65,22 +65,13 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <motion.div
-            className="flex items-center gap-2 sm:gap-3"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Link to="/dashboard" className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#008000] rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-sm sm:text-lg">O</span>
-              </div>
-              <div className="flex flex-col justify-center">
-                <span className="text-xl font-bold text-[#008000]">PrimeChances</span>
-                <span className="text-xs text-gray-500">Find your next opportunity</span>
-              </div>
-            </Link>
-          </motion.div>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <img src="/assets/img/logo.jpg" alt="App Logo" className="h-8 w-8 rounded-full" />
+              <span className="text-xl font-bold text-[#008000]">PrimeChances</span>
+            </div>
+            <span className="text-xs text-gray-500 ml-10">Find your next opportunity</span>
+          </div>
 
           {/* Search Bar - Hidden on mobile, shown on larger screens */}
           <div className="hidden md:flex flex-1 max-w-2xl mx-4 lg:mx-8">
