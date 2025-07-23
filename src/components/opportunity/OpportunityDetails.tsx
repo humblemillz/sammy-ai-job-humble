@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { useState } from 'react';
 import { DocumentGeneratorModal } from '@/components/ai/DocumentGeneratorModal';
+import UpgradePrompt from '@/components/subscription/UpgradePrompt';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserTier } from '@/hooks/useUserTier';
 import { motion } from 'framer-motion';
@@ -36,6 +36,7 @@ interface OpportunityDetailsProps {
 
 const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
   const [showDocumentGenerator, setShowDocumentGenerator] = useState(false);
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
   const { user } = useAuth();
   const { tier } = useUserTier();
   // Adjust tier check to match actual possible values from useUserTier
@@ -266,7 +267,7 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                     className="px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border-[#008000] text-[#008000]"
                     onClick={() => {
                       if (!isSubscribed) {
-                        window.location.href = '/subscription';
+                        setShowUpgradePrompt(true);
                       } else {
                         setShowDocumentGenerator(true);
                       }
@@ -289,6 +290,11 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                   opportunityTitle={opportunity.title}
                 />
               )}
+              {/* Upgrade modal for unsubscribed users */}
+              <UpgradePrompt
+                isOpen={showUpgradePrompt}
+                onClose={() => setShowUpgradePrompt(false)}
+              />
             </div>
           </CardContent>
         </Card>

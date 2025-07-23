@@ -35,7 +35,7 @@ const UpgradePrompt = ({ isOpen, onClose }: UpgradePromptProps) => {
       {isOpen && (
         <Dialog open={isOpen} onOpenChange={onClose}>
           <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
-          <DialogContent className="max-w-2xl border-0 p-0 bg-transparent shadow-none">
+          <DialogContent className="max-w-md border-0 p-0 bg-transparent shadow-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -45,7 +45,7 @@ const UpgradePrompt = ({ isOpen, onClose }: UpgradePromptProps) => {
               <Card className="border-0 shadow-2xl bg-gradient-to-br from-white via-yellow-50/30 to-orange-50/30 overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400"></div>
                 
-                <CardHeader className="relative pb-6 pt-8">
+                <CardHeader className="relative pb-4 pt-6">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -84,7 +84,7 @@ const UpgradePrompt = ({ isOpen, onClose }: UpgradePromptProps) => {
                   </div>
                 </CardHeader>
                 
-                <CardContent className="px-8 pb-8">
+                <CardContent className="px-4 pb-6">
                   <div className="space-y-6">
                     {/* Current Limitation */}
                     <div className="bg-red-50 border border-red-200 rounded-xl p-4">

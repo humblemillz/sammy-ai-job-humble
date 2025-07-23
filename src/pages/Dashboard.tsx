@@ -203,6 +203,14 @@ const Dashboard = () => {
               <Sparkles className="w-4 h-4 mr-2" />
               <span>ATS CV Maker</span>
             </Button>
+            {/* Upgrade button for all users */}
+            <Button
+              variant="outline"
+              className="border-[#008000] text-[#008000] hover:bg-[#e6f5ec] w-full sm:w-auto"
+              onClick={() => setShowUpgradePrompt(true)}
+            >
+              Upgrade
+            </Button>
           </div>
           {showDocumentGenerator && ["pro", "premium"].includes(tier) && (
             <DocumentGeneratorModal
