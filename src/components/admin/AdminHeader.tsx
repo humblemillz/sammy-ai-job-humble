@@ -11,7 +11,7 @@ const AdminHeader = () => {
       <div className="flex gap-4">
         <Button className="bg-[#008000] hover:bg-[#218c1b] text-white">
           <Plus className="w-4 h-4 mr-2 text-white" />
-          Add Opportunity
+          Create Opportunity
         </Button>
         <Button asChild className="bg-[#008000] text-white px-6 py-3 text-lg font-semibold rounded-xl shadow-lg hover:bg-[#008000]/90 transition-all duration-200">
           <Link to="/staff-admin">Staff Admin Dashboard</Link>

@@ -37,10 +37,10 @@ const StaffAdminDashboard = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
 
-  // Pagination state for Discover tab
+  // Pagination state for Discover tab and responsive tab state for mobile
   const [discoverPage, setDiscoverPage] = useState(1);
   const DISCOVER_PAGE_SIZE = 6;
-
+  const [mobileTab, setMobileTab] = useState('all');
   // Paginated opportunities for Discover tab
   const paginatedDiscoverOpportunities = discoverOpportunities.slice(
     (discoverPage - 1) * DISCOVER_PAGE_SIZE,
@@ -325,37 +325,71 @@ const StaffAdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-[#e6f5ec]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
+        <div className="mb-8">
+          {/* Mobile: vertical stack */}
+          <div className="block md:hidden w-full space-y-3">
+            <h1 className="text-2xl font-bold text-[#008000] text-center">Staff Admin Dashboard</h1>
+            <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
+              <DialogTrigger asChild>
+                <Button className="bg-[#008000] text-white hover:bg-[#008000]/90 shadow-lg w-full">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Opportunity
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Create New Opportunity</DialogTitle>
+                </DialogHeader>
+                <OpportunityForm
+                  mode="create"
+                  userRole="staff_admin"
+                  onSubmit={handleCreateOpportunity}
+                  onCancel={handleCancelCreate}
+                  loading={createLoading}
+                />
+              </DialogContent>
+            </Dialog>
             <Button
               variant="outline"
-              className="text-[#008000] border-[#008000] hover:bg-[#008000]/10"
+              className="text-[#008000] border-[#008000] hover:bg-[#008000]/10 w-full"
               onClick={() => navigate('/dashboard')}
             >
               &larr; Back to Dashboard
             </Button>
-            <h1 className="text-3xl font-bold text-[#008000]">Staff Admin Dashboard</h1>
           </div>
-          <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
-            <DialogTrigger asChild>
-              <Button className="bg-[#008000] text-white hover:bg-[#008000]/90 shadow-lg">
-                <Plus className="w-4 h-4 mr-2" />
-                Create Opportunity
+          {/* Desktop: original layout */}
+          <div className="hidden md:flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="outline"
+                className="text-[#008000] border-[#008000] hover:bg-[#008000]/10"
+                onClick={() => navigate('/dashboard')}
+              >
+                &larr; Back to Dashboard
               </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Create New Opportunity</DialogTitle>
-              </DialogHeader>
-              <OpportunityForm
-                mode="create"
-                userRole="staff_admin"
-                onSubmit={handleCreateOpportunity}
-                onCancel={handleCancelCreate}
-                loading={createLoading}
-              />
-            </DialogContent>
-          </Dialog>
+              <h1 className="text-3xl font-bold text-[#008000]">Staff Admin Dashboard</h1>
+            </div>
+            <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
+              <DialogTrigger asChild>
+                <Button className="bg-[#008000] text-white hover:bg-[#008000]/90 shadow-lg">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Opportunity
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Create New Opportunity</DialogTitle>
+                </DialogHeader>
+                <OpportunityForm
+                  mode="create"
+                  userRole="staff_admin"
+                  onSubmit={handleCreateOpportunity}
+                  onCancel={handleCancelCreate}
+                  loading={createLoading}
+                />
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
         {/* Analytics Cards */}
@@ -374,16 +408,268 @@ const StaffAdminDashboard = () => {
             </Card>
           ))}
         </div>
-        {/* Tabs */}
-        <Tabs defaultValue="all" className="w-full">
-          <TabsList className="mb-6 bg-white/80 border border-[#e6f5ec]/30 rounded-xl">
-            <TabsTrigger value="all" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">All Listings & Submissions</TabsTrigger>
-            <TabsTrigger value="manage" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">Manage Submissions</TabsTrigger>
-            <TabsTrigger value="saved" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">Saved Opportunities</TabsTrigger>
-            <TabsTrigger value="discover" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">Discover</TabsTrigger>
-          </TabsList>
-          <TabsContent value="all">
+        {/* Desktop Tabs */}
+        <div className="hidden md:block">
+          <Tabs defaultValue="all" className="w-full">
+            <TabsList className="mb-6 bg-white/80 border border-[#e6f5ec]/30 rounded-xl">
+              <TabsTrigger value="all" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">All Listings & Submissions</TabsTrigger>
+              <TabsTrigger value="manage" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">Manage Submissions</TabsTrigger>
+              <TabsTrigger value="saved" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">Saved Opportunities</TabsTrigger>
+              <TabsTrigger value="discover" className="data-[state=active]:bg-[#008000] data-[state=active]:text-white">Discover</TabsTrigger>
+            </TabsList>
+            <TabsContent value="all">
+              {/* ...existing All Listings & Submissions table... */}
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white rounded-xl">
+                  <thead>
+                    <tr className="bg-[#008000]/10 text-[#008000]">
+                      <th className="p-3 text-left">Title</th>
+                      <th className="p-3 text-left">Organization</th>
+                      <th className="p-3 text-left">Status</th>
+                      <th className="p-3 text-left">Published</th>
+                      <th className="p-3 text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr><td colSpan={5} className="p-6 text-center">Loading...</td></tr>
+                    ) : opportunities.length === 0 ? (
+                      <tr><td colSpan={5} className="p-6 text-center text-gray-400">No opportunities found.</td></tr>
+                    ) : opportunities.map((opp) => (
+                      <tr key={opp.id} className="border-b">
+                        <td className="p-3 font-medium">{opp.title}</td>
+                        <td className="p-3">{opp.organization}</td>
+                        <td className="p-3 capitalize">{opp.status}</td>
+                        <td className="p-3">{opp.is_published ? 'Yes' : 'No'}</td>
+                        <td className="p-3 flex gap-2">
+                          <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit(opp)}><Edit className="w-4 h-4" /></Button>
+                          <Button size="sm" className="bg-red-600 text-white" onClick={() => handleDelete(opp)}><Trash2 className="w-4 h-4" /></Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </TabsContent>
+            <TabsContent value="manage">
+              {/* ...existing Manage Submissions table... */}
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white rounded-xl">
+                  <thead>
+                    <tr className="bg-[#008000]/10 text-[#008000]">
+                      <th className="p-3 text-left">Title</th>
+                      <th className="p-3 text-left">Organization</th>
+                      <th className="p-3 text-left">Status</th>
+                      <th className="p-3 text-left">Submitted By</th>
+                      <th className="p-3 text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {subLoading ? (
+                      <tr><td colSpan={5} className="p-6 text-center">Loading...</td></tr>
+                    ) : submissions.length === 0 ? (
+                      <tr><td colSpan={5} className="p-6 text-center text-gray-400">No submissions found.</td></tr>
+                    ) : submissions.map((sub) => (
+                      <tr key={sub.id} className="border-b">
+                        <td className="p-3 font-medium">{sub.title}</td>
+                        <td className="p-3">{sub.organization}</td>
+                        <td className="p-3 capitalize">{sub.status}</td>
+                        <td className="p-3">{sub.user_id?.slice(0, 8) || 'N/A'}</td>
+                        <td className="p-3 flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-[#008000] border-[#008000]"
+                            onClick={() => {
+                              let toastId: string | number | undefined;
+                              toastId = toast(
+                                <div className="max-w-md relative">
+                                  <button
+                                    onClick={() => toast.dismiss(toastId)}
+                                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-lg font-bold"
+                                    aria-label="Close"
+                                  >
+                                    &times;
+                                  </button>
+                                  <h3 className="font-bold text-lg mb-2">Opportunity Details</h3>
+                                  <div className="space-y-1 text-sm">
+                                    <div><strong>Title:</strong> {sub.title}</div>
+                                    <div><strong>Organization:</strong> {sub.organization}</div>
+                                    <div><strong>Description:</strong> {sub.description}</div>
+                                    <div><strong>Category:</strong> {sub.category_id}</div>
+                                    <div><strong>Location:</strong> {sub.location}</div>
+                                    <div><strong>Salary Range:</strong> {sub.salary_range}</div>
+                                    <div><strong>Deadline:</strong> {sub.application_deadline ? new Date(sub.application_deadline).toLocaleDateString() : 'N/A'}</div>
+                                    <div><strong>Requirements:</strong> {sub.requirements}</div>
+                                    <div><strong>Benefits:</strong> {sub.benefits}</div>
+                                    <div><strong>Tags:</strong> {Array.isArray(sub.tags) ? sub.tags.join(', ') : sub.tags}</div>
+                                  </div>
+                                </div>,
+                                { duration: 8000 }
+                              );
+                            }}
+                          >
+                            View Details
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="bg-green-600 text-white hover:bg-green-700"
+                            disabled={sub.status !== 'pending' || processingSubmission === sub.id}
+                            onClick={() => handleSubmissionAction(sub, 'approved')}
+                          >
+                            {processingSubmission === sub.id ? (
+                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <Check className="w-4 h-4" />
+                            )}
+                            Approve
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="bg-red-600 text-white hover:bg-red-700"
+                            disabled={sub.status !== 'pending' || processingSubmission === sub.id}
+                            onClick={() => handleSubmissionAction(sub, 'rejected')}
+                          >
+                            {processingSubmission === sub.id ? (
+                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <X className="w-4 h-4" />
+                            )}
+                            Reject
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </TabsContent>
+            <TabsContent value="saved">
+              {/* ...existing Saved Opportunities table... */}
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white rounded-xl">
+                  <thead>
+                    <tr className="bg-[#008000]/10 text-[#008000]">
+                      <th className="p-3 text-left">Title</th>
+                      <th className="p-3 text-left">Organization</th>
+                      <th className="p-3 text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {savedLoading ? (
+                      <tr><td colSpan={3} className="p-6 text-center">Loading...</td></tr>
+                    ) : savedOpportunities.length === 0 ? (
+                      <tr><td colSpan={3} className="p-6 text-center text-gray-400">No saved opportunities.</td></tr>
+                    ) : savedOpportunities.map((opp) => (
+                      <tr key={opp.id} className="border-b">
+                        <td className="p-3 font-medium">{opp.title}</td>
+                        <td className="p-3">{opp.organization}</td>
+                        <td className="p-3 flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-[#008000] border-[#008000]"
+                            onClick={() => {
+                              let toastId;
+                              toastId = toast(
+                                <div className="max-w-md relative">
+                                  <button
+                                    onClick={() => toast.dismiss(toastId)}
+                                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-lg font-bold"
+                                    aria-label="Close"
+                                  >
+                                    &times;
+                                  </button>
+                                  <h3 className="font-bold text-lg mb-2">Opportunity Details</h3>
+                                  <div className="space-y-1 text-sm">
+                                    <div><strong>Title:</strong> {opp.title}</div>
+                                    <div><strong>Organization:</strong> {opp.organization}</div>
+                                    <div><strong>Description:</strong> {opp.description}</div>
+                                    <div><strong>Location:</strong> {opp.location}</div>
+                                    <div><strong>Salary Range:</strong> {opp.salary_range}</div>
+                                    <div><strong>Deadline:</strong> {opp.application_deadline ? new Date(opp.application_deadline).toLocaleDateString() : 'N/A'}</div>
+                                    <div><strong>Tags:</strong> {Array.isArray(opp.tags) ? opp.tags.join(', ') : opp.tags}</div>
+                                  </div>
+                                </div>,
+                                { duration: 8000 }
+                              );
+                            }}
+                          >
+                            View
+                          </Button>
+                          <Button size="sm" className="bg-red-600 text-white" onClick={() => handleRemoveBookmark(opp)}>Remove</Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </TabsContent>
+            <TabsContent value="discover">
+              {/* ...existing Discover section... */}
+              <section className="py-8">
+                <div className="mb-8 text-center">
+                  <h2 className="text-3xl font-bold text-[#008000] mb-2">Published Opportunities</h2>
+                  <p className="text-gray-600 text-lg">Browse all published and approved opportunities. Click any card to view full details or take action.</p>
+                </div>
+                {discoverLoading ? (
+                  <div className="py-12 text-center text-lg text-gray-500">Loading opportunities...</div>
+                ) : discoverOpportunities.length === 0 ? (
+                  <div className="py-12 text-center text-lg text-gray-400">No published opportunities.</div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {paginatedDiscoverOpportunities.map((opp) => (
+                        <OpportunityCard key={opp.id} opportunity={opp} />
+                      ))}
+                    </div>
+                    <div className="flex justify-center mt-8 gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-[#008000] border-[#008000]"
+                        disabled={discoverPage === 1}
+                        onClick={() => setDiscoverPage(discoverPage - 1)}
+                      >
+                        Previous
+                      </Button>
+                      <span className="px-4 py-2 text-[#008000] font-semibold">Page {discoverPage}</span>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-[#008000] border-[#008000]"
+                        disabled={discoverPage * DISCOVER_PAGE_SIZE >= discoverOpportunities.length}
+                        onClick={() => setDiscoverPage(discoverPage + 1)}
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </section>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Mobile Dropdown */}
+        <div className="block md:hidden mb-6">
+          <select
+            className="w-full rounded-lg border border-gray-300 p-2 text-[#008000] font-semibold bg-white shadow-sm focus:ring-2 focus:ring-[#008000]"
+            value={mobileTab}
+            onChange={e => setMobileTab(e.target.value)}
+          >
+            <option value="all">All Listings & Submissions</option>
+            <option value="manage">Manage Submissions</option>
+            <option value="saved">Saved Opportunities</option>
+            <option value="discover">Discover</option>
+          </select>
+        </div>
+
+        {/* Mobile Content */}
+        <div className="block md:hidden">
+          {mobileTab === 'all' && (
             <div className="overflow-x-auto">
+              {/* ...existing All Listings & Submissions table... */}
               <table className="min-w-full bg-white rounded-xl">
                 <thead>
                   <tr className="bg-[#008000]/10 text-[#008000]">
@@ -414,9 +700,10 @@ const StaffAdminDashboard = () => {
                 </tbody>
               </table>
             </div>
-          </TabsContent>
-          <TabsContent value="manage">
+          )}
+          {mobileTab === 'manage' && (
             <div className="overflow-x-auto">
+              {/* ...existing Manage Submissions table... */}
               <table className="min-w-full bg-white rounded-xl">
                 <thead>
                   <tr className="bg-[#008000]/10 text-[#008000]">
@@ -506,9 +793,10 @@ const StaffAdminDashboard = () => {
                 </tbody>
               </table>
             </div>
-          </TabsContent>
-          <TabsContent value="saved">
+          )}
+          {mobileTab === 'saved' && (
             <div className="overflow-x-auto">
+              {/* ...existing Saved Opportunities table... */}
               <table className="min-w-full bg-white rounded-xl">
                 <thead>
                   <tr className="bg-[#008000]/10 text-[#008000]">
@@ -566,8 +854,8 @@ const StaffAdminDashboard = () => {
                 </tbody>
               </table>
             </div>
-          </TabsContent>
-          <TabsContent value="discover">
+          )}
+          {mobileTab === 'discover' && (
             <section className="py-8">
               <div className="mb-8 text-center">
                 <h2 className="text-3xl font-bold text-[#008000] mb-2">Published Opportunities</h2>
@@ -579,7 +867,7 @@ const StaffAdminDashboard = () => {
                 <div className="py-12 text-center text-lg text-gray-400">No published opportunities.</div>
               ) : (
                 <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 gap-6">
                     {paginatedDiscoverOpportunities.map((opp) => (
                       <OpportunityCard key={opp.id} opportunity={opp} />
                     ))}
@@ -608,8 +896,8 @@ const StaffAdminDashboard = () => {
                 </>
               )}
             </section>
-          </TabsContent>
-        </Tabs>
+          )}
+        </div>
       </div>
     </div>
   );

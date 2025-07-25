@@ -23,6 +23,7 @@ import { useUserTier } from '@/hooks/useUserTier';
 
 const AIAssistant = () => {
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+  const [mobileTab, setMobileTab] = useState('recommendations');
   const { hasProAccess, tier, loading } = useUserTier();
 
   const features = [
@@ -100,34 +101,152 @@ const AIAssistant = () => {
             </div>
           </div>
 
-          <Tabs defaultValue="recommendations" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="recommendations">
-                <Brain className="h-4 w-4 mr-2 text-[#008000]" />
-                <span className="text-[#008000]">Recommendations</span>
-              </TabsTrigger>
-              <TabsTrigger value="chat">
-                <MessageSquare className="h-4 w-4 mr-2 text-[#008000]" />
-                <span className="text-[#008000]">Chatbot</span>
-              </TabsTrigger>
-              <TabsTrigger value="documents" disabled={!hasProAccess()}>
-                <FileText className="h-4 w-4 mr-2 text-[#008000]" />
-                <span className="text-[#008000]">CV, SOP & Cover letter</span>
-                {!hasProAccess() && <Crown className="h-3 w-3 ml-1 text-amber-500" />}
-              </TabsTrigger>
-              <TabsTrigger value="voice" disabled={!hasProAccess()}>
-                <Mic className="h-4 w-4 mr-2 text-[#008000]" />
-                <span className="text-[#008000]">Voice Assistant</span>
-                {!hasProAccess() && <Crown className="h-3 w-3 ml-1 text-amber-500" />}
-              </TabsTrigger>
-            </TabsList>
+          {/* Desktop Tabs */}
+          <div className="hidden md:block">
+            <Tabs defaultValue="recommendations" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="recommendations">
+                  <Brain className="h-4 w-4 mr-2 text-[#008000]" />
+                  <span className="text-[#008000]">Recommendations</span>
+                </TabsTrigger>
+                <TabsTrigger value="chat">
+                  <MessageSquare className="h-4 w-4 mr-2 text-[#008000]" />
+                  <span className="text-[#008000]">Chatbot</span>
+                </TabsTrigger>
+                <TabsTrigger value="documents" disabled={!hasProAccess()}>
+                  <FileText className="h-4 w-4 mr-2 text-[#008000]" />
+                  <span className="text-[#008000]">CV, SOP & Cover letter</span>
+                  {!hasProAccess() && <Crown className="h-3 w-3 ml-1 text-amber-500" />}
+                </TabsTrigger>
+                <TabsTrigger value="voice" disabled={!hasProAccess()}>
+                  <Mic className="h-4 w-4 mr-2 text-[#008000]" />
+                  <span className="text-[#008000]">Voice Assistant</span>
+                  {!hasProAccess() && <Crown className="h-3 w-3 ml-1 text-amber-500" />}
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="recommendations">
+                <AIRecommendationsDashboard />
+              </TabsContent>
+              <TabsContent value="chat">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <MessageSquare className="h-5 w-5 mr-2 text-[#008000]" />
+                      <span className="text-[#008000]">Primechance AI Career Assistant</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <AIChatWidget />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value="documents">
+                {hasProAccess() ? (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center">
+                        <FileText className="h-5 w-5 mr-2 text-[#008000]" />
+                        <span className="text-[#008000]">Document Generator</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-center space-y-4">
+                        <Sparkles className="h-16 w-16 text-[#008000] mx-auto" />
+                        <h3 className="text-xl font-semibold">Generate Professional Documents</h3>
+                        <p className="text-gray-600 max-w-md mx-auto">
+                          Create tailored CVs, statements of purpose, and cover letters using AI
+                        </p>
+                        <Button 
+                          onClick={() => setIsDocumentModalOpen(true)}
+                          className="bg-[#008000] hover:bg-[#006400] text-white"
+                        >
+                          <FileText className="h-4 w-4 mr-2 text-white" />
+                          Start Generating
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <FeatureGate
+                    feature="AI Document Generator"
+                    description="Generate professional CVs, statements of purpose, and cover letters tailored to your opportunities using advanced AI."
+                  >
+                    <div />
+                  </FeatureGate>
+                )}
+              </TabsContent>
+              <TabsContent value="voice">
+                {hasProAccess() ? (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center">
+                        <Mic className="h-5 w-5 mr-2 text-[#008000]" />
+                        <span className="text-[#008000]">Voice Assistant</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <VoiceInterface />
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <FeatureGate
+                    feature="AI Voice Assistant"
+                    description="Talk to our AI assistant using natural speech. Get personalized career advice through voice conversations."
+                  >
+                    <div />
+                  </FeatureGate>
+                )}
+              </TabsContent>
+            </Tabs>
+          </div>
 
-            <TabsContent value="recommendations">
-              <AIRecommendationsDashboard />
-            </TabsContent>
+          {/* Mobile Dropdown */}
+          <div className="block md:hidden mb-2">
+            <select
+              className="w-full rounded-lg border border-gray-300 p-2 text-[#008000] font-semibold bg-white shadow-sm focus:ring-2 focus:ring-[#008000]"
+              value={mobileTab}
+              onChange={e => setMobileTab(e.target.value)}
+            >
+              <option value="recommendations">Recommendations</option>
+              <option value="chat">Chatbot</option>
+              <option value="documents">CV, SOP & Cover letter</option>
+              <option value="voice">Voice Assistant</option>
+            </select>
+          </div>
 
-            <TabsContent value="chat">
-              <Card>
+          {/* Mobile Buttons for Recommendations */}
+          {mobileTab === 'recommendations' && (
+            <div className="block md:hidden mb-6 w-full">
+              <div className="flex flex-col space-y-2 w-full">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    // Use a ref or window event to trigger refetch in AIRecommendationsDashboard if needed
+                    const event = new CustomEvent('ai-recommendations-refetch');
+                    window.dispatchEvent(event);
+                  }}
+                  className="border-[#008000] text-[#008000] hover:bg-[#008000]/10 hover:text-white hover:border-[#006400] w-full"
+                >
+                  <span className="flex items-center justify-center"><svg className="w-4 h-4 mr-2 text-[#008000]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582M20 20v-5h-.581M5.635 19A9 9 0 1021 12.35" /></svg>Refresh</span>
+                </Button>
+                <Button
+                  onClick={() => {
+                    const event = new CustomEvent('ai-recommendations-generate');
+                    window.dispatchEvent(event);
+                  }}
+                  className="bg-[#008000] hover:bg-[#006400] text-white w-full"
+                >
+                  <span className="flex items-center justify-center"><svg className="w-4 h-4 mr-2 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>Generate New</span>
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Mobile Content */}
+          <div className="block md:hidden">
+            {mobileTab === 'recommendations' && <AIRecommendationsDashboard />}
+            {mobileTab === 'chat' && (
+              <Card className="mt-4">
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <MessageSquare className="h-5 w-5 mr-2 text-[#008000]" />
@@ -138,11 +257,10 @@ const AIAssistant = () => {
                   <AIChatWidget />
                 </CardContent>
               </Card>
-            </TabsContent>
-
-            <TabsContent value="documents">
-              {hasProAccess() ? (
-                <Card>
+            )}
+            {mobileTab === 'documents' && (
+              hasProAccess() ? (
+                <Card className="mt-4">
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <FileText className="h-5 w-5 mr-2 text-[#008000]" />
@@ -173,12 +291,11 @@ const AIAssistant = () => {
                 >
                   <div />
                 </FeatureGate>
-              )}
-            </TabsContent>
-
-            <TabsContent value="voice">
-              {hasProAccess() ? (
-                <Card>
+              )
+            )}
+            {mobileTab === 'voice' && (
+              hasProAccess() ? (
+                <Card className="mt-4">
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Mic className="h-5 w-5 mr-2 text-[#008000]" />
@@ -196,9 +313,9 @@ const AIAssistant = () => {
                 >
                   <div />
                 </FeatureGate>
-              )}
-            </TabsContent>
-          </Tabs>
+              )
+            )}
+          </div>
         </motion.div>
 
         {/* Document Generator Modal */}

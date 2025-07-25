@@ -17,6 +17,16 @@ export const AIRecommendationsDashboard: React.FC = () => {
 
   useEffect(() => {
     refetch();
+
+    // Mobile event listeners for custom events
+    const handleRefetch = () => refetch();
+    const handleGenerate = () => generateRecommendations();
+    window.addEventListener('ai-recommendations-refetch', handleRefetch);
+    window.addEventListener('ai-recommendations-generate', handleGenerate);
+    return () => {
+      window.removeEventListener('ai-recommendations-refetch', handleRefetch);
+      window.removeEventListener('ai-recommendations-generate', handleGenerate);
+    };
   }, []);
 
   const unviewedCount = recommendations.filter(r => !r.is_viewed).length;
@@ -38,25 +48,25 @@ export const AIRecommendationsDashboard: React.FC = () => {
             Personalized opportunity matches based on your profile
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button 
-            variant="outline" 
-            onClick={refetch} 
-            disabled={loading}
-            className="border-[#008000] text-[#008000] hover:bg-[#008000]/10 hover:text-white hover:border-[#006400]"
-          >
-            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''} text-[#008000]`} />
-            Refresh
-          </Button>
-          <Button 
-            onClick={generateRecommendations} 
-            disabled={loading}
-            className="bg-[#008000] hover:bg-[#006400] text-white"
-          >
-            <Sparkles className="w-4 h-4 mr-2 text-white" />
-            Generate New
-          </Button>
-        </div>
+      <div className="hidden md:flex md:flex-row md:space-x-2 md:w-auto">
+        <Button 
+          variant="outline" 
+          onClick={refetch} 
+          disabled={loading}
+          className="border-[#008000] text-[#008000] hover:bg-[#008000]/10 hover:text-white hover:border-[#006400] w-full md:w-auto"
+        >
+          <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''} text-[#008000]`} />
+          Refresh
+        </Button>
+        <Button 
+          onClick={generateRecommendations} 
+          disabled={loading}
+          className="bg-[#008000] hover:bg-[#006400] text-white w-full md:w-auto"
+        >
+          <Sparkles className="w-4 h-4 mr-2 text-white" />
+          Generate New
+        </Button>
+      </div>
       </div>
 
       {/* Stats Cards */}
