@@ -78,8 +78,8 @@ const DashboardHeader = ({ user, isAdmin, adminCheckComplete, onResultSelect, on
             <SearchBar onResultSelect={onResultSelect} />
           </div>
 
-          {/* AI Assistant Button - Hidden on mobile */}
-          <div className="hidden sm:flex items-center gap-4">
+          {/* AI Assistant and Staff Admin Buttons - Desktop only */}
+          <div className="hidden sm:flex items-center gap-2 sm:gap-4">
             <Button
               variant="outline"
               size="sm"

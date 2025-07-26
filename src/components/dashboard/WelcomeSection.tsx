@@ -1,15 +1,36 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-interface WelcomeSectionProps {
+type WelcomeSectionProps = {
   user: any;
-}
+};
 
 const WelcomeSection = ({ user }: WelcomeSectionProps) => {
   const navigate = useNavigate();
+  const [isStaffAdmin, setIsStaffAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkStaffAdminRole = async () => {
+      if (user?.id) {
+        // You may need to import supabase if not already
+        const { data } = await import('@/integrations/supabase/client').then(m => m.supabase)
+          .then(supabase =>
+            supabase
+              .from('user_roles')
+              .select('role')
+              .eq('user_id', user.id)
+              .eq('role', 'staff_admin')
+              .maybeSingle()
+          );
+        setIsStaffAdmin(!!data);
+      }
+    };
+    checkStaffAdminRole();
+  }, [user]);
 
   return (
     <motion.div
@@ -39,6 +60,17 @@ const WelcomeSection = ({ user }: WelcomeSectionProps) => {
         >
           Ready to discover your next big opportunity? Let's find something amazing for you.
         </motion.p>
+        {/* Staff Admin button for mobile only, below welcome message */}
+        {isStaffAdmin && (
+          <div className="block sm:hidden mt-3">
+            <Button
+              className="w-full bg-[#008000] text-white font-semibold rounded-lg shadow hover:bg-[#008000]/90 transition-all duration-200"
+              onClick={() => navigate('/staff-admin')}
+            >
+              Staff Admin Dashboard
+            </Button>
+          </div>
+        )}
       </div>
 
       <motion.div

@@ -13,10 +13,24 @@ import BulkScrapingManager from '@/components/admin/BulkScrapingManager';
 import ApplicationDetailsManager from '@/components/admin/ApplicationDetailsManager';
 import ListingsSubmissionsManager from '@/components/admin/ListingsSubmissionsManager';
 import PublishedOpportunitiesList from '@/components/admin/PublishedOpportunitiesList';
+
 import SavedOpportunitiesManager from '@/components/admin/SavedOpportunitiesManager';
+import CreateOpportunityModal from './CreateOpportunityModal';
 
 const Admin = () => {
   const [activeSection, setActiveSection] = useState('listings-submissions');
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
+
+  const handleCreateOpportunity = async (data: any) => {
+    setCreateLoading(true);
+    // TODO: Add your create logic here
+    setTimeout(() => {
+      setCreateLoading(false);
+      setShowCreateModal(false);
+    }, 1000);
+  };
+  const handleCancelCreate = () => setShowCreateModal(false);
 
   const renderContent = () => {
     switch (activeSection) {
@@ -50,14 +64,24 @@ const Admin = () => {
   };
 
   return (
-    <AdminLayout 
-      activeSection={activeSection} 
-      onSectionChange={setActiveSection}
-    >
-      <div className="space-y-6">
-        {renderContent()}
-      </div>
-    </AdminLayout>
+    <>
+      <AdminLayout 
+        activeSection={activeSection} 
+        onSectionChange={setActiveSection}
+        onCreateOpportunity={() => setShowCreateModal(true)}
+      >
+        <div className="space-y-6">
+          {renderContent()}
+        </div>
+      </AdminLayout>
+      <CreateOpportunityModal
+        open={showCreateModal}
+        onOpenChange={setShowCreateModal}
+        onSubmit={handleCreateOpportunity}
+        onCancel={handleCancelCreate}
+        loading={createLoading}
+      />
+    </>
   );
 };
 

@@ -9,13 +9,15 @@ import AdminSidebar from './AdminSidebar';
 import AdminHeader from './AdminHeader';
 import EnhancedStatsCards from './EnhancedStatsCards';
 
-interface AdminLayoutProps {
+
+export interface AdminLayoutProps {
   children: React.ReactNode;
   activeSection: string;
   onSectionChange: (section: string) => void;
+  onCreateOpportunity?: () => void;
 }
 
-const AdminLayout = ({ children, activeSection, onSectionChange }: AdminLayoutProps) => {
+const AdminLayout = ({ children, activeSection, onSectionChange, onCreateOpportunity }: AdminLayoutProps) => {
   const { signOut } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -28,7 +30,8 @@ const AdminLayout = ({ children, activeSection, onSectionChange }: AdminLayoutPr
       <div className="min-h-screen flex w-full bg-gradient-to-br from-white via-[#e6f5ec]/5 to-white">
         <AdminSidebar 
           activeSection={activeSection} 
-          onSectionChange={onSectionChange} 
+          onSectionChange={onSectionChange}
+          onCreateOpportunity={onCreateOpportunity}
         />
         
         <SidebarInset className="flex-1 min-w-0">

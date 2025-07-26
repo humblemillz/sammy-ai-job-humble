@@ -1,4 +1,6 @@
+import { useSidebar } from '@/components/ui/sidebar';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Sidebar,
@@ -27,9 +29,12 @@ import {
 interface AdminSidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
+  onCreateOpportunity: () => void;
 }
 
-const AdminSidebar = ({ activeSection, onSectionChange }: AdminSidebarProps) => {
+const AdminSidebar = ({ activeSection, onSectionChange, onCreateOpportunity }: AdminSidebarProps) => {
+  const { isMobile, setOpenMobile } = useSidebar ? useSidebar() : { isMobile: false, setOpenMobile: () => {} };
+  const navigate = useNavigate();
   const menuItems = [
     { id: 'listings-submissions', label: 'Listings & Submissions', icon: FileText },
     { id: 'scraping', label: 'Web Scraping', icon: Search },
@@ -92,7 +97,10 @@ const AdminSidebar = ({ activeSection, onSectionChange }: AdminSidebarProps) => 
                 <motion.div key={item.id} variants={itemVariants}>
                   <SidebarMenuItem>
                     <SidebarMenuButton
-                      onClick={() => onSectionChange(item.id)}
+                      onClick={() => {
+                        onSectionChange(item.id);
+                        if (isMobile) setOpenMobile(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-[#e6f5ec] group ${
                         activeSection === item.id
                           ? 'bg-gradient-to-r from-[#17cfcf]/10 to-[#384040]/10 border-l-4 border-[#17cfcf] text-[#384040] font-semibold'
@@ -110,7 +118,21 @@ const AdminSidebar = ({ activeSection, onSectionChange }: AdminSidebarProps) => 
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-[#e6f5ec]/30">
+      <SidebarFooter className="p-4 border-t border-[#e6f5ec]/30 flex flex-col gap-3">
+        <button
+          className="w-full bg-[#008000] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:bg-[#218c1b] transition-all duration-200 flex items-center justify-center gap-2"
+          onClick={onCreateOpportunity}
+          type="button"
+        >
+          <span className="text-lg">+</span> Create Opportunity
+        </button>
+        <button
+          className="w-full bg-[#384040] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:bg-[#222] transition-all duration-200 flex items-center justify-center gap-2"
+          onClick={() => navigate('/staff-admin')}
+          type="button"
+        >
+          Staff Admin
+        </button>
         <motion.div 
           className="text-center text-xs text-gray-500"
           initial={{ opacity: 0 }}
