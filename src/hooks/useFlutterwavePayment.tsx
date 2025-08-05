@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { useProSubscriptionPrice } from './useProSubscriptionPrice';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserTier } from '@/hooks/useUserTier';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,7 +13,9 @@ export const useFlutterwavePayment = () => {
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const processPayment = async (planType: 'pro', amount: number) => {
+  const { price: proPrice, loading: priceLoading } = useProSubscriptionPrice();
+
+  const processPayment = async (planType: 'pro') => {
     if (!user) {
       toast({
         title: 'Authentication Required',
@@ -23,12 +26,21 @@ export const useFlutterwavePayment = () => {
     }
 
     setIsProcessing(true);
+    if (priceLoading) {
+      toast({
+        title: 'Please wait',
+        description: 'Fetching latest subscription price...'
+      });
+      setIsProcessing(false);
+      return;
+    }
 
     try {
       // Load Flutterwave script
       await loadFlutterwaveScript();
 
       const userName = user.user_metadata?.full_name || user.email || 'User';
+      const amount = proPrice;
 
       initializeFlutterwavePayment(
         amount,
@@ -109,5 +121,7 @@ export const useFlutterwavePayment = () => {
   return {
     processPayment,
     isProcessing,
+    proPrice,
+    priceLoading,
   };
 };

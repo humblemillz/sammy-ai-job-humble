@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useProSubscriptionPrice } from '@/hooks/useProSubscriptionPrice';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,6 +21,8 @@ const UpgradePrompt = ({ isOpen, onClose }: UpgradePromptProps) => {
     navigate('/subscription');
     onClose();
   };
+
+  const { price: proPrice, loading: priceLoading } = useProSubscriptionPrice(2500);
 
   const proFeatures = [
     'Access to all opportunity categories',
@@ -124,10 +127,10 @@ const UpgradePrompt = ({ isOpen, onClose }: UpgradePromptProps) => {
                     
                     {/* Pricing */}
                     <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-6 text-center">
-                      <div className="text-3xl font-bold text-gray-900 mb-2">
-                        ₦2,500
-                        <span className="text-lg font-normal text-gray-600">/month</span>
-                      </div>
+                    <div className="text-3xl font-bold text-gray-900 mb-2">
+                      {priceLoading ? 'Loading...' : `₦${proPrice.toLocaleString()}`}
+                      <span className="text-lg font-normal text-gray-600">/month</span>
+                    </div>
                       <p className="text-gray-600 text-sm mb-4">
                         Cancel anytime • 7-day free trial
                       </p>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { OpportunityCard } from '@/components/opportunity/OpportunityCard';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useAdminRole } from '@/hooks/useAdminRole';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Briefcase, CheckCircle, Bookmark, Eye, Edit, Trash2, Check, X, Plus } from 'lucide-react';
@@ -11,14 +12,15 @@ import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import OpportunityForm from '@/components/shared/OpportunityForm';
 
-// Placeholder role check (replace with real logic)
-const isStaffAdmin = true; // TODO: Replace with real role check
+// Role check
+
 
 const analyticsIcons = [CheckCircle, Bookmark, Eye, Briefcase];
 
 const StaffAdminDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin, isStaffAdmin } = useAdminRole();
   const [analytics, setAnalytics] = useState([
     { label: 'Pending Submissions', value: 0, icon: CheckCircle },
     { label: 'Saved Opportunities', value: 0, icon: Bookmark },
@@ -34,6 +36,9 @@ const StaffAdminDashboard = () => {
   const [discoverOpportunities, setDiscoverOpportunities] = useState<any[]>([]);
   const [discoverLoading, setDiscoverLoading] = useState(true);
   const [processingSubmission, setProcessingSubmission] = useState<string | null>(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
+  const [editOpportunity, setEditOpportunity] = useState<any | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
 
@@ -132,6 +137,7 @@ const StaffAdminDashboard = () => {
         .eq('user_id', userId);
 
       if (error) throw error;
+      // Include both published and unpublished (draft) opportunities
       setSavedOpportunities((bookmarks || []).map((b: any) => b.opportunities).filter(Boolean));
     } catch (error) {
       console.error('Error fetching saved opportunities:', error);
@@ -162,8 +168,39 @@ const StaffAdminDashboard = () => {
   };
 
   const handleEdit = (opp: any) => {
-    // TODO: Open edit modal
-    toast.info('Edit functionality coming soon');
+    setEditOpportunity(opp);
+    setEditModalOpen(true);
+  };
+
+  const handleSaveEdit = async (data: any, isDraft?: boolean) => {
+    setEditLoading(true);
+    try {
+      const updateData = {
+        ...data,
+        is_published: isDraft === true ? false : (data.is_published !== undefined ? data.is_published : true),
+      };
+      const { error } = await supabase
+        .from('opportunities')
+        .update(updateData)
+        .eq('id', editOpportunity.id);
+      if (error) throw error;
+      toast.success('Opportunity updated successfully');
+      setEditModalOpen(false);
+      setEditOpportunity(null);
+      fetchOpportunities();
+      fetchDiscoverOpportunities();
+      fetchAnalytics();
+    } catch (error) {
+      console.error('Error updating opportunity:', error);
+      toast.error('Failed to update opportunity');
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditModalOpen(false);
+    setEditOpportunity(null);
   };
 
   const handleDelete = async (opp: any) => {
@@ -318,9 +355,27 @@ const StaffAdminDashboard = () => {
     setShowCreateModal(false);
   };
 
-  if (!isStaffAdmin) {
-    return <div className="p-8 text-center text-lg">Access denied. Staff Admins only.</div>;
+  if (!isStaffAdmin && !isAdmin) {
+    return <div className="p-8 text-center text-lg">Access denied. Staff Admins or Admins only.</div>;
   }
+  {/* Edit Opportunity Modal */}
+  <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
+    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogHeader>
+        <DialogTitle>Edit Opportunity</DialogTitle>
+      </DialogHeader>
+      {editOpportunity && (
+        <OpportunityForm
+          mode="edit"
+          userRole={isAdmin ? 'admin' : 'staff_admin'}
+          initialData={editOpportunity}
+          onSubmit={handleSaveEdit}
+          onCancel={handleCancelEdit}
+          loading={editLoading}
+        />
+      )}
+    </DialogContent>
+  </Dialog>
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-[#e6f5ec]/20">
@@ -442,7 +497,9 @@ const StaffAdminDashboard = () => {
                         <td className="p-3 capitalize">{opp.status}</td>
                         <td className="p-3">{opp.is_published ? 'Yes' : 'No'}</td>
                         <td className="p-3 flex gap-2">
-                          <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit(opp)}><Edit className="w-4 h-4" /></Button>
+                          {(isStaffAdmin || isAdmin) && (
+                            <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit(opp)}><Edit className="w-4 h-4" /></Button>
+                          )}
                           <Button size="sm" className="bg-red-600 text-white" onClick={() => handleDelete(opp)}><Trash2 className="w-4 h-4" /></Button>
                         </td>
                       </tr>
@@ -620,7 +677,42 @@ const StaffAdminDashboard = () => {
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {paginatedDiscoverOpportunities.map((opp) => (
-                        <OpportunityCard key={opp.id} opportunity={opp} />
+                        <OpportunityCard
+                          key={opp.id}
+                          opportunity={opp}
+                          isBookmarked={!!savedOpportunities.find((s) => s.id === opp.id)}
+                          onBookmarkToggle={async (opportunityId) => {
+                            const isBookmarked = !!savedOpportunities.find((s) => s.id === opportunityId);
+                            const userId = user?.id || 'staff-admin-id';
+                            if (isBookmarked) {
+                              // Remove bookmark
+                              const { error } = await supabase
+                                .from('user_bookmarks')
+                                .delete()
+                                .eq('user_id', userId)
+                                .eq('opportunity_id', opportunityId);
+                              if (error) {
+                                toast.error('Failed to unsave opportunity');
+                              } else {
+                                toast.success('Opportunity unsaved');
+                                fetchSavedOpportunities();
+                                fetchAnalytics();
+                              }
+                            } else {
+                              // Add bookmark
+                              const { error } = await supabase
+                                .from('user_bookmarks')
+                                .insert({ user_id: userId, opportunity_id: opportunityId });
+                              if (error) {
+                                toast.error('Failed to save opportunity');
+                              } else {
+                                toast.success('Opportunity saved');
+                                fetchSavedOpportunities();
+                                fetchAnalytics();
+                              }
+                            }
+                          }}
+                        />
                       ))}
                     </div>
                     <div className="flex justify-center mt-8 gap-2">
@@ -692,7 +784,9 @@ const StaffAdminDashboard = () => {
                       <td className="p-3 capitalize">{opp.status}</td>
                       <td className="p-3">{opp.is_published ? 'Yes' : 'No'}</td>
                       <td className="p-3 flex gap-2">
-                        <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit(opp)}><Edit className="w-4 h-4" /></Button>
+                        {(isStaffAdmin || isAdmin) && (
+                          <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit(opp)}><Edit className="w-4 h-4" /></Button>
+                        )}
                         <Button size="sm" className="bg-red-600 text-white" onClick={() => handleDelete(opp)}><Trash2 className="w-4 h-4" /></Button>
                       </td>
                     </tr>
@@ -761,6 +855,9 @@ const StaffAdminDashboard = () => {
                         >
                           View Details
                         </Button>
+                        {(isStaffAdmin || isAdmin) && (
+                          <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit(sub)}><Edit className="w-4 h-4" /></Button>
+                        )}
                         <Button
                           size="sm"
                           className="bg-green-600 text-white hover:bg-green-700"

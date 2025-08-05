@@ -1,46 +1,40 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Crown, Check, X, CreditCard } from 'lucide-react';
 import { useUserTier } from '@/hooks/useUserTier';
 import { useFlutterwavePayment } from '@/hooks/useFlutterwavePayment';
+import { toast } from 'sonner';
 
 const SubscriptionManager: React.FC = () => {
   const { tier, loading } = useUserTier();
-  const { processPayment, isProcessing } = useFlutterwavePayment();
+  const { processPayment, isProcessing, proPrice, priceLoading } = useFlutterwavePayment();
 
+  // Features from homepage pricing component
   const features = [
-    {
-      name: 'View jobs/scholarships',
-      free: true,
-      pro: true
-    },
-    {
-      name: 'Smart AI recommendations',
-      free: true,
-      pro: true
-    },
-    {
-      name: 'AI-generated documents (CV, SOP, Letters)',
-      free: false,
-      pro: true
-    },
-    {
-      name: 'AI Voice Agent (Livekit)',
-      free: false,
-      pro: true
-    },
-    {
-      name: 'Application tracking/workflow',
-      free: false,
-      pro: true
-    }
+    { name: 'Access to all opportunity categories', free: true, pro: true },
+    { name: 'Advanced search functionality', free: true, pro: true },
+    { name: 'Save unlimited opportunities', free: true, pro: true },
+    { name: 'Standard email notifications', free: true, pro: true },
+    { name: 'Profile customization', free: true, pro: true },
+    { name: 'Unlimited applications per month', free: true, pro: true },
+    { name: 'Community forum access', free: true, pro: true },
+    // Pro-only features
+    { name: 'Advanced search filters', free: false, pro: true },
+    { name: '24/7 AI Career Assistant', free: false, pro: true },
+    { name: 'ATS-optimized CV generation', free: false, pro: true },
+    { name: 'AI-powered application guidance', free: false, pro: true },
+    { name: 'Success rate analysis', free: false, pro: true },
+    { name: 'Priority email support', free: false, pro: true },
+    { name: 'Application tracking & analytics', free: false, pro: true },
+    { name: 'Document templates', free: false, pro: true },
+    { name: 'Early access to new features', free: false, pro: true },
   ];
 
   const handleUpgrade = async () => {
-    await processPayment('pro', 5000); // ₦5,000 for Pro plan
+    await processPayment('pro'); // Dynamic price for Pro plan
   };
 
   if (loading) {
@@ -117,7 +111,10 @@ const SubscriptionManager: React.FC = () => {
                 </Badge>
               )}
             </CardTitle>
-            <p className="text-2xl font-bold">₦5,000<span className="text-sm font-normal">/month</span></p>
+            <p className="text-2xl font-bold">
+              {priceLoading ? 'Loading...' : `₦${proPrice.toLocaleString()}`}
+              <span className="text-sm font-normal">/month</span>
+            </p>
           </CardHeader>
           <CardContent className="space-y-4">
             <ul className="space-y-2">

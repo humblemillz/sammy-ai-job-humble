@@ -47,12 +47,12 @@ const OpportunityForm = ({
     setFormData(prev => ({ ...prev, ...updates }));
   };
 
-  const handleSubmit = async (isDraft: boolean = false) => {
+  const handleSubmit = async (isDraft: boolean = false, e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!formData.title || !formData.description || !formData.organization || !formData.category_id) {
       toast.error('Please fill in all required fields');
       return;
     }
-
     try {
       if (isAdmin) {
         const dataToSubmit = isDraft 
@@ -81,7 +81,7 @@ const OpportunityForm = ({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="space-y-6">
+        <form onSubmit={(e) => handleSubmit(false, e)} className="space-y-6">
           <OpportunityBasicFields
             formData={formData}
             categories={categories}
@@ -119,7 +119,7 @@ const OpportunityForm = ({
             userRole={userRole}
             loading={loading}
             onCancel={onCancel}
-            onSubmit={handleSubmit}
+            onSubmit={(isDraft?: boolean) => handleSubmit(isDraft)}
           />
         </form>
       </CardContent>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { callOpenAI } from '@/services/openaiService';
 import { toast } from 'sonner';
 
 interface AIRecommendation {
@@ -36,32 +37,18 @@ export const useAIRecommendations = () => {
 
   const fetchRecommendations = async () => {
     if (!user) return;
-
+    setLoading(true);
     try {
-      setLoading(true);
-      
-      console.log('Starting AI recommendations fetch for user:', user.id);
-      
       // Get user profile for matching
       const { data: userProfile, error: profileError } = await supabase
         .from('user_profiles')
         .select('*')
         .eq('id', user.id)
         .single();
-
-      console.log('User profile for AI recommendations:', userProfile);
       if (profileError) {
         console.error('Profile error:', profileError);
       }
-
-      // First, let's check if there are any opportunities at all
-      const { count: totalOpportunities } = await supabase
-        .from('opportunities')
-        .select('*', { count: 'exact', head: true });
-
-      console.log('Total opportunities in database:', totalOpportunities);
-
-      // Get approved opportunities with more detailed logging
+      // Get opportunities
       const { data: opportunities, error: oppError } = await supabase
         .from('opportunities')
         .select(`
@@ -82,164 +69,140 @@ export const useAIRecommendations = () => {
         .eq('status', 'approved')
         .order('created_at', { ascending: false })
         .limit(50);
-
-      console.log('Opportunities query result:', { 
-        count: opportunities?.length, 
-        error: oppError,
-        firstOpportunity: opportunities?.[0] 
-      });
-
       if (oppError) {
         console.error('Error fetching opportunities:', oppError);
-        throw oppError;
-      }
-
-      if (!opportunities || opportunities.length === 0) {
-        console.log('No opportunities found - this might be a database issue');
-        // Let's try without the status filter to see if that's the issue
-        const { data: allOpportunities, error: allOppError } = await supabase
-          .from('opportunities')
-          .select('id, title, organization, status')
-          .limit(10);
-        
-        console.log('All opportunities (without status filter):', allOpportunities);
-        console.log('All opportunities error:', allOppError);
-        
         setRecommendations([]);
+        setLoading(false);
         return;
       }
-
-      console.log('Successfully fetched opportunities:', opportunities.length);
-
-      let generatedRecommendations;
-
-      // Check if user has a complete profile
-      const hasCompleteProfile = userProfile && (
-        userProfile.field_of_study || 
-        userProfile.years_of_experience !== undefined || 
-        userProfile.education_level
-      );
-
-      console.log('User profile completeness check:', {
-        hasProfile: !!userProfile,
-        hasFieldOfStudy: !!userProfile?.field_of_study,
-        hasExperience: userProfile?.years_of_experience !== undefined,
-        hasEducation: !!userProfile?.education_level,
-        hasCompleteProfile
-      });
-
-      if (hasCompleteProfile) {
-        // Generate AI-powered recommendations based on profile
-        generatedRecommendations = opportunities.map((opportunity, index) => {
-          const matchScore = calculateMatchScore(userProfile, opportunity);
-          const reasons = generateMatchReasons(userProfile, opportunity, matchScore);
-          
-          console.log(`Opportunity ${index + 1}: ${opportunity.title} - Score: ${matchScore}`);
-          
-          return {
-            id: `rec_${opportunity.id}_${index}`,
-            opportunity_id: opportunity.id,
-            recommendation_type: 'job_match',
-            match_score: matchScore,
-            reasons,
-            created_at: new Date().toISOString(),
-            is_viewed: false,
-            opportunities: {
-              id: opportunity.id,
-              title: opportunity.title,
-              organization: opportunity.organization,
-              description: opportunity.description,
-              location: opportunity.location,
-              application_deadline: opportunity.application_deadline,
-              salary_range: opportunity.salary_range,
-              is_remote: opportunity.is_remote
-            }
-          };
-        });
-        
-        console.log('Before filtering - recommendations count:', generatedRecommendations.length);
-        
-        // Filter and limit recommendations
-        generatedRecommendations = generatedRecommendations
-          .filter(rec => rec.match_score > 0.2) // Lower threshold to show more recommendations
-          .slice(0, 12);
-          
-        console.log('After filtering - recommendations count:', generatedRecommendations.length);
-      } else {
-        // Show featured/trending opportunities for incomplete profiles
-        generatedRecommendations = opportunities.slice(0, 6).map((opportunity, index) => {
-          const matchScore = 0.5 + (Math.random() * 0.3); // Random score between 0.5-0.8
-          const reasons = [
-            'Featured opportunity in our database',
-            'Recently posted and actively hiring',
-            'Great company with competitive benefits',
-            'Opportunity for career growth and development'
-          ];
-          
-          console.log(`Featured opportunity ${index + 1}: ${opportunity.title} - Score: ${matchScore}`);
-          
-          return {
-            id: `rec_${opportunity.id}_${index}`,
-            opportunity_id: opportunity.id,
-            recommendation_type: 'featured',
-            match_score: matchScore,
-            reasons,
-            created_at: new Date().toISOString(),
-            is_viewed: false,
-            opportunities: {
-              id: opportunity.id,
-              title: opportunity.title,
-              organization: opportunity.organization,
-              description: opportunity.description,
-              location: opportunity.location,
-              application_deadline: opportunity.application_deadline,
-              salary_range: opportunity.salary_range,
-              is_remote: opportunity.is_remote
-            }
-          };
-        });
+      if (!opportunities || opportunities.length === 0) {
+        setRecommendations([]);
+        setLoading(false);
+        return;
       }
-
+      // Try OpenAI recommendations
+      let generatedRecommendations: AIRecommendation[] = [];
+      let aiContent: string | undefined = undefined;
+      try {
+        const openaiRes = await callOpenAI('chat/completions', {
+          model: 'gpt-3.5-turbo',
+          messages: [
+            { role: 'system', content: 'You are an AI career assistant. Given a user profile and a list of opportunities, recommend the best matches as a JSON array. Respond ONLY with valid JSON.' },
+            { role: 'user', content: `User profile: ${JSON.stringify(userProfile)}\nOpportunities: ${JSON.stringify(opportunities)}` }
+          ],
+          user: user.id
+        });
+        aiContent = openaiRes.choices?.[0]?.message?.content;
+        if (aiContent) {
+          try {
+            generatedRecommendations = JSON.parse(aiContent);
+          } catch (e) {
+            console.warn('Failed to parse OpenAI recommendations, falling back to local logic.');
+          }
+        }
+      } catch (err) {
+        console.error('OpenAI recommendation error:', err);
+        // Removed failed notification for AI recommendations
+      }
+      // If OpenAI failed or returned nothing, use local logic
+      if (!generatedRecommendations || generatedRecommendations.length === 0) {
+        // Check profile completeness
+        const hasCompleteProfile = !!userProfile && (
+          !!userProfile.field_of_study ||
+          userProfile.years_of_experience !== undefined ||
+          !!userProfile.education_level
+        );
+        if (hasCompleteProfile) {
+          generatedRecommendations = opportunities.map((opportunity: any, index: number) => {
+            const matchScore = calculateMatchScore(userProfile, opportunity);
+            const reasons = generateMatchReasons(userProfile, opportunity, matchScore);
+            return {
+              id: `rec_${opportunity.id}_${index}`,
+              opportunity_id: opportunity.id,
+              recommendation_type: 'job_match',
+              match_score: matchScore,
+              reasons,
+              created_at: new Date().toISOString(),
+              is_viewed: false,
+              opportunities: {
+                id: opportunity.id,
+                title: opportunity.title,
+                organization: opportunity.organization,
+                description: opportunity.description,
+                location: opportunity.location,
+                application_deadline: opportunity.application_deadline,
+                salary_range: opportunity.salary_range,
+                is_remote: opportunity.is_remote
+              }
+            };
+          })
+          .filter(rec => rec.match_score > 0.2)
+          .slice(0, 12);
+        } else {
+          // Show featured/trending opportunities for incomplete profiles
+          generatedRecommendations = opportunities.slice(0, 6).map((opportunity: any, index: number) => {
+            const matchScore = 0.5 + (Math.random() * 0.3);
+            const reasons = [
+              'Featured opportunity in our database',
+              'Recently posted and actively hiring',
+              'Great company with competitive benefits',
+              'Opportunity for career growth and development'
+            ];
+            return {
+              id: `rec_${opportunity.id}_${index}`,
+              opportunity_id: opportunity.id,
+              recommendation_type: 'featured',
+              match_score: matchScore,
+              reasons,
+              created_at: new Date().toISOString(),
+              is_viewed: false,
+              opportunities: {
+                id: opportunity.id,
+                title: opportunity.title,
+                organization: opportunity.organization,
+                description: opportunity.description,
+                location: opportunity.location,
+                application_deadline: opportunity.application_deadline,
+                salary_range: opportunity.salary_range,
+                is_remote: opportunity.is_remote
+              }
+            };
+          });
+        }
+        // Fallback: if no recommendations after filtering, show at least 3 opportunities
+        if (!generatedRecommendations || generatedRecommendations.length === 0) {
+          generatedRecommendations = opportunities.slice(0, 3).map((opportunity: any, index: number) => {
+            const matchScore = 0.4 + (Math.random() * 0.2);
+            const reasons = [
+              'Featured opportunity in our database',
+              'Recently posted and actively hiring',
+              'Great company with competitive benefits'
+            ];
+            return {
+              id: `rec_fallback_${opportunity.id}_${index}`,
+              opportunity_id: opportunity.id,
+              recommendation_type: 'fallback',
+              match_score: matchScore,
+              reasons,
+              created_at: new Date().toISOString(),
+              is_viewed: false,
+              opportunities: {
+                id: opportunity.id,
+                title: opportunity.title,
+                organization: opportunity.organization,
+                description: opportunity.description,
+                location: opportunity.location,
+                application_deadline: opportunity.application_deadline,
+                salary_range: opportunity.salary_range,
+                is_remote: opportunity.is_remote
+              }
+            };
+          });
+        }
+      }
       // Sort by match score (highest first)
       generatedRecommendations.sort((a, b) => b.match_score - a.match_score);
-
-      console.log('Generated AI recommendations:', generatedRecommendations.length);
-      
-      // Fallback: if no recommendations after filtering, show at least 3 opportunities
-      if (generatedRecommendations.length === 0) {
-        console.log('No recommendations after filtering, showing fallback opportunities');
-        generatedRecommendations = opportunities.slice(0, 3).map((opportunity, index) => {
-          const matchScore = 0.4 + (Math.random() * 0.2); // Random score between 0.4-0.6
-          const reasons = [
-            'Featured opportunity in our database',
-            'Recently posted and actively hiring',
-            'Great company with competitive benefits'
-          ];
-          
-          return {
-            id: `rec_fallback_${opportunity.id}_${index}`,
-            opportunity_id: opportunity.id,
-            recommendation_type: 'fallback',
-            match_score: matchScore,
-            reasons,
-            created_at: new Date().toISOString(),
-            is_viewed: false,
-            opportunities: {
-              id: opportunity.id,
-              title: opportunity.title,
-              organization: opportunity.organization,
-              description: opportunity.description,
-              location: opportunity.location,
-              application_deadline: opportunity.application_deadline,
-              salary_range: opportunity.salary_range,
-              is_remote: opportunity.is_remote
-            }
-          };
-        });
-      }
-      
       setRecommendations(generatedRecommendations);
-      
     } catch (error) {
       console.error('Error fetching recommendations:', error);
       toast.error('Failed to load recommendations');

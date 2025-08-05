@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from './useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { callOpenAI } from '@/services/openaiService';
 import { toast } from 'sonner';
 
 interface ChatMessage {
@@ -48,23 +48,29 @@ export const useAIChat = () => {
     } : null);
 
     try {
-      // Call the AI chat assistant edge function
-      const { data, error } = await supabase.functions.invoke('ai-chat-assistant', {
-        body: {
-          message,
-          userId: user.id,
-          sessionId: currentSession.sessionId,
-          contextData
-        }
+      // Call OpenAI API for chat completion
+      const openaiRes = await callOpenAI('chat/completions', {
+        model: 'gpt-3.5-turbo',
+        messages: [
+          ...currentSession.messages.map(m => ({
+            role: m.message_type === 'user' ? 'user' : 'assistant',
+            content: m.content
+          })),
+          { role: 'user', content: message }
+        ],
+        user: user.id,
+        ...contextData
       });
 
-      if (error) throw error;
+      const aiContent = openaiRes.choices?.[0]?.message?.content || 'I apologize, but I encountered an issue. Please try again.';
+
+      // (No error object to check here; OpenAI errors are caught in catch block)
 
       // Add AI response to UI
       const aiMessage: ChatMessage = {
         id: crypto.randomUUID(),
         message_type: 'assistant',
-        content: data.response || 'I apologize, but I encountered an issue. Please try again.',
+        content: aiContent,
         created_at: new Date().toISOString()
       };
 

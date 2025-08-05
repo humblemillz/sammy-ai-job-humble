@@ -26,6 +26,7 @@ declare global {
 
 const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK_TEST-ae9bdd6c2623314033efbfee042d90d5-X';
 
+// Accepts dynamic price, always pass the price from the hook/service
 export const initializeFlutterwavePayment = (
   amount: number,
   userEmail: string,

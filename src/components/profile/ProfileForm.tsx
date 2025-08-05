@@ -56,21 +56,29 @@ const ProfileForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    if (!user?.id) {
+      toast.error('User not found. Please sign in again.');
+      return;
+    }
     try {
+      // Ensure all required fields are present for upsert
+      const upsertData = {
+        id: user.id,
+        full_name: profileData.full_name || '',
+        bio: profileData.bio || '',
+        country: profileData.country || '',
+        education_level: profileData.education_level || '',
+        field_of_study: profileData.field_of_study || '',
+        years_of_experience: profileData.years_of_experience || 0,
+        cookie_accepted: profileData.cookie_accepted ?? false,
+        updated_at: new Date().toISOString()
+      };
       const { error } = await supabase
         .from('user_profiles')
-        .upsert({
-          id: user?.id,
-          ...profileData,
-          updated_at: new Date().toISOString()
-        }, {
-          onConflict: 'id'
-        });
-
+        .upsert(upsertData, { onConflict: 'id' });
       if (error) throw error;
-
       toast.success('Profile updated successfully');
+      await fetchProfile();
     } catch (error) {
       console.error('Error updating profile:', error);
       toast.error('Failed to update profile');
@@ -181,9 +189,9 @@ const ProfileForm = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full bg-[#008000] hover:bg-[#006400] text-white">
+          <button type="submit" className="w-full bg-[#008000] hover:bg-[#006400] text-white rounded-md py-2 px-4 font-semibold">
             Save Profile
-          </Button>
+          </button>
         </form>
       </CardContent>
     </Card>
