@@ -1,15 +1,25 @@
-import React from 'react';
-import { useState } from 'react';
-import { DocumentGeneratorModal } from '@/components/ai/DocumentGeneratorModal';
-import UpgradePrompt from '@/components/subscription/UpgradePrompt';
-import { useAuth } from '@/hooks/useAuth';
-import { useUserTier } from '@/hooks/useUserTier';
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { MapPin, Calendar, Building, Globe, DollarSign, Clock, CheckCircle, FileText, ExternalLink } from 'lucide-react';
+import React from "react";
+import { useState } from "react";
+import { DocumentGeneratorModal } from "@/components/ai/DocumentGeneratorModal";
+import UpgradePrompt from "@/components/subscription/UpgradePrompt";
+import { useAuth } from "@/hooks/useAuth";
+import { useUserTier } from "@/hooks/useUserTier";
+import { motion } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import {
+  MapPin,
+  Calendar,
+  Building,
+  Globe,
+  DollarSign,
+  Clock,
+  CheckCircle,
+  FileText,
+  ExternalLink,
+} from "lucide-react";
 
 interface OpportunityDetailsProps {
   opportunity: {
@@ -42,41 +52,43 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
   // Adjust tier check to match actual possible values from useUserTier
   const isSubscribed = ["pro", "premium"].includes(tier);
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   // Format description to handle line breaks and structure
   const formatDescription = (description: string) => {
-    if (!description) return 'No detailed description available for this opportunity.';
-    
+    if (!description)
+      return "No detailed description available for this opportunity.";
+
     // Split by common delimiters and clean up
     const paragraphs = description
       .split(/\n\n|\r\n\r\n/)
-      .filter(p => p.trim().length > 0)
-      .map(p => p.trim());
-    
+      .filter((p) => p.trim().length > 0)
+      .map((p) => p.trim());
+
     if (paragraphs.length <= 1) {
       // If no clear paragraph breaks, try to split by sentences for better readability
-      const sentences = description.split(/(?<=[.!?])\s+/)
-        .filter(s => s.trim().length > 20); // Only include substantial sentences
-      
+      const sentences = description
+        .split(/(?<=[.!?])\s+/)
+        .filter((s) => s.trim().length > 20); // Only include substantial sentences
+
       if (sentences.length > 3) {
         return sentences.reduce((acc, sentence, index) => {
           if (index > 0 && index % 3 === 0) {
-            acc += '\n\n' + sentence;
+            acc += "\n\n" + sentence;
           } else {
-            acc += (index > 0 ? ' ' : '') + sentence;
+            acc += (index > 0 ? " " : "") + sentence;
           }
           return acc;
-        }, '');
+        }, "");
       }
     }
-    
-    return paragraphs.join('\n\n');
+
+    return paragraphs.join("\n\n");
   };
 
   return (
@@ -90,10 +102,9 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                 {opportunity.title}
               </CardTitle>
               <div className="flex items-center gap-2 mb-4">
-                <Badge 
+                <Badge
                   variant="outline"
-                  className="border-[#17cfcf] text-[#17cfcf] bg-[#17cfcf]/10 text-sm px-3 py-1"
-                >
+                  className="border-[#17cfcf] text-[#17cfcf] bg-[#17cfcf]/10 text-sm px-3 py-1">
                   {opportunity.category.name}
                 </Badge>
                 {opportunity.is_remote && (
@@ -107,10 +118,14 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
-              <Building className="w-5 h-5" style={{ color: '#008000' }} />
+              <Building className="w-5 h-5" style={{ color: "#008000" }} />
               <div>
-                <p className="text-sm font-medium text-blue-950">Organization</p>
-                <p className="font-semibold text-blue-950">{opportunity.organization}</p>
+                <p className="text-sm font-medium text-blue-950">
+                  Organization
+                </p>
+                <p className="font-semibold text-blue-950">
+                  {opportunity.organization}
+                </p>
               </div>
             </div>
 
@@ -119,16 +134,20 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                 <MapPin className="w-5 h-5 text-green-600" />
                 <div>
                   <p className="text-sm font-medium text-green-900">Location</p>
-                  <p className="font-semibold text-green-800">{opportunity.location}</p>
+                  <p className="font-semibold text-green-800">
+                    {opportunity.location}
+                  </p>
                 </div>
               </div>
             )}
 
             <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg border border-purple-100">
-              <Calendar className="w-5 h-5" style={{ color: '#008000' }} />
+              <Calendar className="w-5 h-5" style={{ color: "#008000" }} />
               <div>
                 <p className="text-sm font-medium text-blue-950">Posted</p>
-                <p className="font-semibold text-blue-950">{formatDate(opportunity.created_at)}</p>
+                <p className="font-semibold text-blue-950">
+                  {formatDate(opportunity.created_at)}
+                </p>
               </div>
             </div>
           </div>
@@ -138,7 +157,9 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
               <div className="flex items-center gap-3">
                 <Clock className="w-5 h-5 text-orange-600" />
                 <div>
-                  <p className="text-sm font-medium text-orange-900">Application Deadline</p>
+                  <p className="text-sm font-medium text-orange-900">
+                    Application Deadline
+                  </p>
                   <p className="font-bold text-orange-800 text-lg">
                     {formatDate(opportunity.application_deadline)}
                   </p>
@@ -153,29 +174,32 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
       <Card className="border-0 shadow-lg bg-white">
         <CardHeader className="pb-4">
           <CardTitle className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <FileText className="w-6 h-6" style={{ color: '#008000' }} />
+            <FileText className="w-6 h-6" style={{ color: "#008000" }} />
             About This Opportunity
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="prose prose-gray max-w-none">
-            {formatDescription(opportunity.description).split('\n\n').map((paragraph, index) => (
-              <motion.p
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-gray-700 leading-relaxed mb-4 text-lg"
-              >
-                {paragraph}
-              </motion.p>
-            ))}
-            
-            {(!opportunity.description || opportunity.description.trim().length < 50) && (
+            {formatDescription(opportunity.description)
+              .split("\n\n")
+              .map((paragraph, index) => (
+                <motion.p
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="text-gray-700 leading-relaxed mb-4 text-lg">
+                  {paragraph}
+                </motion.p>
+              ))}
+
+            {(!opportunity.description ||
+              opportunity.description.trim().length < 50) && (
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
                 <p className="text-yellow-800 font-medium">
-                  Limited details available for this opportunity. 
-                  Please click "Apply Now" to visit the official page for complete information.
+                  Limited details available for this opportunity. Please click
+                  "Apply Now" to visit the official page for complete
+                  information.
                 </p>
               </div>
             )}
@@ -200,8 +224,7 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg"
-                >
+                  className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                   <div className="w-2 h-2 bg-[#022e06] rounded-full mt-2 flex-shrink-0"></div>
                   <span className="text-gray-700">{requirement}</span>
                 </motion.li>
@@ -228,8 +251,7 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg"
-                >
+                  className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
                   <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">{benefit}</span>
                 </motion.li>
@@ -244,7 +266,7 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
         <Card className="border-0 shadow-lg bg-gradient-to-br from-green-50 to-white">
           <CardHeader className="pb-4">
             <CardTitle className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <ExternalLink className="w-6 h-6" style={{ color: '#008000' }} />
+              <ExternalLink className="w-6 h-6" style={{ color: "#008000" }} />
               Apply for This Opportunity
             </CardTitle>
           </CardHeader>
@@ -252,14 +274,23 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
             <div className="bg-white rounded-xl p-6 border border-green-200">
               <div className="text-center space-y-4">
                 <p className="text-gray-700 text-lg">
-                  This opportunity requires you to apply through the official website.
+                  This opportunity requires you to apply through the official
+                  website.
                 </p>
                 <div className="flex flex-col md:flex-row items-center justify-center gap-4">
                   <Button
-                    onClick={() => window.open(opportunity.source_url || opportunity.application_url, '_blank', 'noopener,noreferrer')}
-                    className="bg-[#008000] hover:bg-[#008000]/90 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                  >
-                    <ExternalLink className="w-5 h-5 mr-2" style={{ color: '#fff' }} />
+                    onClick={() =>
+                      window.open(
+                        opportunity.source_url || opportunity.application_url,
+                        "_blank",
+                        "noopener,noreferrer"
+                      )
+                    }
+                    className="bg-[#008000] hover:bg-[#008000]/90 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                    <ExternalLink
+                      className="w-5 h-5 mr-2"
+                      style={{ color: "#fff" }}
+                    />
                     Apply on Official Website
                   </Button>
                   <Button
@@ -271,14 +302,17 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                       } else {
                         setShowDocumentGenerator(true);
                       }
-                    }}
-                  >
-                    <FileText className="w-5 h-5 mr-2" style={{ color: '#008000' }} />
+                    }}>
+                    <FileText
+                      className="w-5 h-5 mr-2"
+                      style={{ color: "#008000" }}
+                    />
                     Use AI
                   </Button>
                 </div>
                 <p className="text-sm text-gray-500">
-                  You'll be redirected to the official application page in a new tab. No sign-in required.
+                  You'll be redirected to the official application page in a new
+                  tab. No sign-in required.
                 </p>
               </div>
               {/* Only render modal if subscribed */}
@@ -313,12 +347,12 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
             <div className="bg-white rounded-xl p-6 border border-orange-200">
               <div className="text-center space-y-4">
                 <p className="text-gray-700 text-lg">
-                  This is a user-submitted opportunity. You need to sign in to apply.
+                  This is a user-submitted opportunity. You need to sign in to
+                  apply.
                 </p>
                 <Button
-                  onClick={() => window.location.href = '/auth'}
-                  className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                >
+                  onClick={() => (window.location.href = "/auth")}
+                  className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                   Sign In to Apply
                 </Button>
                 <p className="text-sm text-gray-500">
@@ -339,8 +373,7 @@ const OpportunityDetails = ({ opportunity }: OpportunityDetailsProps) => {
                 <Badge
                   key={index}
                   variant="secondary"
-                  className="bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors"
-                >
+                  className="bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors">
                   {tag}
                 </Badge>
               ))}
