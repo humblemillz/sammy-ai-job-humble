@@ -1,25 +1,26 @@
-
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { 
-  ExternalLink, 
-  MapPin, 
-  Calendar, 
-  DollarSign, 
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  ExternalLink,
+  MapPin,
+  Calendar,
+  DollarSign,
   Clock,
   FileText,
   TrendingUp,
   Sparkles,
-  BarChart3
-} from 'lucide-react';
-import { useApplicationAnalyzer } from '@/hooks/useApplicationAnalyzer';
-import { ApplicationSteps } from '@/components/ai/ApplicationSteps';
-import { ApplicationChanceAnalysis } from '@/components/ai/ApplicationChanceAnalysis';
-import ApplicationModal from './ApplicationModal';
+  BarChart3,
+} from "lucide-react";
+import { useApplicationAnalyzer } from "@/hooks/useApplicationAnalyzer";
+import { ApplicationSteps } from "@/components/ai/ApplicationSteps";
+import { ApplicationChanceAnalysis } from "@/components/ai/ApplicationChanceAnalysis";
+import ApplicationModal from "./ApplicationModal";
+import { useUserTier } from "@/hooks/useUserTier";
+import UpgradePrompt from "@/components/subscription/UpgradePrompt";
 
 interface OpportunitySidebarProps {
   opportunity: {
@@ -40,49 +41,56 @@ interface OpportunitySidebarProps {
   onApply: () => void;
 }
 
-const OpportunitySidebar = ({ 
-  opportunity, 
-  user, 
-  hasApplied, 
-  actionLoading, 
-  onApply 
+const OpportunitySidebar = ({
+  opportunity,
+  user,
+  hasApplied,
+  actionLoading,
+  onApply,
 }: OpportunitySidebarProps) => {
-  const [activeAnalysis, setActiveAnalysis] = useState<'steps' | 'chance' | null>(null);
+  const [activeAnalysis, setActiveAnalysis] = useState<
+    "steps" | "chance" | null
+  >(null);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [showApplicationModal, setShowApplicationModal] = useState(false);
-  
-  const { 
-    loading, 
-    steps, 
-    chanceAnalysis, 
-    generateApplicationSteps, 
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
+
+  const { tier } = useUserTier();
+  // Adjust tier check to match actual possible values from useUserTier
+  const isSubscribed = ["pro", "premium"].includes(tier);
+
+  const {
+    loading,
+    steps,
+    chanceAnalysis,
+    generateApplicationSteps,
     analyzeApplicationChance,
-    clearAnalysis 
+    clearAnalysis,
   } = useApplicationAnalyzer();
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const handleStepComplete = (stepNumber: number) => {
-    setCompletedSteps(prev => 
-      prev.includes(stepNumber) 
-        ? prev.filter(s => s !== stepNumber)
+    setCompletedSteps((prev) =>
+      prev.includes(stepNumber)
+        ? prev.filter((s) => s !== stepNumber)
         : [...prev, stepNumber]
     );
   };
 
-  const handleAnalysisToggle = (type: 'steps' | 'chance') => {
+  const handleAnalysisToggle = (type: "steps" | "chance") => {
     if (activeAnalysis === type) {
       setActiveAnalysis(null);
       clearAnalysis();
     } else {
       setActiveAnalysis(type);
-      if (type === 'steps') {
+      if (type === "steps") {
         generateApplicationSteps(opportunity.id);
       } else {
         analyzeApplicationChance(opportunity.id);
@@ -98,10 +106,10 @@ const OpportunitySidebar = ({
   const handleApplyClick = () => {
     // Determine which URL to use for application
     const applyUrl = opportunity.source_url || opportunity.application_url;
-    
+
     if (applyUrl) {
       // For external URLs (scraped opportunities), apply directly without requiring sign-in
-      window.open(applyUrl, '_blank', 'noopener,noreferrer');
+      window.open(applyUrl, "_blank", "noopener,noreferrer");
       // Record the application in our system if user is signed in
       if (user) {
         onApply();
@@ -110,7 +118,7 @@ const OpportunitySidebar = ({
       // For user-submitted opportunities without external URLs, require sign-in
       if (!user) {
         // Redirect to auth page for user-submitted opportunities
-        window.location.href = '/auth';
+        window.location.href = "/auth";
         return;
       }
       // If user is signed in, show the application modal
@@ -134,47 +142,60 @@ const OpportunitySidebar = ({
             disabled={actionLoading}
             className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg ${
               hasApplied
-                ? 'bg-[#008000] hover:bg-[#006400] text-white'
-                : 'bg-[#008000] hover:bg-[#006400] text-white'
-            }`}
-          >
+                ? "bg-[#008000] hover:bg-[#006400] text-white"
+                : "bg-[#008000] hover:bg-[#006400] text-white"
+            }`}>
             <ExternalLink className="w-5 h-5 mr-2 text-white" />
-            {hasApplied 
-              ? 'Applied Successfully ✓' 
-              : (opportunity.source_url || opportunity.application_url 
-                  ? 'Apply on External Site' 
-                  : (!user ? 'Sign In to Apply' : 'Apply Now')
-                )
-            }
+            {hasApplied
+              ? "Applied Successfully ✓"
+              : opportunity.source_url || opportunity.application_url
+              ? "Apply on External Site"
+              : !user
+              ? "Sign In to Apply"
+              : "Apply Now"}
           </Button>
 
           <div className="grid grid-cols-1 gap-3">
             <Button
               variant="outline"
-              onClick={() => handleAnalysisToggle('steps')}
+              onClick={() => {
+                if (!isSubscribed) {
+                  setShowUpgradePrompt(true);
+                } else {
+                  handleAnalysisToggle("steps");
+                }
+              }}
               disabled={loading}
               className={`flex items-center justify-center gap-2 py-3 rounded-xl font-medium transition-all duration-300 border-2 ${
-                activeAnalysis === 'steps' 
-                  ? 'bg-[#008000]/10 border-[#008000] text-[#008000] shadow-md' 
-                  : 'hover:bg-[#008000]/10 hover:border-[#008000] border-gray-200 text-[#008000]'
-              }`}
-            >
+                activeAnalysis === "steps"
+                  ? "bg-[#008000]/10 border-[#008000] text-[#008000] shadow-md"
+                  : "hover:bg-[#008000]/10 hover:border-[#008000] border-gray-200 text-[#008000]"
+              }`}>
               <FileText className="w-4 h-4 text-[#008000]" />
-              {activeAnalysis === 'steps' ? 'Hide Application Guide' : 'Get Application Guide'}
+              {activeAnalysis === "steps"
+                ? "Hide Application Guide"
+                : "Get Application Guide"}
             </Button>
-            
+
             <Button
               variant="outline"
-              onClick={() => handleAnalysisToggle('chance')}
+              onClick={() => {
+                if (!isSubscribed) {
+                  setShowUpgradePrompt(true);
+                } else {
+                  handleAnalysisToggle("chance");
+                }
+              }}
               disabled={loading}
               className={`flex items-center justify-center gap-2 py-3 rounded-xl font-medium transition-all duration-300 border-2 ${
-                activeAnalysis === 'chance' 
-                  ? 'bg-[#008000]/10 border-[#008000] text-[#008000] shadow-md' 
-                  : 'hover:bg-[#008000]/10 hover:border-[#008000] border-gray-200 text-[#008000]'
-              }`}
-            >
+                activeAnalysis === "chance"
+                  ? "bg-[#008000]/10 border-[#008000] text-[#008000] shadow-md"
+                  : "hover:bg-[#008000]/10 hover:border-[#008000] border-gray-200 text-[#008000]"
+              }`}>
               <BarChart3 className="w-4 h-4 text-[#008000]" />
-              {activeAnalysis === 'chance' ? 'Hide Success Analysis' : 'Analyze Success Rate'}
+              {activeAnalysis === "chance"
+                ? "Hide Success Analysis"
+                : "Analyze Success Rate"}
             </Button>
           </div>
         </CardContent>
@@ -192,7 +213,9 @@ const OpportunitySidebar = ({
               />
               <div className="text-center">
                 <p className="font-semibold text-blue-900">
-                  {activeAnalysis === 'steps' ? 'Generating Application Guide' : 'Analyzing Success Probability'}
+                  {activeAnalysis === "steps"
+                    ? "Generating Application Guide"
+                    : "Analyzing Success Probability"}
                 </p>
                 <p className="text-sm text-blue-600 mt-1">
                   AI is processing your profile...
@@ -203,8 +226,15 @@ const OpportunitySidebar = ({
         </Card>
       )}
 
+      {!isSubscribed && (
+        <UpgradePrompt
+          isOpen={showUpgradePrompt}
+          onClose={() => setShowUpgradePrompt(false)}
+        />
+      )}
+
       {/* Analysis Results */}
-      {activeAnalysis === 'steps' && steps && (
+      {activeAnalysis === "steps" && steps && (
         <ApplicationSteps
           steps={steps.steps}
           timeline={steps.timeline}
@@ -214,7 +244,7 @@ const OpportunitySidebar = ({
         />
       )}
 
-      {activeAnalysis === 'chance' && chanceAnalysis && (
+      {activeAnalysis === "chance" && chanceAnalysis && (
         <ApplicationChanceAnalysis
           score={chanceAnalysis.score}
           percentage={chanceAnalysis.percentage}
@@ -229,7 +259,9 @@ const OpportunitySidebar = ({
       {/* Enhanced Opportunity Details Card */}
       <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
         <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-bold text-gray-900">Opportunity Details</CardTitle>
+          <CardTitle className="text-xl font-bold text-gray-900">
+            Opportunity Details
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {opportunity.location && (
@@ -239,7 +271,9 @@ const OpportunitySidebar = ({
               </div>
               <div>
                 <p className="text-sm font-medium text-blue-900">Location</p>
-                <p className="font-semibold text-blue-800">{opportunity.location}</p>
+                <p className="font-semibold text-blue-800">
+                  {opportunity.location}
+                </p>
               </div>
             </div>
           )}
@@ -251,7 +285,9 @@ const OpportunitySidebar = ({
               </div>
               <div>
                 <p className="text-sm font-medium text-green-900">Work Type</p>
-                <Badge className="bg-green-100 text-green-800 font-medium">Remote Available</Badge>
+                <Badge className="bg-green-100 text-green-800 font-medium">
+                  Remote Available
+                </Badge>
               </div>
             </div>
           )}
@@ -262,8 +298,12 @@ const OpportunitySidebar = ({
                 <DollarSign className="w-5 h-5 text-emerald-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-emerald-900">Salary Range</p>
-                <p className="font-semibold text-emerald-800">{opportunity.salary_range}</p>
+                <p className="text-sm font-medium text-emerald-900">
+                  Salary Range
+                </p>
+                <p className="font-semibold text-emerald-800">
+                  {opportunity.salary_range}
+                </p>
               </div>
             </div>
           )}
@@ -274,8 +314,12 @@ const OpportunitySidebar = ({
                 <Calendar className="w-5 h-5 text-orange-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-orange-900">Application Deadline</p>
-                <p className="font-semibold text-orange-800">{formatDate(opportunity.application_deadline)}</p>
+                <p className="text-sm font-medium text-orange-900">
+                  Application Deadline
+                </p>
+                <p className="font-semibold text-orange-800">
+                  {formatDate(opportunity.application_deadline)}
+                </p>
               </div>
             </div>
           )}
