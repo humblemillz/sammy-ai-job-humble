@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
+import ResetPassword from '@/pages/reset-password';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
 import Opportunity from '@/pages/Opportunity';
@@ -36,6 +37,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <Dashboard />

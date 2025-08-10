@@ -12,6 +12,10 @@ const Auth = () => {
   const [error, setError] = useState('');
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [showReset, setShowReset] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetError, setResetError] = useState('');
+  const [resetSuccess, setResetSuccess] = useState('');
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -126,6 +130,34 @@ const Auth = () => {
     navigate('/dashboard');
   };
 
+
+  const handleForgotPassword = () => {
+    setShowReset(true);
+    setResetError('');
+    setResetSuccess('');
+  };
+
+  const handleBackToSignIn = () => {
+    setShowReset(false);
+    setResetError('');
+    setResetSuccess('');
+  };
+
+  const handleResetPassword = async (email: string) => {
+    setResetLoading(true);
+    setResetError('');
+    setResetSuccess('');
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth?tab=reset-password`,
+    });
+    if (error) {
+      setResetError(error.message);
+    } else {
+      setResetSuccess('Password reset email sent! Please check your inbox.');
+    }
+    setResetLoading(false);
+  };
+
   const handleSubmit = (email: string, password: string, fullName?: string) => {
     if (isLogin) {
       handleSignIn(email, password);
@@ -146,12 +178,24 @@ const Auth = () => {
   }
 
   return (
-    <FullScreenSignup
-      onSubmit={handleSubmit}
-      isLogin={isLogin}
-      loading={isLoading}
-      error={error}
-    />
+    <>
+      {resetSuccess && (
+        <div className="text-green-600 text-sm bg-green-50 p-3 rounded-lg mt-2 text-center">
+          {resetSuccess}
+        </div>
+      )}
+      <FullScreenSignup
+        onSubmit={handleSubmit}
+        isLogin={isLogin}
+        loading={isLoading}
+        error={error}
+        onForgotPassword={showReset ? handleBackToSignIn : handleForgotPassword}
+        showReset={showReset}
+        onResetPassword={handleResetPassword}
+        resetError={resetError}
+        resetLoading={resetLoading}
+      />
+    </>
   );
 };
 

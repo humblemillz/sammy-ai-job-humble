@@ -18,6 +18,13 @@ interface ProfileData {
   field_of_study?: string;
   years_of_experience?: number;
   cookie_accepted?: boolean;
+  avatar_url?: string | null;
+  email_notifications?: boolean;
+  onboarding_completed?: boolean;
+  push_notifications?: boolean;
+  subscription_tier?: 'free' | 'pro';
+  updated_at?: string;
+  created_at?: string;
 }
 
 const ProfileForm = () => {
@@ -69,13 +76,33 @@ const ProfileForm = () => {
         country: profileData.country || '',
         education_level: profileData.education_level || '',
         field_of_study: profileData.field_of_study || '',
-        years_of_experience: profileData.years_of_experience || 0,
-        cookie_accepted: profileData.cookie_accepted ?? false,
-        updated_at: new Date().toISOString()
+        years_of_experience: profileData.years_of_experience ?? null,
+        avatar_url: profileData.avatar_url ?? null,
+        email_notifications: profileData.email_notifications ?? true,
+        onboarding_completed: profileData.onboarding_completed ?? false,
+        push_notifications: profileData.push_notifications ?? true,
+        subscription_tier: profileData.subscription_tier === 'pro' ? 'pro' : 'free',
+        updated_at: new Date().toISOString(),
+        created_at: profileData.created_at || new Date().toISOString(),
+      } as {
+        id: string;
+        full_name: string;
+        bio: string;
+        country: string;
+        education_level: string;
+        field_of_study: string;
+        years_of_experience: number | null;
+        avatar_url: string | null;
+        email_notifications: boolean;
+        onboarding_completed: boolean;
+        push_notifications: boolean;
+        subscription_tier: 'free' | 'pro';
+        updated_at: string;
+        created_at: string;
       };
       const { error } = await supabase
         .from('user_profiles')
-        .upsert(upsertData, { onConflict: 'id' });
+        .upsert(upsertData);
       if (error) throw error;
       toast.success('Profile updated successfully');
       await fetchProfile();
