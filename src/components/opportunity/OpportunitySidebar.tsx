@@ -91,9 +91,9 @@ const OpportunitySidebar = ({
     } else {
       setActiveAnalysis(type);
       if (type === "steps") {
-        generateApplicationSteps(opportunity.id);
+        generateApplicationSteps(opportunity);
       } else {
-        analyzeApplicationChance(opportunity.id);
+        analyzeApplicationChance(opportunity);
       }
     }
   };
