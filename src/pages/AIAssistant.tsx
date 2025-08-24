@@ -161,30 +161,6 @@ const AIAssistant = () => {
               </TabsList>
               <TabsContent value="recommendations">
                 <AIRecommendationsDashboard />
-                {/* --- Success Rate Analysis UI --- */}
-                <Card className="mt-8">
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Sparkles className="h-5 w-5 mr-2 text-[#008000]" />
-                      <span className="text-[#008000]">Analyse Success Rate</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Button
-                      onClick={analyze}
-                      disabled={aiLoading}
-                      className="bg-[#008000] hover:bg-[#006400] text-white"
-                    >
-                      {aiLoading ? 'Analysing...' : 'Analyse Success Rate'}
-                    </Button>
-                    {successRate !== null && (
-                      <div className="mt-4 text-green-700 font-bold text-xl">
-                        Estimated Success Rate: {successRate}%
-                      </div>
-                    )}
-                    {aiError && <div className="text-red-500 mt-2">{aiError}</div>}
-                  </CardContent>
-                </Card>
               </TabsContent>
               {/* ...existing code for other tabs... */}
               {/* ...existing code for chat, documents, voice tabs... */}

@@ -497,9 +497,7 @@ const StaffAdminDashboard = () => {
                         <td className="p-3 capitalize">{opp.status}</td>
                         <td className="p-3">{opp.is_published ? 'Yes' : 'No'}</td>
                         <td className="p-3 flex gap-2">
-                          {(isStaffAdmin || isAdmin) && (
-                            <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit(opp)}><Edit className="w-4 h-4" /></Button>
-                          )}
+                          {/* Edit icon removed as requested; nothing rendered here */}
                           <Button size="sm" className="bg-red-600 text-white" onClick={() => handleDelete(opp)}><Trash2 className="w-4 h-4" /></Button>
                         </td>
                       </tr>
@@ -561,6 +559,18 @@ const StaffAdminDashboard = () => {
                                     <div><strong>Benefits:</strong> {sub.benefits}</div>
                                     <div><strong>Tags:</strong> {Array.isArray(sub.tags) ? sub.tags.join(', ') : sub.tags}</div>
                                   </div>
+                                  {(isStaffAdmin || isAdmin) && (
+                                    <Button
+                                      size="sm"
+                                      className="bg-[#008000] text-white mt-4"
+                                      onClick={() => {
+                                        toast.dismiss(toastId);
+                                        navigate(`/create-opportunity?editSubmissionId=${sub.id}`);
+                                      }}
+                                    >
+                                      <Edit className="w-4 h-4 mr-1" /> Edit Submission
+                                    </Button>
+                                  )}
                                 </div>,
                                 { duration: 8000 }
                               );
@@ -856,7 +866,7 @@ const StaffAdminDashboard = () => {
                           View Details
                         </Button>
                         {(isStaffAdmin || isAdmin) && (
-                          <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit(sub)}><Edit className="w-4 h-4" /></Button>
+                          <Button size="sm" className="bg-[#008000] text-white" onClick={() => handleEdit({ ...sub, isSubmission: true })}><Edit className="w-4 h-4" /></Button>
                         )}
                         <Button
                           size="sm"

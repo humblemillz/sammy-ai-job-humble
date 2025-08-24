@@ -1,12 +1,13 @@
 
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useFeatureToggle } from '@/hooks/useFeatureToggle';
 import { toast } from 'sonner';
 import OpportunityForm from '@/components/shared/OpportunityForm';
+import AdminOpportunityForm from '@/components/admin/AdminOpportunityForm';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -35,8 +36,12 @@ interface OpportunityFormData {
 const CreateOpportunity = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const editSubmissionId = searchParams.get('editSubmissionId');
   const { isEnabled: canCreatePosts, loading: featureLoading } = useFeatureToggle('user_opportunity_posts');
   const [submitting, setSubmitting] = useState(false);
+  const [editSubmissionData, setEditSubmissionData] = useState<OpportunityFormData | null>(null);
+  const [loadingEdit, setLoadingEdit] = useState(false);
 
   const handleSubmit = async (formData: OpportunityFormData) => {
     if (!user) {
@@ -46,31 +51,44 @@ const CreateOpportunity = () => {
 
     setSubmitting(true);
     try {
-      // Create user submission for admin review
-      const { error: submissionError } = await supabase
-        .from('user_submissions')
-        .insert({
-          title: formData.title,
-          organization: formData.organization,
-          description: formData.description,
-          category_id: formData.category_id,
-          user_id: user.id,
-          location: formData.location,
-          salary_range: formData.salary_range,
-          is_remote: formData.is_remote,
-          application_deadline: formData.application_deadline,
-          application_url: formData.application_url,
-          requirements: formData.requirements,
-          benefits: formData.benefits,
-          tags: formData.tags,
-          submission_notes: `Author: ${formData.author}\nPreview: ${formData.preview_text}\nFeatured Image: ${formData.featured_image_url || 'None'}`,
-          status: 'pending'
-        });
-
-      if (submissionError) throw submissionError;
-
-      toast.success('Opportunity submitted successfully! It will be reviewed by our team.');
-      navigate('/dashboard');
+      if (editSubmissionId) {
+        // Update existing submission
+        const { error: updateError } = await supabase
+          .from('user_submissions')
+          .update({
+            ...formData,
+            user_id: user.id,
+            status: 'pending'
+          })
+          .eq('id', editSubmissionId);
+        if (updateError) throw updateError;
+        toast.success('Submission updated successfully!');
+        navigate('/dashboard');
+      } else {
+        // Create new submission
+        const { error: submissionError } = await supabase
+          .from('user_submissions')
+          .insert({
+            title: formData.title,
+            organization: formData.organization,
+            description: formData.description,
+            category_id: formData.category_id,
+            user_id: user.id,
+            location: formData.location,
+            salary_range: formData.salary_range,
+            is_remote: formData.is_remote,
+            application_deadline: formData.application_deadline,
+            application_url: formData.application_url,
+            requirements: formData.requirements,
+            benefits: formData.benefits,
+            tags: formData.tags,
+            submission_notes: `Author: ${formData.author}\nPreview: ${formData.preview_text}\nFeatured Image: ${formData.featured_image_url || 'None'}`,
+            status: 'pending'
+          });
+        if (submissionError) throw submissionError;
+        toast.success('Opportunity submitted successfully! It will be reviewed by our team.');
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Error submitting opportunity:', error);
       toast.error('Failed to submit opportunity');
@@ -78,6 +96,44 @@ const CreateOpportunity = () => {
       setSubmitting(false);
     }
   };
+  // Fetch submission data if editing
+  useEffect(() => {
+    const fetchSubmission = async () => {
+      if (editSubmissionId) {
+        setLoadingEdit(true);
+        const { data, error } = await supabase
+          .from('user_submissions')
+          .select('*')
+          .eq('id', editSubmissionId)
+          .single();
+        if (error) {
+          toast.error('Failed to load submission for editing');
+        } else if (data) {
+          // Map submission data to OpportunityFormData, filling missing fields
+          setEditSubmissionData({
+            title: data.title || '',
+            author: '', // Not present in submission, set default
+            category_id: data.category_id || '',
+            preview_text: '', // Not present in submission, set default
+            description: data.description || '',
+            organization: data.organization || '',
+            location: data.location || '',
+            salary_range: data.salary_range || '',
+            is_remote: data.is_remote || false,
+            application_deadline: data.application_deadline || '',
+            application_url: data.application_url || '',
+            requirements: data.requirements || [],
+            benefits: data.benefits || [],
+            tags: data.tags || [],
+            featured_image_url: '', // Not present in submission, set default
+            is_published: false,
+          });
+        }
+        setLoadingEdit(false);
+      }
+    };
+    fetchSubmission();
+  }, [editSubmissionId]);
 
   const handleCancel = () => {
     navigate('/dashboard');
@@ -273,13 +329,25 @@ const CreateOpportunity = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="bg-white/80 backdrop-blur-sm rounded-3xl border border-[#e6f5ec]/30 shadow-xl p-8 mb-8"
         >
-          <OpportunityForm
-            mode="create"
-            userRole="user"
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            loading={submitting}
-          />
+          {loadingEdit ? (
+            <div className="text-center py-8">Loading submission for editing...</div>
+          ) : editSubmissionId ? (
+            <AdminOpportunityForm
+              isOpen={true}
+              onClose={handleCancel}
+              onSuccess={() => navigate('/dashboard')}
+              mode="create"
+              initialData={editSubmissionData || undefined}
+            />
+          ) : (
+            <OpportunityForm
+              mode="create"
+              userRole="user"
+              onSubmit={handleSubmit}
+              onCancel={handleCancel}
+              loading={submitting}
+            />
+          )}
         </motion.div>
 
         {/* Help Section */}
