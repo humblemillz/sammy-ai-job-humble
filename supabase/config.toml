@@ -9,8 +9,8 @@ max_rows = 1000
 
 [auth]
 enabled = true
-site_url = "http://localhost:3000"
-additional_redirect_urls = ["https://*.vercel.app"]
+site_url = "https://sammy-ai-job-humble.vercel.app"
+additional_redirect_urls = ["https://*.vercel.app", "http://localhost:3000"]
 
 [auth.email]
 enable_signup = true
