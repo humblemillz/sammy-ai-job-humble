@@ -38,13 +38,15 @@ interface OpportunitiesListProps {
   searchQuery?: string;
   limit?: number;
   showBookmarksOnly?: boolean;
+  showApplicationsOnly?: boolean;
 }
 
 const OpportunitiesList = ({
   categoryFilter = '',
   searchQuery = '',
   limit = 10,
-  showBookmarksOnly = false
+  showBookmarksOnly = false,
+  showApplicationsOnly = false
 }: OpportunitiesListProps) => {
   const { user } = useAuth();
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
@@ -57,7 +59,7 @@ const OpportunitiesList = ({
   useEffect(() => {
     setCurrentPage(1);
     fetchOpportunities(1);
-  }, [categoryFilter, searchQuery, showBookmarksOnly]);
+  }, [categoryFilter, searchQuery, showBookmarksOnly, showApplicationsOnly]);
 
   useEffect(() => {
     if (user) {
@@ -136,6 +138,25 @@ const OpportunitiesList = ({
         }
 
         query = query.in('id', bookmarkedIds);
+      }
+
+      // Handle applications-only filter
+      if (showApplicationsOnly && user) {
+        const { data: userApplications } = await supabase
+          .from('user_applications')
+          .select('opportunity_id')
+          .eq('user_id', user.id);
+
+        const appliedIds = userApplications?.map(a => a.opportunity_id) || [];
+
+        if (appliedIds.length === 0) {
+          setOpportunities([]);
+          setTotalPages(1);
+          setTotalCount(0);
+          return;
+        }
+
+        query = query.in('id', appliedIds);
       }
 
       const { data, error, count } = await query;

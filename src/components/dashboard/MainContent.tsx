@@ -181,37 +181,12 @@ const MainContent = ({ selectedCategory, searchQuery, viewMode, handleViewMode }
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <Card className="bg-white/80 backdrop-blur-sm border-[#e6f5ec]/30 shadow-lg rounded-xl sm:rounded-2xl overflow-hidden">
-                <CardContent className="p-6 sm:p-12 text-center">
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.6, type: "spring" }}
-                    className="relative"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#90EE90]/10 to-[#e6f5ec]/10 rounded-full blur-2xl"></div>
-                    <div className="relative p-6 sm:p-8 bg-[#e6f5ec]/20 rounded-full w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 sm:mb-6 flex items-center justify-center">
-                      <Briefcase className="w-12 h-12 sm:w-16 sm:h-16 text-[#90EE90]" />
-                    </div>
-                  </motion.div>
-                  <motion.h3
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="text-lg sm:text-xl font-semibold text-[#384040] mb-2 sm:mb-3"
-                  >
-                    No applications yet
-                  </motion.h3>
-                  <motion.p
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    className="text-sm sm:text-base text-gray-600"
-                  >
-                    Your submitted applications will appear here.
-                  </motion.p>
-                </CardContent>
-              </Card>
+              <OpportunitiesList
+                categoryFilter={selectedCategory?.name || ''}
+                searchQuery={searchQuery}
+                limit={10}
+                showApplicationsOnly={true}
+              />
             </motion.div>
           </motion.div>
         </TabsContent>
