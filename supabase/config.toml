@@ -10,7 +10,7 @@ max_rows = 1000
 [auth]
 enabled = true
 site_url = "http://localhost:3000"
-additional_redirect_urls = []
+additional_redirect_urls = ["https://*.vercel.app"]
 
 [auth.email]
 enable_signup = true
