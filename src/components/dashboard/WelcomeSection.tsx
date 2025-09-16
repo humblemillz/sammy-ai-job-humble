@@ -14,6 +14,7 @@ const WelcomeSection = ({ user }: WelcomeSectionProps) => {
   const navigate = useNavigate();
   const [isStaffAdmin, setIsStaffAdmin] = useState(false);
 
+  
   useEffect(() => {
     const checkStaffAdminRole = async () => {
       if (user?.id) {
