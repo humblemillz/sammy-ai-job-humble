@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 type WelcomeSectionProps = {
   user: any;
@@ -16,21 +17,38 @@ const WelcomeSection = ({ user }: WelcomeSectionProps) => {
   useEffect(() => {
     const checkStaffAdminRole = async () => {
       if (user?.id) {
-        // You may need to import supabase if not already
-        const { data } = await import('@/integrations/supabase/client').then(m => m.supabase)
-          .then(supabase =>
-            supabase
-              .from('user_roles')
-              .select('role')
-              .eq('user_id', user.id)
-              .eq('role', 'staff_admin')
-              .maybeSingle()
-          );
+        const { data } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'staff_admin')
+          .maybeSingle();
+
         setIsStaffAdmin(!!data);
       }
     };
     checkStaffAdminRole();
   }, [user]);
+
+
+  // useEffect(() => {
+  //   const checkStaffAdminRole = async () => {
+  //     if (user?.id) {
+  //       // You may need to import supabase if not already
+  //       const { data } = await import('@/integrations/supabase/client').then(m => m.supabase)
+  //         .then(supabase =>
+  //           supabase
+  //             .from('user_roles')
+  //             .select('role')
+  //             .eq('user_id', user.id)
+  //             .eq('role', 'staff_admin')
+  //             .maybeSingle()
+  //         );
+  //       setIsStaffAdmin(!!data);
+  //     }
+  //   };
+  //   checkStaffAdminRole();
+  // }, [user]);
 
   return (
     <motion.div
